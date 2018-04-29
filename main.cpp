@@ -4,10 +4,13 @@
 
 #include "utils/dbwrapper/db-wrapper.h"
 #include "utils/config.h"
+#include "utils/file/logstream.h"
+static QTextStream cout(stdout, QIODevice::WriteOnly);
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+    lstream = new LogStream();
     // load configuration file
     config conf("./config.conf");
 
@@ -20,6 +23,7 @@ int main(int argc, char *argv[])
     auto isSuccess = db.open();
     if(isSuccess)
       {
+	*lstream << "Successfullly connected mysql."
         QSqlQuery query;
         query.exec("create database test3");
       }
