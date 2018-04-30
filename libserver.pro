@@ -26,5 +26,4 @@ HEADERS += \
     utils/dbwrapper/db-wrapper.h \
     utils/dbwrapper/db-operation.h \
     utils/config.h \
-    utils/file/fileio.h \
-    utils/file/loadsettings.h
+    utils/file/fileio.h
