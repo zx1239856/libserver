@@ -120,7 +120,7 @@ select::select(const QVector<QString> &_what,const QString& _tablename,const QSt
       sql+=(*it);
       if((it+1)!=what.end())sql+=",";
     }
-  sql+=" FROM" + tablename+" WHERE ";
+  sql+=" FROM " + tablename+" WHERE ";
   sql+=filter;
 }
 
