@@ -1,33 +1,22 @@
 // Qt lib import
 #include <QCoreApplication>
 
-
 #include "utils/dbwrapper/db-wrapper.h"
+#include "utils/dbwrapper/db-operation.h"
 #include "utils/config.h"
-#include "utils/file/logstream.h"
+
+// global variables
 static QTextStream cout(stdout, QIODevice::WriteOnly);
+// global configuration file
+config globalConf("./config.conf");
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    lstream = new LogStream();
-    // load configuration file
-    config conf("./config.conf");
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName(conf.dbHost);
-    db.setPort(conf.dbPort);
-    //db.setDatabaseName("test");
-    db.setUserName(conf.dbUname);
-    db.setPassword(conf.dbPwd);
-    auto isSuccess = db.open();
-    if(isSuccess)
-      {
-	*lstream << "Successfullly connected mysql."
-        QSqlQuery query;
-        query.exec("create database test3");
-      }
-
+    std::vector<QString> fields{"id","typename","privilege"};
+    std::vector<QVariantList> vals{{1,2,3},{"Admin","Stock","Test"},{false,false,false}};
+    sql::insert in("lib_settings.stafftype",fields,vals);
+    in.exec();
  /*
     auto insert = [&]() {
         auto query(control.query()); // 这里的query在解引用（ -> 或者 * ）后返回的是 QSqlQuery ，直接用就可以了，不需要单独打开数据库或者其他的初始化
