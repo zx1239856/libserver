@@ -1,0 +1,58 @@
+//登录
+{
+    "type": "USER",
+    "commond": "login",
+    "username": "用户名",
+    "password": "SHA-1处理后的密码"
+}
+
+//忘记密码
+{
+    "type": "USER",
+    "commond": "forget",
+    "username": "用户名",
+    "auth": "验证邮箱",
+}
+
+//退出
+{
+    "token": "该对话所对应的令牌",
+    "type": "USER",
+    "commond": "logout",
+    "username": "用户名",
+}
+
+//更改密码
+{
+    "token": "该对话所对应的令牌",
+    "type": "USER",
+    "commond": "changepwd",
+    "username": "用户名",
+    "oldpwd": "SHA-1处理后的旧密码",
+    "newpwd": "SHA-1处理后的新密码",
+}
+
+//更新个人信息
+{
+    "token": "该对话所对应的令牌",
+    "type": "USER",
+    "commond": "updateinfo",
+    "info":[
+        {
+            "field": "name",
+            "data": "昵称"
+        },
+        {
+            "field": "sex",
+            "data": "性别"
+        },
+        {
+            "field": "tel",
+            "data": "手机"
+        },
+        {
+            "field": "email",
+            "data": "邮箱"
+        }
+    ]
+}

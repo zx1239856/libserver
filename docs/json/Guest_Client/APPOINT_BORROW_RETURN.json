@@ -1,0 +1,15 @@
+//预约借书（提出借阅申请）
+{
+    "token": "该对话所对应的令牌",
+    "type": "APPOINT",
+    "commond": "borrow",
+    "id": 1 //书的id
+}
+
+//预约还书（提出归还申请）
+{
+    "token": "该对话所对应的令牌",
+    "type": "APPOINT",
+    "commond": "return",
+    "id": 1 //书的id
+}

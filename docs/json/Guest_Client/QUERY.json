@@ -1,0 +1,127 @@
+//检索书籍
+//完全匹配检索
+{
+    "token": "该对话所对应的令牌",
+    "type": "QUERY",
+    "commond": "book",
+    "rule": "completesearch",
+    "content": [
+        {
+            "field": "name",
+            "data": "C++ Primer Plus"
+        },
+        {
+            "field": "auther",
+            "data": "Stephen Prata"
+        },
+        {
+            "field": "press",
+            "data": "人民邮电出版社"
+        },
+        {
+            "field": "ISBN",
+            "data": "978-7-115-27946-0"
+        },
+        //以下固定进行完全匹配检索
+        {
+            "field": "id",
+            "data": 1
+        },
+        {
+            "field": "tags",
+            "data": [
+                "Computer Science",
+                "C/C++"
+            ]
+        },
+        {
+            "field": "bookcase",
+            "data": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        {
+            "field": "available",
+            "data": true
+        },
+        //以下固定进行模糊检索
+        {
+            "field": "price",
+            "data": {
+                "inf": 10.0,
+                "sup": 100.0
+            }
+        }
+    ]
+}
+//模糊检索
+{
+    "token": "该对话所对应的令牌",
+    "type": "QUERY",
+    "commond": "book",
+    "rule": "fuzzysearch",
+    "content": [
+        {
+            "field": "name",
+            "data": "Primer Plus"
+        },
+        {
+            "field": "auther",
+            "data": "Stephen"
+        },
+        {
+            "field": "press",
+            "data": "邮电"
+        },
+        {
+            "field": "tags",
+            "data": [
+                "Computer Science",
+                "C/C++"
+            ]
+        },
+        {
+            "field": "ISBN",
+            "data": "115-27946"
+        },
+        //以下固定进行完全匹配检索
+        {
+            "field": "id",
+            "data": 1
+        },
+        {
+            "field": "tags",
+            "data": [
+                "Computer Science",
+                "C/C++"
+            ]
+        },
+        {
+            "field": "bookcase",
+            "data": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        {
+            "field": "available",
+            "data": true
+        },
+        //以下固定进行模糊检索
+        {
+            "field": "price",
+            "data": {
+                "inf": 10.0,
+                "sup": 100.0
+            }
+        }
+    ]
+}
+    
