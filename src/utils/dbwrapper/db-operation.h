@@ -11,8 +11,9 @@ namespace sql
 {
   // SQL-query constructor basic class
   // This can run direct SQL sentence
-  class basicSQL
+  class basicSQL:public QObject
   {
+    Q_OBJECT
   protected:
     dbWrapper::Query query;
     QString sql;
@@ -20,10 +21,13 @@ namespace sql
   public:
     basicSQL();
     basicSQL(const QString &s);
-    //basicSQL(const QString &_sql);
     virtual bool exec();
     virtual QSqlError lastError();
     virtual ~basicSQL(){}
+  signals:
+    void onSuccess(); // for update, delete, insert
+    void onResult(); // for SELECT, you need to fetch results
+    void onFail(const QSqlError &error);
   };
 
   /* derived specific SQL queries
@@ -73,14 +77,16 @@ namespace sql
   // SELECT AVG/SUM(col) FROM ... /
   // SELECT MIN(col) FROM ... /
   enum order{DESC,ASC};
-  enum func{MIN,MAX,AVG,SUM};
+  enum func{MIN,MAX,AVG,SUM,COUNT};
 
   class select:public basicSQL
   {
+    bool isOrder=false;
+    bool isLimit=false;
   public:
     select(const QString& tablename,const QString &condition="1",const QList<QString> &what={"*"},bool isDistinct=false);
     select(const QString& tablename,const QList<QString> &what={"*"},bool isDistinct=false);
-    select(const QString &tablename,const QString &col, func sqlfunc);
+    select(const QString& tablename,const QString &col, func sqlfunc);
     void addLimit(uint limit,uint start_pos);
     void addOrder(const QString& colname, order sqlorder);
     void addOrder(const QList<QString>& cols,order sqlorder);
@@ -117,4 +123,15 @@ private:
 public:
   static dbConn* getInstance();
   dbWrapper::Control* getControl();
+};
+
+
+class dbQueryQueue
+{
+  QQueue<sql::basicSQL*> QueryQueue;
+  uint maxThread;
+public:
+  dbQueryQueue(uint maxT);
+  void addQuery(sql::basicSQL* query);
+  void run();
 };

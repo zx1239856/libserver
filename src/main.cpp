@@ -19,14 +19,15 @@ int main(int argc, char *argv[])
     map.insert(map.end(),"id",1);
     sql::insert up("lib_settings.stafftype",map);
     up.exec();
-    QList<QString> vec{"typename"}; // only select typename
-    sql::select sel("lib_settings.stafftype",vec);
-    sel.addOrder("id",sql::ASC);
-    sel.addLimit(2,1);
-    sel.exec();
+    sql::select sel("lib_settings.stafftype","id",sql::COUNT);
+    if(!sel.exec())
+      {
+        qWarning()<<sel.lastError();
+      }
     while(sel.next())
       {
-        qWarning()<<sel.value(0).toString();
+       auto res = sel.value(0);
+       qWarning()<<res;
       }
     /*QThreadPool::globalInstance()->setMaxThreadCount(10);
 

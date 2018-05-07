@@ -23,7 +23,10 @@ basicSQL::basicSQL(const QString &s):
 
 bool basicSQL::exec()
 {
-  return query->exec(sql);
+  bool stat = query->exec(sql);
+  if(stat)emit onSuccess();
+  else emit onFail(query->lastError());
+  return stat;
 }
 
 QSqlError basicSQL::lastError()
@@ -63,15 +66,18 @@ bool insert::exec()
     {
       query->bindValue(":"+it.key(),it.value());
     }
-  return query->exec();
+  bool stat = query->exec();
+  if(stat)emit onSuccess();
+  else emit onFail(query->lastError());
+  return stat;
 }
 
 /* insert end */
 
 /* update */
 update::update(const QString& tablename,
-       QMap<QString,QVariant>& content,
-       const QString& condition):
+               QMap<QString,QVariant>& content,
+               const QString& condition):
   basicSQL(),
   cont(content)
 {
@@ -93,7 +99,10 @@ bool update::exec()
     {
       query->bindValue(":"+it.key(),it.value());
     }
-  return query->exec();
+  bool stat = query->exec();
+  if(stat)emit onSuccess();
+  else emit onFail(query->lastError());
+  return stat;
 }
 /* update end */
 
@@ -106,7 +115,10 @@ del::del(const QString &tablename,const QString &condition):
 
 bool del::exec()
 {
-  return query->exec(sql);
+  bool stat = query->exec(sql);
+  if(stat)emit onSuccess();
+  else emit onFail(query->lastError());
+  return stat;
 }
 
 /* delete end */
@@ -140,6 +152,7 @@ select::select(const QString &tablename,const QString &col, func sqlfunc):
     case MAX:sql+="MAX";break;
     case AVG:sql+="AVG";break;
     case SUM:sql+="SUM";break;
+    case COUNT:sql+="COUNT";break;
     }
   sql+=("("+col+")");
   sql+=(" FROM "+tablename);
@@ -147,37 +160,52 @@ select::select(const QString &tablename,const QString &col, func sqlfunc):
 
 void select::addLimit(uint limit,uint start_pos)
 {
-  sql+=(" LIMIT "+QString::number(start_pos)+","+QString::number(limit));
+  if(!isLimit)
+    {
+      sql+=(" LIMIT "+QString::number(start_pos)+","+QString::number(limit));
+      isLimit=true;
+    }
 }
 
 void select::addOrder(const QString& colname, order sqlorder)
 {
-  sql+=(" ORDER BY "+colname);
-  switch(sqlorder)
+  if(!isOrder)
     {
-    case DESC:sql+=" DESC";break;
-    case ASC:sql+=" ASC";break;
+      sql+=(" ORDER BY "+colname);
+      switch(sqlorder)
+        {
+        case DESC:sql+=" DESC";break;
+        case ASC:sql+=" ASC";break;
+        }
+      isOrder=true;
     }
 }
 
 void select::addOrder(const QList<QString>& cols,order sqlorder)
 {
-  sql+=" ORDER BY ";
-  for(auto it=cols.begin();it!=cols.end();++it)
+  if(!isOrder)
     {
-      sql+=*it;
-      if((it+1)!=cols.end())sql+=",";
-    }
-  switch(sqlorder)
-    {
-    case DESC:sql+=" DESC";break;
-    case ASC:sql+=" ASC";break;
+      sql+=" ORDER BY ";
+      for(auto it=cols.begin();it!=cols.end();++it)
+        {
+          sql+=*it;
+          if((it+1)!=cols.end())sql+=",";
+        }
+      switch(sqlorder)
+        {
+        case DESC:sql+=" DESC";break;
+        case ASC:sql+=" ASC";break;
+        }
+      isOrder=true;
     }
 }
 
 bool select::exec()
 {
-  return query->exec(sql);
+  bool stat = query->exec(sql);
+  if(stat)emit onSuccess();
+  else emit onFail(query->lastError());
+  return stat;
 }
 
 bool select::next()
@@ -211,3 +239,21 @@ dbWrapper::Control* dbConn::getControl()
 {
   return control;
 }
+// dbConn end
+
+// start dbQueryQueue
+
+dbQueryQueue::dbQueryQueue(uint maxT):maxThread(maxT){}
+
+void dbQueryQueue::addQuery(sql::basicSQL* query)
+{
+  QueryQueue.enqueue(query);
+}
+
+void dbQueryQueue::run()
+{
+
+}
+
+
+
