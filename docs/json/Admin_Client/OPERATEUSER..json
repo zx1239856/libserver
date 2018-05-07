@@ -2,7 +2,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEUSER",
-    "commond": "createuser",
+    "command": "createuser",
     "info": [
         {
             "field": "groupid",
@@ -34,7 +34,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEUSER",
-    "commond": "deleteuser",
+    "command": "deleteuser",
     "userid": [
         1,
         2,
@@ -45,7 +45,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEUSER",
-    "commond": "changegroup",
+    "command": "changegroup",
     "groupid": 1,
     "userid": [
         1,

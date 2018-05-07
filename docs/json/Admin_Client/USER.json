@@ -1,7 +1,7 @@
 //登录
 {
     "type": "USER",
-    "commond": "login",
+    "command": "login",
     "username": "用户名",
     "password": "SHA-1处理后的密码"
 }
@@ -9,7 +9,7 @@
 //忘记密码
 {
     "type": "USER",
-    "commond": "forget",
+    "command": "forget",
     "username": "用户名",
     "auth": "验证邮箱",
 }
@@ -18,7 +18,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "USER",
-    "commond": "logout",
+    "command": "logout",
     "username": "用户名",
 }
 
@@ -26,7 +26,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "USER",
-    "commond": "changepwd",
+    "command": "changepwd",
     "username": "用户名",
     "oldpwd": "SHA-1处理后的旧密码",
     "newpwd": "SHA-1处理后的新密码",
@@ -36,7 +36,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "USER",
-    "commond": "updateinfo",
+    "command": "updateinfo",
     "info":[
         {
             "field": "name",

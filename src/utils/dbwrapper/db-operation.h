@@ -126,7 +126,7 @@ public:
 };
 
 
-class dbQueryQueue
+class dbQueryQueue:public QObject
 {
   QQueue<sql::basicSQL*> QueryQueue;
   uint maxThread;

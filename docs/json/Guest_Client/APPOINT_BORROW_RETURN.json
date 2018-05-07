@@ -2,7 +2,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "APPOINT",
-    "commond": "borrow",
+    "command": "borrow",
     "id": 1 //书的id
 }
 
@@ -10,6 +10,6 @@
 {
     "token": "该对话所对应的令牌",
     "type": "APPOINT",
-    "commond": "return",
+    "command": "return",
     "id": 1 //书的id
 }

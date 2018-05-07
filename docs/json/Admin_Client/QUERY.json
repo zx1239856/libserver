@@ -3,7 +3,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "QUERY",
-    "commond": "book",
+    "command": "book",
     "rule": "completesearch",
     "content": [
         {
@@ -62,7 +62,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "QUERY",
-    "commond": "book",
+    "command": "book",
     "rule": "fuzzysearch",
     "content": [
         {
@@ -129,7 +129,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "QUERY",
-    "commond": "operationlog",
+    "command": "operationlog",
     "content": [
         {
             "field": "logid",
@@ -162,7 +162,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "QUERY",
-    "commond": "borrowlog",
+    "command": "borrowlog",
     "content": [
         {
             "field": "logid",
