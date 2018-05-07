@@ -1,0 +1,15 @@
+//确认借书（审核借阅申请）
+{
+    "token": "该对话所对应的令牌",
+    "type": "CHECK",
+    "commond": "borrow",
+    "appointid": 1 //curappoint表中的id
+}
+
+//确认还书（审核归还申请）
+{
+    "token": "该对话所对应的令牌",
+    "type": "CHECK",
+    "commond": "return",
+    "appointid": 1 //curappoint表中的id
+}

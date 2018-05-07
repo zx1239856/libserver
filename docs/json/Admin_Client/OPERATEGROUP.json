@@ -1,0 +1,139 @@
+//添加组
+//添加读者组
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEGROUP",
+    "commond": "createreader",
+    "content":[
+        {
+            "field": "name",
+            "data": "一级读者"
+        },
+        {
+            "field": "max_num",
+            "data": 10 //最多同时借书本数
+        },
+        {
+            "field": "max_borrow_time",
+            "data": 10 //每次最长借出时间
+        },
+        {
+            "field": "max_renew_time",
+            "data": 3 //最多续借次数
+        }
+    ]
+}
+
+//添加工作人员组
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEGROUP",
+    "commond": "createstaff",
+    "content":[
+        {
+            "field": "name",
+            "data": "一级管理员"
+        }
+    ]
+}
+
+//添加图书组
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEGROUP",
+    "commond": "createbook",
+    "content":[
+        {
+            "field": "name",
+            "data": "常用书"
+        },
+        {
+            "field": "max_time",
+            "data": 10 //最长可借出时间
+        }
+    ]
+}
+
+//更改组
+//更改读者组
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEGROUP",
+    "commond": "changereader",
+    "groupid": 1,
+    "content":[
+        {
+            "field": "name",
+            "data": "一级读者"
+        },
+        {
+            "field": "max_num",
+            "data": 10 //最多同时借书本数
+        },
+        {
+            "field": "max_borrow_time",
+            "data": 10 //每次最长借出时间
+        },
+        {
+            "field": "max_renew_time",
+            "data": 3 //最多续借次数
+        }
+    ]
+}
+
+//更改工作人员组
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEGROUP",
+    "commond": "changestaff",
+    "groupid": 1,
+    "content":[
+        {
+            "field": "name",
+            "data": "一级管理员"
+        }
+    ]
+}
+
+//更改图书组
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEGROUP",
+    "commond": "changebook",
+    "groupid": 1,
+    "content":[
+        {
+            "field": "name",
+            "data": "常用书"
+        },
+        {
+            "field": "max_time",
+            "data": 10 //最长可借出时间
+        }
+    ]
+}
+
+//删除组（注意：删除的组必须为空）
+//删除读者组
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEGROUP",
+    "commond": "deletereader",
+    "groupid": 1,
+}
+
+//删除工作人员组
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEGROUP",
+    "commond": "deletestaff",
+    "groupid": 1,
+}
+
+//删除图书组
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEGROUP",
+    "commond": "deletebook",
+    "groupid": 1,
+}

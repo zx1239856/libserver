@@ -1,0 +1,16 @@
+//更改通用设置
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATE",
+    "commond": "setting",
+    "content":[
+        {
+            "field": "",
+            "data": ""
+        },
+        {
+            "field": "",
+            "data": ""
+        }
+    ]
+}
