@@ -30,58 +30,60 @@ namespace sql
    *
    */
   // USAGE: insert(tablename,fields,vals); insert->exec();
-  // This can either take a single row or a batch of rows
   // INSERT INTO tablename (fields) VALUES (vals)
   class insert:public basicSQL
   {
   private:
-    const QString tablename;
-    const QMap<QString,QVariantList> &content;
+    const QMap<QString,QVariant>& cont;
   public:
-    insert(const QString &_tableName,
-           const QMap<QString,QVariantList> &_content);
+    insert(const QString &tableName, const QMap<QString,QVariant> &content);
     virtual bool exec();
   };
 
-  // update(tablename,content,filter)
-  // UPDATE tablename a=a1,b=b1,... WHERE filter
+  // update(tablename,content,condition)
+  // UPDATE tablename a=a1,b=b1,... WHERE condition
   class update:public basicSQL
   {
   private:
-    const QString tablename;
-    const QMap<QString,QVariant> &content;
-    const QString filter;
+    const QMap<QString,QVariant> &cont;
   public:
-    update(const QString& _tablename,
-           QMap<QString,QVariant>& _content,
-           const QString& _filter);
+    update(const QString& tablename,
+           QMap<QString,QVariant>& content,
+           const QString& condition);
     virtual bool exec();
   };
 
-  // delete(tablename,filter)
-  // DELETE FROM tablename WHERE filter
+  // delete(tablename,conidtion)
+  // DELETE FROM tablename WHERE condition
   class del:public basicSQL
   {
-  private:
-    const QString tablename;
-    const QString filter;
   public:
-    del(const QString &_tablename,
-        const QString &_filter);
+    del(const QString &tablename,
+        const QString &condition);
     virtual bool exec();
   };
 
-  // select(what,tablename,filter)
-  // SELECT what FROM tablename WHERE filter
+  // select(what,tablename,condition)
+  // SELECT what FROM tablename WHERE condition /
+  // SELECT DISTINCT what FROM ... /
+  // SELECT ... LIMIT [number of records] /
+  // SELECT ... LIMIT [start pos, number of records] /
+  // SELECT ... ORDERED BY a,b,c DESC/ASC /
+  // SELECT CONCAT(col,',',col) FROM ...
+  // SELECT AVG/SUM(col) FROM ... /
+  // SELECT MIN(col) FROM ... /
+  enum order{DESC,ASC};
+  enum func{MIN,MAX,AVG,SUM};
+
   class select:public basicSQL
   {
-  private:
-    const QVector<QString> &what={"*"};
-    const QString tablename;
-    const QString filter;
   public:
-    select(const QString& _tablename,const QString _filter="1");
-    select(const QVector<QString> &_what,const QString& _tablename,const QString _filter="1");
+    select(const QString& tablename,const QString &condition="1",const QList<QString> &what={"*"},bool isDistinct=false);
+    select(const QString& tablename,const QList<QString> &what={"*"},bool isDistinct=false);
+    select(const QString &tablename,const QString &col, func sqlfunc);
+    void addLimit(uint limit,uint start_pos);
+    void addOrder(const QString& colname, order sqlorder);
+    void addOrder(const QList<QString>& cols,order sqlorder);
     virtual bool exec();
     bool next();
     QVariant value(int i);

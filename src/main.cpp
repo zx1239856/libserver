@@ -13,14 +13,16 @@ config globalConf("./config.conf");
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    QMap<QString,QVariantList> map;
-    map.insert(map.end(),"typename",{"user"});
-    map.insert(map.end(),"privilege",{true});
-    map.insert(map.end(),"id",{1});
+    QMap<QString,QVariant> map;
+    map.insert(map.end(),"typename","user");
+    map.insert(map.end(),"privilege",true);
+    map.insert(map.end(),"id",1);
     sql::insert up("lib_settings.stafftype",map);
     up.exec();
-    QVector<QString> vec{"typename"}; // only select typename
-    sql::select sel(vec,"lib_settings.stafftype");
+    QList<QString> vec{"typename"}; // only select typename
+    sql::select sel("lib_settings.stafftype",vec);
+    sel.addOrder("id",sql::ASC);
+    sel.addLimit(2,1);
     sel.exec();
     while(sel.next())
       {

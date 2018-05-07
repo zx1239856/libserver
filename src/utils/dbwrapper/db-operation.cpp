@@ -12,7 +12,7 @@ dbWrapper::Control* basicSQL::mainDBControl=dbConn::getInstance()->getControl();
 // singleton init end
 
 /*
- * SQL constructors and executors
+ * basic SQL constructors and executors
  */
 
 basicSQL::basicSQL():
@@ -31,13 +31,16 @@ QSqlError basicSQL::lastError()
   return query->lastError();
 }
 
-insert::insert(const QString &_tableName,
-               const QMap<QString,QVariantList> &_content):
-  basicSQL(),
-  tablename(_tableName),content(_content)
+/*
+ * insert
+ */
+
+insert::insert(const QString &tableName,
+               const QMap<QString,QVariant> &content):
+  basicSQL(),cont(content)
 {
   // construct SQL sentence
-  sql="INSERT INTO "+_tableName +" (";  // INSERT INTO tablename (a,b,c) VALUES (?, ? ,?)
+  sql="INSERT INTO "+tableName +" (";  // INSERT INTO tablename (col1,col2,col3) VALUES (?, ? ,?)
   for(auto it=content.keys().begin();it!=content.keys().end();++it)
     {
       sql += *it;
@@ -56,18 +59,21 @@ insert::insert(const QString &_tableName,
 bool insert::exec()
 {
   query->prepare(sql);
-  for(int i=0;i<content.keys().size();++i)
+  for(auto it=cont.begin();it!=cont.end();++it)
     {
-      query->bindValue(":"+content.keys()[i],content.values()[i]);
+      query->bindValue(":"+it.key(),it.value());
     }
-  return query->execBatch();
+  return query->exec();
 }
 
-update::update(const QString& _tablename,
-               QMap<QString,QVariant>& _content,
-               const QString& _filter):
+/* insert end */
+
+/* update */
+update::update(const QString& tablename,
+       QMap<QString,QVariant>& content,
+       const QString& condition):
   basicSQL(),
-  tablename(_tablename),content(_content),filter(_filter)
+  cont(content)
 {
   sql="UPDATE "+tablename+" SET ";
   for(auto it=content.begin();it!=content.end();++it)
@@ -77,25 +83,25 @@ update::update(const QString& _tablename,
       if((it+1)!=content.end())sql.append(",");
     }
   sql+=" WHERE ";
-  sql+=filter;
+  sql+=condition;
 }
 
 bool update::exec()
 {
   query->prepare(sql);
-  for(auto it=content.begin();it!=content.end();++it)
+  for(auto it=cont.begin();it!=cont.end();++it)
     {
       query->bindValue(":"+it.key(),it.value());
     }
   return query->exec();
 }
+/* update end */
 
-del::del(const QString &_tablename,const QString &_filter):
-  basicSQL(),
-  tablename(_tablename),filter(_filter)
+del::del(const QString &tablename,const QString &condition):
+  basicSQL()
 {
   sql="DELETE FROM "+tablename +" WHERE ";
-  sql+=filter;
+  sql+=condition;
 }
 
 bool del::exec()
@@ -103,25 +109,70 @@ bool del::exec()
   return query->exec(sql);
 }
 
-select::select(const QString& _tablename,const QString _filter):
-  basicSQL(),
-  tablename(_tablename),filter(_filter)
-{
-  sql="SELECT * FROM "+tablename+" WHERE "+filter;
-}
+/* delete end */
 
-select::select(const QVector<QString> &_what,const QString& _tablename,const QString _filter):
-  basicSQL(),
-  what(_what),tablename(_tablename),filter(_filter)
+/* select */
+
+select::select(const QString& tablename,const QString &condition,const QList<QString> &what,bool isDistinct):
+  basicSQL()
 {
   sql="SELECT ";
+  if(isDistinct)sql+="DISTINCT ";
   for(auto it=what.begin();it!=what.end();++it)
     {
       sql+=(*it);
       if((it+1)!=what.end())sql+=",";
     }
   sql+=" FROM " + tablename+" WHERE ";
-  sql+=filter;
+  sql+=condition;
+}
+
+select::select(const QString& tablename,const QList<QString> &what,bool isDistinct):
+  select(tablename,"1",what,isDistinct){}
+
+select::select(const QString &tablename,const QString &col, func sqlfunc):
+  basicSQL()
+{
+  sql="SELECT ";
+  switch(sqlfunc)
+    {
+    case MIN:sql+="MIN";break;
+    case MAX:sql+="MAX";break;
+    case AVG:sql+="AVG";break;
+    case SUM:sql+="SUM";break;
+    }
+  sql+=("("+col+")");
+  sql+=(" FROM "+tablename);
+}
+
+void select::addLimit(uint limit,uint start_pos)
+{
+  sql+=(" LIMIT "+QString::number(start_pos)+","+QString::number(limit));
+}
+
+void select::addOrder(const QString& colname, order sqlorder)
+{
+  sql+=(" ORDER BY "+colname);
+  switch(sqlorder)
+    {
+    case DESC:sql+=" DESC";break;
+    case ASC:sql+=" ASC";break;
+    }
+}
+
+void select::addOrder(const QList<QString>& cols,order sqlorder)
+{
+  sql+=" ORDER BY ";
+  for(auto it=cols.begin();it!=cols.end();++it)
+    {
+      sql+=*it;
+      if((it+1)!=cols.end())sql+=",";
+    }
+  switch(sqlorder)
+    {
+    case DESC:sql+=" DESC";break;
+    case ASC:sql+=" ASC";break;
+    }
 }
 
 bool select::exec()
