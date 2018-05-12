@@ -1,8 +1,4 @@
-Client:
-'H'(1byte)
+﻿Client:
+'Q'(1byte) + int length(4byte) + data(json)(上限约2048byte)
 Server:
-'W'(1byte)
-Client:
-'J'(1byte) + int length(4byte) + data(json)(上限约2048byte)
-Server:
-'J'(1byte) + int length(4byte) + data(json)(上限约2048byte)
+'A'(1byte) + int length(4byte) + data(json)(上限约2048byte)
