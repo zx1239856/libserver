@@ -254,12 +254,7 @@ void dbQueryQueue::run()
 {
   for(int i=0;i<maxThread;++i)
     {
-      QtConcurrent::run(
-            [&]
-      {
-
-      }
-      );
+    }
 }
 
 

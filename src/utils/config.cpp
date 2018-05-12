@@ -4,6 +4,7 @@
 config::config(const QString &path)
 {
     settings = new QSettings(path, QSettings::NativeFormat);
+    Load();
 }
 
 config::~config()
@@ -16,8 +17,8 @@ void config::Load()
     //web
     port = Get("web/listen_port").toInt();
     ccurrency = Get("web/concurrency").toInt();
-	// database
-	dbHost= Get("database/host").toString();
+    // database
+    dbHost= Get("database/host").toString();
     dbPort= Get("database/port").toInt();
     dbUname= Get("database/username").toString();
     dbPwd= Get("database/password").toString();

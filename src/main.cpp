@@ -10,19 +10,16 @@
 // global variables
 static QTextStream cout(stdout, QIODevice::WriteOnly);
 
-LogStream* lstream;
+LogStream* lstream = new LogStream;
 
 // global configuration file
 config globalConf("./config.conf");
-globalConf->load();
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-	
-	// load logstream
+    // load logstream
     lstream = new LogStream();
-	
     QMap<QString,QVariant> map;
     map.insert(map.end(),"typename","user");
     map.insert(map.end(),"privilege",true);
