@@ -1,5 +1,5 @@
 QT -= gui
-QT += sql
+QT += sql concurrent network
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -20,11 +20,17 @@ SOURCES += main.cpp \
     utils/dbwrapper/db-operation.cpp \
     utils/config.cpp \
     utils/file/fileio.cpp \
-    utils/file/logstream.cpp
+    utils/file/logstream.cpp \
+    utils/web/webserver.cpp \
+    utils/web/socketthread.cpp \
+    utils/web/requesthdl.cpp
 
 HEADERS += \
     utils/dbwrapper/db-wrapper.h \
     utils/dbwrapper/db-operation.h \
     utils/config.h \
     utils/file/fileio.h \
-    utils/file/logstream.h
+    utils/file/logstream.h \
+    utils/web/webserver.h \
+    utils/web/socketthread.h \
+    utils/web/requesthdl.h

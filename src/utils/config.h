@@ -1,7 +1,9 @@
 #pragma once
 
+#include "utils/file/logstream.h"
 #include <QtCore>
 #include <QSettings>
+
 /*
  * Read basic configuration file and parse parameters
  *
@@ -10,19 +12,23 @@
 
 struct config
 {
-  // DB configuration
-  QString dbHost;
-  unsigned int dbPort;
-  QString dbUname;
-  QString dbPwd;
-  // network configuration
-  unsigned int listenPort;
+    QSettings* settings;
 
-  // superUser configuration
-  QString suname;
-  QString supass;
+public:
+    config(const QString &path);
+    ~config();
+    QVariant Get(const QString &type);
+    void Load();
 
-  config(const QString &path);
-private:
-
+    // DB configuration
+    QString dbHost;
+    unsigned int dbPort;
+    QString dbUname;
+    QString dbPwd;
+    // superUser configuration
+    QString suname;
+    QString supass;
+    //web
+    int port;
+    int ccurrency;
 };
