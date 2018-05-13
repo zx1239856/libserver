@@ -2,24 +2,15 @@
 
 using namespace sql;
 
-extern config globalConf;
-
-// singleton initialization
-config * dbConn::conf = &globalConf;
-dbConn * dbConn::instance = new dbConn();
-
-dbWrapper::Control* basicSQL::mainDBControl=dbConn::getInstance()->getControl();
-// singleton init end
-
 /*
  * basic SQL constructors and executors
  */
 
-basicSQL::basicSQL():
-  query(mainDBControl->query()){}
+dbWrapper::Control * basicSQL::mainDBControl = nullptr;
 
-basicSQL::basicSQL(const QString &s):
-  query(mainDBControl->query()),sql(s){}
+basicSQL::basicSQL():query(mainDBControl->query()){}
+
+basicSQL::basicSQL(const QString &s):query(mainDBControl->query()),sql(s){}
 
 bool basicSQL::exec()
 {
@@ -32,6 +23,11 @@ bool basicSQL::exec()
 QSqlError basicSQL::lastError()
 {
   return query->lastError();
+}
+
+void basicSQL::setControl(dbWrapper::Control *c)
+{
+  mainDBControl = c;
 }
 
 /*
@@ -220,18 +216,40 @@ QVariant select::value(int i)
 
 // dbConn class
 // use singleton mode
-dbConn::dbConn(unsigned int threads, const QString &dbName):
-  control(new dbWrapper::Control({"QMYSQL","DBConn",conf->dbHost,dbName,conf->dbUname,conf->dbPwd})),
-  threadCount(threads)
-{}
+
+config * dbConn::conf = nullptr;
+dbConn * dbConn::instance = nullptr;
+unsigned int dbConn::threadCount = 4;
+
+dbConn::dbConn(const QString &dbName):
+  control(new dbWrapper::Control({"QMYSQL","DBConn",conf->dbHost,dbName,conf->dbUname,conf->dbPwd}))
+{
+  sql::basicSQL::setControl(control);
+}
 
 dbConn::~dbConn()
 {
   if(control)delete control;
 }
 
+void dbConn::setConf(config *_conf)
+{
+  conf = _conf;
+  threadCount = 4; // this is a default val of MaxThreads
+  dbConn::getInstance();
+}
+
+void dbConn::setMaxThread(unsigned int t)
+{
+  threadCount = t;
+}
+
 dbConn* dbConn::getInstance()
 {
+  if(instance == nullptr)
+    {
+      instance= new dbConn();
+    }
   return instance;
 }
 
@@ -240,22 +258,6 @@ dbWrapper::Control* dbConn::getControl()
   return control;
 }
 // dbConn end
-
-// start dbQueryQueue
-
-dbQueryQueue::dbQueryQueue(uint maxT):maxThread(maxT){}
-
-void dbQueryQueue::addQuery(sql::basicSQL* query)
-{
-  QueryQueue.enqueue(query);
-}
-
-void dbQueryQueue::run()
-{
-  for(int i=0;i<maxThread;++i)
-    {
-    }
-}
 
 
 

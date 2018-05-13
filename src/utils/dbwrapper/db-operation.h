@@ -7,6 +7,8 @@
 #include "db-wrapper.h"
 #include "../config.h"
 
+class dbConn;
+
 namespace sql
 {
   // SQL-query constructor basic class
@@ -21,6 +23,7 @@ namespace sql
   public:
     basicSQL();
     basicSQL(const QString &s);
+    static void setControl(dbWrapper::Control *c);
     virtual bool exec();
     virtual QSqlError lastError();
     virtual ~basicSQL(){}
@@ -105,8 +108,7 @@ private:
   static dbConn* instance;
   static config* conf;
   dbWrapper::Control *control; //({"QMYSQL", "DBconn", conf.dbHost, "test", "root", conf.dbPwd})
-  unsigned int threadCount;
-
+  static unsigned int threadCount;
   // auto destroy singleton itself
   class dbConnGarbo
   {
@@ -116,22 +118,13 @@ private:
       if(dbConn::instance)delete dbConn::instance;
     }
   };
-  dbConn(unsigned int threads = 4 , const QString &dBName = "");  // initialize dbConn with configuration file
+  dbConn(const QString &dBName = "");  // initialize dbConn with configuration file
   dbConn(const dbConn &)=delete;
   dbConn& operator=(dbConn &)=delete;
   ~dbConn();
 public:
+  static void setConf(config* conf);
+  static void setMaxThread(unsigned int t);
   static dbConn* getInstance();
   dbWrapper::Control* getControl();
-};
-
-
-class dbQueryQueue:public QObject
-{
-  QQueue<sql::basicSQL*> QueryQueue;
-  uint maxThread;
-public:
-  dbQueryQueue(uint maxT);
-  void addQuery(sql::basicSQL* query);
-  void run();
 };

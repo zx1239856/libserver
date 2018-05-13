@@ -7,19 +7,62 @@
 #include "utils/file/logstream.h"
 #include "utils/web/webserver.h"
 
-// global variables
-static QTextStream cout(stdout, QIODevice::WriteOnly);
+// Global Variables Init
+// Init logstream
+LogStream* LogStream::instance = new LogStream("Server.log");
+LogStream* lstream = LogStream::getInstance();
 
-LogStream* lstream = new LogStream;
-
-// global configuration file
-config globalConf("./config.conf");
+void usage(char *argv[])
+{
+  qWarning() << "";
+  qWarning() << argv[0] << " start [conf-path]";
+  qWarning() << argv[0] << " stop";
+}
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    // load logstream
-    lstream = new LogStream();
+    QString confPath;
+    // argument handlers
+    if(argc==1)
+      {
+        usage(argv);
+        exit(EXIT_FAILURE);
+      }
+    else if(argc == 2)
+      {
+        if(!strcmp(argv[1],"stop"))exit(EXIT_SUCCESS);
+        else
+          {
+            usage(argv);
+            exit(EXIT_FAILURE);
+          }
+      }
+    else if(argc == 3)
+      {
+        if(!strcmp(argv[1],"start"))
+          {
+            confPath = QString(argv[2]);
+          }
+        else
+          {
+            usage(argv);
+            exit(EXIT_FAILURE);
+          }
+      }
+    else
+      {
+        usage(argv);
+        exit(EXIT_FAILURE);
+      }
+    // argument handlers end
+
+    // Configuration File Init
+    config::setPath(confPath);
+    config *conf = config::getInstance();
+    // dbConn Init
+    dbConn::setConf(conf);
+    // All init end
     QMap<QString,QVariant> map;
     map.insert(map.end(),"typename","user");
     map.insert(map.end(),"privilege",true);
@@ -44,7 +87,7 @@ int main(int argc, char *argv[])
 
     // initiate websocket
     webServer server;
-    server.init(8080, 5);
+    server.init(5678, 5);
     // server.init(conf.port, conf.ccurrency);
     return a.exec();
 }

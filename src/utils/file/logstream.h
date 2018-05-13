@@ -9,9 +9,19 @@
 
 class LogStream : public FileIO
 {
+  static LogStream *instance;
+  LogStream(const QString &filename = "Server.log");
+  class LogStreamGarbo
+  {
+  public:
+    ~LogStreamGarbo()
+    {
+      if(LogStream::instance)delete LogStream::instance;
+    }
+  };
 public:
-    LogStream(const QString &filename = "Server.log");
     ~LogStream();
+    static LogStream* getInstance();
     void operator <<(const QString &data);
 };
 
