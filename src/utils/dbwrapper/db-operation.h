@@ -7,8 +7,6 @@
 #include "db-wrapper.h"
 #include "../config.h"
 
-class dbConn;
-
 namespace sql
 {
   // SQL-query constructor basic class
