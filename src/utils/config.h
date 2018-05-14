@@ -1,6 +1,5 @@
 #pragma once
 
-#include "utils/file/logstream.h"
 #include <QtCore>
 #include <QSettings>
 
@@ -38,6 +37,7 @@ public:
     unsigned int dbPort;
     QString dbUname;
     QString dbPwd;
+    QString logPath;
     // superUser configuration
     QString suname;
     QString supass;

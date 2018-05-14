@@ -55,12 +55,13 @@ int main(int argc, char *argv[])
       }
     // argument handlers end
 
-    //Initiate LogStream
-    lstream = new LogStream("server.log");
-
     // Configuration File Init
     config::setPath(confPath);
     config *conf = config::getInstance();
+
+    //Initiate LogStream
+    LogStream::setPath(conf->logPath);
+    lstream = LogStream::getInstance();
 
     // dbConn Init
     dbConn::setConf(conf);
@@ -79,7 +80,7 @@ int main(int argc, char *argv[])
 
     // initiate websocket
     webServer server;
-    server.init(8080, 5);
+    server.init(conf->port,conf->ccurrency);
 
     // server.init(conf.port, conf.ccurrency);
     return a.exec();

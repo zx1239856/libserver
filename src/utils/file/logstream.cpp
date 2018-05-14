@@ -2,6 +2,9 @@
 #include <QDebug>
 QTextStream cout(stdout,  QIODevice::WriteOnly);
 
+QString LogStream::logpath="server.log";
+LogStream* LogStream::instance = nullptr;
+
 LogStream::LogStream(const QString &filename): FileIO(filename, QIODevice::Append)
 {
     if (success)
@@ -24,4 +27,18 @@ void LogStream::operator <<(const QString &data)
     //qWarning() << logString;
     cout << logString << endl;
     *data_io << logString << endl;
+}
+
+void LogStream::setPath(const QString &p)
+{
+  logpath = p;
+}
+
+LogStream* LogStream::getInstance()
+{
+  if(instance==nullptr)
+    {
+      instance = new LogStream(logpath);
+    }
+  return instance;
 }

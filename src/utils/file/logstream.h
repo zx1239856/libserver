@@ -9,7 +9,7 @@
 
 class LogStream : public FileIO
 {
-  /*
+  static QString logpath;
   static LogStream *instance;
   class LogStreamGarbo
   {
@@ -20,12 +20,13 @@ class LogStream : public FileIO
     }
   };
   static LogStreamGarbo garbo;
-  */
-
+  LogStream(const QString &filename);
 public:
-    LogStream(const QString &filename = "Server.log");
+    LogStream(const LogStream&)=delete;
+    LogStream& operator=(LogStream&)=delete;
     ~LogStream();
-    //static LogStream* getInstance();
+    static LogStream* getInstance();
+    static void setPath(const QString &p);
     void operator <<(const QString &data);
 };
 

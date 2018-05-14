@@ -1,5 +1,4 @@
 #include "config.h"
-#include "file/logstream.h"
 #include <exception>
 #include <QDebug>
 
@@ -35,9 +34,11 @@ void config::Load()
 {
   try
   {
+    // logpath
+    logPath = Get("server/log_path").toString();
     //web
-    port = Get("web/listen_port").toInt();
-    ccurrency = Get("web/concurrency").toInt();
+    port = Get("server/listen_port").toInt();
+    ccurrency = Get("server/concurrency").toInt();
     // database
     dbHost= Get("database/host").toString();
     dbPort= Get("database/port").toInt();
@@ -47,15 +48,15 @@ void config::Load()
   }
   catch(QString &e)
   {
-    *lstream << e;
+    qWarning() << e;
     exit(EXIT_FAILURE);
   }
   catch(...)
   {
-    *lstream << "Unknown error occured. Exit.";
+    qWarning() << "Unknown error occured. Exit.";
     exit(EXIT_FAILURE);
   }
-    *lstream << "All settings successfully loaded.";
+    qWarning() << "All settings successfully loaded.";
 }
 
 QVariant config::Get(const QString &type)
