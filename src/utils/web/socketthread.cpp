@@ -5,8 +5,8 @@ socketThread::socketThread(qintptr socketDescriptor, QObject *parent):
 
 socketThread::~socketThread()
 {
-    *lstream << "Disconnected from " + tcpsocket->peerAddress().toString();
-    tcpsocket->deleteLater();
+    *lstream << "Disconnected from " + socketDescriptor;
+    tcpsocket->close();
     exit(0);
 }
 
@@ -21,19 +21,17 @@ void socketThread::run()
     tcpsocket->setReadBufferSize(2048);
 
     *lstream << "New thread for the connection from " + tcpsocket->peerAddress().toString();
-    //connect(tcpsocket, &QAbstractSocket::disconnected, this, &socketThread::disconnect);
+    connect(tcpsocket, &QAbstractSocket::disconnected, tcpsocket, &QAbstractSocket::deleteLater);
 
-    connect(tcpsocket, &QAbstractSocket::readyRead, this, &socketThread::React);
-
-    tcpsocket->write("Welcome to libserver!\n");
-    tcpsocket->flush();
+    Object obj(tcpsocket);
+    connect(tcpsocket, &QAbstractSocket::readyRead, &obj, &Object::slot);
 
     tcpsocket->waitForDisconnected();
 }
 
-void socketThread::React()
+Object::Object(QTcpSocket* tcpsocket): tcpsocket(tcpsocket){}
+void Object::slot()
 {
-    /*
     try
     {
         QByteArray ReadData, SendData;
@@ -45,15 +43,12 @@ void socketThread::React()
             int bytes = ReadData.left(4).toInt();
 
             ReadData.remove(0, 4);
-            requesthdl* hdl;
-            if(ReadData.size() == bytes)
-                hdl = new requesthdl(ReadData);
-            else
+            if(ReadData.size() != bytes)
                 throw("Bad Request");
+            requesthdl hdl(ReadData);
 
             // send
-            SendData = hdl->deal();
-            delete hdl;
+            SendData = hdl.deal();
             tcpsocket->write(SendData);
             tcpsocket->flush();
         }
@@ -63,7 +58,6 @@ void socketThread::React()
     catch(QString msg)
     {
         *lstream << "Error: " + msg;
-        tcpsocket->close();
+        tcpsocket->disconnect();
     }
-    */
 }

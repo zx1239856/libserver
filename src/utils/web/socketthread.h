@@ -13,16 +13,25 @@ class socketThread: public QThread
 public:
     socketThread(qintptr socketDescriptor, QObject *parent = 0);
     ~socketThread();
-
+    void react();
 protected:
     virtual void run();
-
-private slots:
-    void React();
 
 private:
     qintptr socketDescriptor;
     QTcpSocket *tcpsocket;
 };
 
+class Object:public QObject
+{
+    Q_OBJECT
+public:
+    Object(QTcpSocket* tcpsocket);
+
+public slots:
+    void slot();
+
+private:
+    QTcpSocket* tcpsocket;
+};
 #endif // SOCKETTHREAD_H
