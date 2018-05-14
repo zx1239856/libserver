@@ -63,22 +63,11 @@ int main(int argc, char *argv[])
     // dbConn Init
     dbConn::setConf(conf);
     // All init end
-    QMap<QString,QVariant> map;
-    map.insert(map.end(),"typename","user");
-    map.insert(map.end(),"privilege",true);
-    map.insert(map.end(),"id",1);
-    sql::insert up("lib_settings.stafftype",map);
-    up.exec();
-    sql::select sel("lib_settings.stafftype","id",sql::COUNT);
-    if(!sel.exec())
-      {
-        qWarning()<<sel.lastError();
-      }
-    while(sel.next())
-      {
-       auto res = sel.value(0);
-       qWarning()<<res;
-      }
+
+    // other miscellaneous stuffs here
+    sql::select sel("lib_settings.stafftype");
+    dbQueryThread dbT(&sel);
+    dbT.start();
     /*QThreadPool::globalInstance()->setMaxThreadCount(10);
 
     for Loop indicates how many threads
@@ -88,6 +77,7 @@ int main(int argc, char *argv[])
     // initiate websocket
     webServer server;
     server.init(8080, 5);
+
     // server.init(conf.port, conf.ccurrency);
     return a.exec();
 }
