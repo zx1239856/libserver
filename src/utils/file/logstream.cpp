@@ -11,7 +11,7 @@ LogStream::LogStream(const QString &filename): FileIO(filename, QIODevice::Appen
     }
     else
     {
-        qWarning() << "Error: CANNOT open logstream file.";
+        throw("Error: CANNOT open logstream file.");
     }
 }
 

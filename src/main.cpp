@@ -7,9 +7,7 @@
 #include "utils/file/logstream.h"
 #include "utils/web/webserver.h"
 
-// Global Variables Init
-// Init logstream
-LogStream* LogStream::instance = new LogStream("Server.log");
+LogStream* LogStream::instance = new LogStream("server.log");
 LogStream* lstream = LogStream::getInstance();
 
 void usage(char *argv[])

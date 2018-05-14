@@ -19,6 +19,7 @@ class LogStream : public FileIO
       if(LogStream::instance)delete LogStream::instance;
     }
   };
+  static LogStreamGarbo garbo;
 public:
     ~LogStream();
     static LogStream* getInstance();

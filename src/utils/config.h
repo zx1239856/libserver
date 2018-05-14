@@ -16,6 +16,9 @@ class config
     static config *instance;
     static QString path;
     config(const QString &path);
+    ~config();
+    QVariant Get(const QString &type);
+    void Load();
     class configGarbo
     {
     public:
@@ -24,12 +27,12 @@ class config
         if(config::instance)delete config::instance;
       }
     };
+    static configGarbo garbo;
 public:
-    ~config();
+    config(const config &)=delete;
+    config& operator=(config &)=delete;
     static config* getInstance();
     static void setPath(const QString &path);
-    QVariant Get(const QString &type);
-    void Load();
     // DB configuration
     QString dbHost;
     unsigned int dbPort;

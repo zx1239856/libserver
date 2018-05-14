@@ -25,7 +25,7 @@ void socketThread::run()
 
     connect(tcpsocket, &QAbstractSocket::readyRead, this, &socketThread::React);
 
-    tcpsocket->write("Welcome to libserver!");
+    tcpsocket->write("Welcome to libserver!\n");
     tcpsocket->flush();
 
     tcpsocket->waitForDisconnected();

@@ -116,11 +116,12 @@ private:
       if(dbConn::instance)delete dbConn::instance;
     }
   };
+  static dbConnGarbo Garbo;
   dbConn(const QString &dBName = "");  // initialize dbConn with configuration file
-  dbConn(const dbConn &)=delete;
-  dbConn& operator=(dbConn &)=delete;
   ~dbConn();
 public:
+  dbConn(const dbConn &)=delete;
+  dbConn& operator=(dbConn &)=delete;
   static void setConf(config* conf);
   static void setMaxThread(unsigned int t);
   static dbConn* getInstance();
