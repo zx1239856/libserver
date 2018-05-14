@@ -7,6 +7,7 @@ socketThread::~socketThread()
 {
     *lstream << "Disconnected from " + socketDescriptor;
     tcpsocket->close();
+    tcpsocket->deleteLater();
     exit(0);
 }
 
@@ -34,21 +35,28 @@ void Object::slot()
 {
     try
     {
-        QByteArray ReadData, SendData;
-        ReadData = tcpsocket->readAll();
-        if(ReadData.at(0) == 'Q')
+        QByteArray &&ReadData =tcpsocket->readAll();
+        QDataStream in(&ReadData,QIODevice::ReadOnly);
+        qint8 sign;
+        in >> sign;
+        if(sign == 'Q')
         {
             // read
-            ReadData.remove(0, 1);
-            int bytes = ReadData.left(4).toInt();
-
-            ReadData.remove(0, 4);
-            if(ReadData.size() != bytes)
+            qint32 bytes;
+            QByteArray rqtData;
+            in >> bytes;
+            in >> rqtData;
+            if(rqtData.size() != bytes)
                 throw("Bad Request");
-            requesthdl hdl(ReadData);
+            requesthdl hdl(rqtData);
 
             // send
-            SendData = hdl.deal();
+            QByteArray &&dltData = hdl.deal();
+            QByteArray SendData;
+            QDataStream out(&SendData,QIODevice::WriteOnly);
+            out << (qint8)'A';
+            out << (qint32)dltData.size();
+            out << dltData;
             tcpsocket->write(SendData);
             tcpsocket->flush();
         }

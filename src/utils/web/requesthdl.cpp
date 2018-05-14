@@ -8,8 +8,8 @@ requesthdl::requesthdl(const QByteArray &rqtData)
 
 QByteArray requesthdl::deal()
 {
-
     //
+
     QJsonDocument jdocReturn(jsonReturn);
     return jdocReturn.toBinaryData();
 }

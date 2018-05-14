@@ -20,8 +20,6 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    lstream = new LogStream("server.log");
-
     QString confPath;
     // argument handlers
     if(argc==1)
@@ -57,9 +55,13 @@ int main(int argc, char *argv[])
       }
     // argument handlers end
 
+    //Initiate LogStream
+    lstream = new LogStream("server.log");
+
     // Configuration File Init
     config::setPath(confPath);
     config *conf = config::getInstance();
+
     // dbConn Init
     dbConn::setConf(conf);
     // All init end
@@ -74,9 +76,10 @@ int main(int argc, char *argv[])
     and put the function into QtConcurrent::run() to run
     }*/
 
+
     // initiate websocket
     webServer server;
-    server.init(conf->port, conf->ccurrency);
+    server.init(8080, 5);
 
     // server.init(conf.port, conf.ccurrency);
     return a.exec();

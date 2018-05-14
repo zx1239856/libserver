@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QDataStream>
 #include "utils/file/logstream.h"
 #include "utils/web/requesthdl.h"
 
