@@ -11,9 +11,8 @@ namespace sql
 {
   // SQL-query constructor basic class
   // This can run direct SQL sentence
-  class basicSQL:public QObject
+  class basicSQL
   {
-    Q_OBJECT
   protected:
     dbWrapper::Query query;
     QString sql;
@@ -22,13 +21,10 @@ namespace sql
     basicSQL();
     basicSQL(const QString &s);
     static void setControl(dbWrapper::Control *c);
+    bool isSelect();
     virtual bool exec();
     virtual QSqlError lastError();
     virtual ~basicSQL(){}
-  signals:
-    void onSuccess(); // for update, delete, insert
-    void onResult(); // for SELECT, you need to fetch results
-    void onFail(const QSqlError &error);
   };
 
   /* derived specific SQL queries
@@ -85,7 +81,7 @@ namespace sql
     bool isOrder=false;
     bool isLimit=false;
   public:
-    select(const QString& tablename,const QString &condition="1",const QList<QString> &what={"*"},bool isDistinct=false);
+    select(const QString& tablename,const QString &condition,const QList<QString> &what={"*"},bool isDistinct=false);
     select(const QString& tablename,const QList<QString> &what={"*"},bool isDistinct=false);
     select(const QString& tablename,const QString &col, func sqlfunc);
     void addLimit(uint limit,uint start_pos);
@@ -126,4 +122,21 @@ public:
   static void setMaxThread(unsigned int t);
   static dbConn* getInstance();
   dbWrapper::Control* getControl();
+};
+
+
+class dbQueryThread: public QThread
+{
+  Q_OBJECT
+public:
+  dbQueryThread(sql::basicSQL *sql,QObject *parent = 0);
+  ~dbQueryThread();
+protected:
+  virtual void run();
+private:
+  sql::basicSQL* bSql;
+signals:
+  void onSuccess();
+  void onFail(const QSqlError &err);
+  void onResult();
 };

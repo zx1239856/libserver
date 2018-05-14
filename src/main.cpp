@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 
     // initiate websocket
     webServer server;
-    server.init(8080, 5);
+    server.init(conf->port, conf->ccurrency);
 
     // server.init(conf.port, conf.ccurrency);
     return a.exec();
