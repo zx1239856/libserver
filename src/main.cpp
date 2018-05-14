@@ -7,8 +7,7 @@
 #include "utils/file/logstream.h"
 #include "utils/web/webserver.h"
 
-LogStream* LogStream::instance = new LogStream("server.log");
-LogStream* lstream = LogStream::getInstance();
+LogStream* lstream;
 
 void usage(char *argv[])
 {
@@ -20,6 +19,9 @@ void usage(char *argv[])
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+
+    lstream = new LogStream("server.log");
+
     QString confPath;
     // argument handlers
     if(argc==1)
@@ -85,7 +87,7 @@ int main(int argc, char *argv[])
 
     // initiate websocket
     webServer server;
-    server.init(5678, 5);
+    server.init(8080, 5);
     // server.init(conf.port, conf.ccurrency);
     return a.exec();
 }
