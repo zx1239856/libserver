@@ -1,5 +1,4 @@
-QT -= gui
-QT += sql concurrent network
+QT += sql concurrent network gui
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -15,6 +14,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+PKGCONFIG += poppler-qt5
+
+CONFIG += link_pkgconfig
+
 SOURCES += main.cpp \
     utils/dbwrapper/db-wrapper.cpp \
     utils/dbwrapper/db-operation.cpp \
@@ -23,7 +26,8 @@ SOURCES += main.cpp \
     utils/file/logstream.cpp \
     utils/web/webserver.cpp \
     utils/web/socketthread.cpp \
-    utils/web/requesthdl.cpp
+    utils/web/requesthdl.cpp \
+    utils/file/pdfhandler.cpp
 
 HEADERS += \
     utils/dbwrapper/db-wrapper.h \
@@ -33,4 +37,5 @@ HEADERS += \
     utils/file/logstream.h \
     utils/web/webserver.h \
     utils/web/socketthread.h \
-    utils/web/requesthdl.h
+    utils/web/requesthdl.h \
+    utils/file/pdfhandler.h
