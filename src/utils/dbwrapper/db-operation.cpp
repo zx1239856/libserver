@@ -14,10 +14,7 @@ basicSQL::basicSQL(const QString &s):query(mainDBControl->query()),sql(s){}
 
 bool basicSQL::exec()
 {
-  bool stat = query->exec(sql);
-  if(stat)emit onSuccess();
-  else emit onFail(query->lastError());
-  return stat;
+  return query->exec(sql);
 }
 
 QSqlError basicSQL::lastError()
@@ -28,6 +25,11 @@ QSqlError basicSQL::lastError()
 void basicSQL::setControl(dbWrapper::Control *c)
 {
   mainDBControl = c;
+}
+
+bool basicSQL::isSelect()
+{
+  return query->isSelect();
 }
 
 /*
@@ -62,10 +64,7 @@ bool insert::exec()
     {
       query->bindValue(":"+it.key(),it.value());
     }
-  bool stat = query->exec();
-  if(stat)emit onSuccess();
-  else emit onFail(query->lastError());
-  return stat;
+  return query->exec();
 }
 
 /* insert end */
@@ -95,10 +94,7 @@ bool update::exec()
     {
       query->bindValue(":"+it.key(),it.value());
     }
-  bool stat = query->exec();
-  if(stat)emit onSuccess();
-  else emit onFail(query->lastError());
-  return stat;
+  return query->exec();
 }
 /* update end */
 
@@ -111,10 +107,7 @@ del::del(const QString &tablename,const QString &condition):
 
 bool del::exec()
 {
-  bool stat = query->exec(sql);
-  if(stat)emit onSuccess();
-  else emit onFail(query->lastError());
-  return stat;
+  return query->exec(sql);
 }
 
 /* delete end */
@@ -198,10 +191,7 @@ void select::addOrder(const QList<QString>& cols,order sqlorder)
 
 bool select::exec()
 {
-  bool stat = query->exec(sql);
-  if(stat)emit onSuccess();
-  else emit onFail(query->lastError());
-  return stat;
+  return query->exec(sql);
 }
 
 bool select::next()
@@ -259,5 +249,36 @@ dbWrapper::Control* dbConn::getControl()
 }
 // dbConn end
 
+// dbQueryThread start
 
+dbQueryThread::dbQueryThread(basicSQL *sql,QObject *parent)
+  :QThread(parent),bSql(sql){}
 
+void dbQueryThread::run()
+{
+  if(!bSql->exec())
+    {
+      emit onFail(bSql->lastError());
+    }
+  else
+    {
+      if(bSql->isSelect())
+        {
+          sql::select* pSelect = dynamic_cast<sql::select*>(bSql);
+          if(pSelect!=nullptr)
+            {
+              // readEverything here
+              // and emit onResult signal
+              // after finish
+            }
+        }
+      else
+        {
+           emit onSuccess();
+        }
+    }
+}
+
+dbQueryThread::~dbQueryThread(){}
+
+// dbQueryThread end
