@@ -11,7 +11,7 @@ class requesthdl
     QJsonObject jsonReturn;
 public:
     requesthdl(const QByteArray &rqtData);
-    QByteArray deal();
+    virtual QByteArray deal();
 };
 
 #endif // REQUESTHDL_H

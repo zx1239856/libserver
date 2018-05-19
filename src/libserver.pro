@@ -27,7 +27,10 @@ SOURCES += main.cpp \
     utils/web/webserver.cpp \
     utils/web/socketthread.cpp \
     utils/web/requesthdl.cpp \
-    utils/file/pdfhandler.cpp
+    utils/file/pdfhandler.cpp \
+    utils/handle/controlhdl.cpp \
+    utils/handle/handle.cpp \
+    utils/handle/userhdl.cpp
 
 HEADERS += \
     utils/dbwrapper/db-wrapper.h \
@@ -38,4 +41,9 @@ HEADERS += \
     utils/web/webserver.h \
     utils/web/socketthread.h \
     utils/web/requesthdl.h \
-    utils/file/pdfhandler.h
+    utils/file/pdfhandler.h \
+    utils/handle/handle.h \
+    utils/handle/userhdl.h \
+    utils/handle/controlhdl.h \
+    utils/exception.h \
+    utils/command.h

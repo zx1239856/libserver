@@ -6,8 +6,10 @@
 #include "utils/config.h"
 #include "utils/file/logstream.h"
 #include "utils/web/webserver.h"
+#include "utils/handle/controlhdl.h"
 
 LogStream* lstream;
+controlhdl* ctrl;
 
 void usage(char *argv[])
 {
@@ -82,6 +84,7 @@ int main(int argc, char *argv[])
     webServer server;
     server.init(conf->port,conf->ccurrency);
 
+    ctrl = controlhdl::getInstance();
     // server.init(conf.port, conf.ccurrency);
     return a.exec();
 }
