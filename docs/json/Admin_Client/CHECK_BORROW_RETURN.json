@@ -2,7 +2,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "CHECK",
-    "command": "borrow",
+    "command": "checkborrow",
     "appointid": 1 //curappoint表中的id -1
 }
 
@@ -10,6 +10,6 @@
 {
     "token": "该对话所对应的令牌",
     "type": "CHECK",
-    "command": "return",
+    "command": "checkreturn",
     "appointid": 1 //curappoint表中的id -1
 }

@@ -3,7 +3,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
-    "command": "createreader",
+    "command": "createreadergp",
     "content":[
         {
             "field": "name",
@@ -28,7 +28,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
-    "command": "createstaff",
+    "command": "createstaffgp",
     "content":[
         {
             "field": "name",
@@ -41,7 +41,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
-    "command": "createbook",
+    "command": "createbookgp",
     "content":[
         {
             "field": "name",
@@ -59,7 +59,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
-    "command": "changereader",
+    "command": "changereadergp",
     "groupid": 1,
     "content":[
         {
@@ -85,7 +85,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
-    "command": "changestaff",
+    "command": "changestaffgp",
     "groupid": 1,
     "content":[
         {
@@ -99,7 +99,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
-    "command": "changebook",
+    "command": "changebookgp",
     "groupid": 1,
     "content":[
         {
@@ -118,7 +118,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
-    "command": "deletereader",
+    "command": "deletereadergp",
     "groupid": 1,
 }
 
@@ -126,7 +126,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
-    "command": "deletestaff",
+    "command": "deletestaffgp",
     "groupid": 1,
 }
 
@@ -134,6 +134,6 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
-    "command": "deletebook",
+    "command": "deletebookgp",
     "groupid": 1,
 }
