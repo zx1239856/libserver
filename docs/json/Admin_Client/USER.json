@@ -1,5 +1,6 @@
 //登录
 {
+    "token": -1,
     "type": "USER",
     "command": "login",
     "username": "用户名",
@@ -8,6 +9,7 @@
 
 //忘记密码
 {
+    "token": -1,
     "type": "USER",
     "command": "forget",
     "username": "用户名",

@@ -1,0 +1,113 @@
+//添加图书
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEBOOK",
+    "commond": "createbook",
+    "info": [
+        {
+            "field": "name",
+            "data": "C++ Primer Plus"
+        },
+        {
+            "field": "auther",
+            "data": "Stephen Prata"
+        },
+        {
+            "field": "press",
+            "data": "人民邮电出版社"
+        },
+        {
+            "field": "ISBN",
+            "data": "978-7-115-27946-0"
+        },
+        {
+            "field": "tags",
+            "data": [
+                1,
+                2,
+                3
+            ]
+        },
+        {
+            "field": "price",
+            "data": 99.0
+        },
+        {
+            "field": "bookcase",
+            "data": 1
+        },
+        {
+            "field": "available",
+            "data": true
+        }
+    ]
+}
+//删除图书
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEBOOK",
+    "commond": "deletebook",
+    "bookid": [
+        1,
+        2,
+        3
+    ]
+}
+
+//修改图书信息
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEBOOK",
+    "commond": "changebook",
+    "bookid": 1,
+    "info": [
+        {
+            "field": "name",
+            "data": "C++ Primer Plus"
+        },
+        {
+            "field": "auther",
+            "data": "Stephen Prata"
+        },
+        {
+            "field": "press",
+            "data": "人民邮电出版社"
+        },
+        {
+            "field": "ISBN",
+            "data": "978-7-115-27946-0"
+        },
+        {
+            "field": "tags",
+            "data": [
+                1,
+                2,
+                3
+            ]
+        },
+        {
+            "field": "price",
+            "data": 99.0
+        },
+        {
+            "field": "bookcase",
+            "data":
+        },
+        {
+            "field": "available",
+            "data": true
+        }
+    ]
+}
+//批量更改图书所在的组
+{
+    "token": "该对话所对应的令牌",
+    "type": "OPERATEBOOK",
+    "commond": "changegroup",
+    "groupid": 1,
+    "bookid": [
+        1,
+        2,
+        3
+    ]
+}

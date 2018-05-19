@@ -5,13 +5,16 @@
     "type": "QUERY",
     "command": "book",
     "rule": "completesearch",
+    "order": [
+        "name","author"
+    ],
     "content": [
         {
             "field": "name",
             "data": "C++ Primer Plus"
         },
         {
-            "field": "auther",
+            "field": "author",
             "data": "Stephen Prata"
         },
         {
@@ -58,12 +61,16 @@
         }
     ]
 }
+
 //模糊检索
 {
     "token": "该对话所对应的令牌",
     "type": "QUERY",
     "command": "book",
     "rule": "fuzzysearch",
+    "order": [
+        "name","author"
+    ],
     "content": [
         {
             "field": "name",
