@@ -2,7 +2,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATE",
-    "command": "changesetting",
+    "command": "setting",
     "content":[
         {
             "field": "",
