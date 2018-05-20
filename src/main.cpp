@@ -70,8 +70,19 @@ int main(int argc, char *argv[])
     // All init end
 
     // other miscellaneous stuffs here
-    sql::select sel("lib_settings.stafftype");
+    sql::select sel("lib_user.user");
     dbQueryThread dbT(&sel);
+    QObject::connect(&dbT,&dbQueryThread::onResult,
+                     [&](const QVector<QSqlRecord>& res)
+    {
+        for(int i=0;i<res.size();++i)
+          {
+            for(int j=0;j<res[i].count();++j)
+              {
+                qWarning() << res[i].value(j);
+              }
+          }
+    });
     dbT.start();
     /*QThreadPool::globalInstance()->setMaxThreadCount(10);
 

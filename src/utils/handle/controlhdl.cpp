@@ -1,5 +1,7 @@
 #include "controlhdl.h"
 
+controlhdl* controlhdl::instance=nullptr;
+
 controlhdl::controlhdl()
 {
 

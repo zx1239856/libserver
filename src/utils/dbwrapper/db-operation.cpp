@@ -32,6 +32,11 @@ bool basicSQL::isSelect()
   return query->isSelect();
 }
 
+QSqlQuery* basicSQL::getQuery()
+{
+  return &(*query);
+}
+
 /*
  * insert
  */
@@ -204,6 +209,7 @@ QVariant select::value(int i)
   return query->value(i);
 }
 
+
 // dbConn class
 // use singleton mode
 
@@ -270,6 +276,14 @@ void dbQueryThread::run()
               // readEverything here
               // and emit onResult signal
               // after finish
+              QVector<QSqlRecord> result;
+              QSqlQuery *q=pSelect->getQuery();
+              for(int i=0;i<q->size();++i)
+                {
+                  q->seek(i);
+                  result.push_back(q->record());
+                }
+              emit onResult(result);
             }
         }
       else

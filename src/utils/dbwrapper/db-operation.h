@@ -24,6 +24,7 @@ namespace sql
     bool isSelect();
     virtual bool exec();
     virtual QSqlError lastError();
+    QSqlQuery* getQuery();
     virtual ~basicSQL(){}
   };
 
@@ -138,5 +139,5 @@ private:
 signals:
   void onSuccess();
   void onFail(const QSqlError &err);
-  void onResult();
+  void onResult(const QVector<QSqlRecord> &res);
 };
