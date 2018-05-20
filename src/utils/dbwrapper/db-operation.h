@@ -14,16 +14,14 @@ namespace sql
   class basicSQL
   {
   protected:
-    dbWrapper::Query query;
+    QSqlQuery *query;
     QString sql;
     static dbWrapper::Control *mainDBControl;
   public:
     basicSQL();
     basicSQL(const QString &s);
     static void setControl(dbWrapper::Control *c);
-    bool isSelect();
     virtual bool exec();
-    virtual QSqlError lastError();
     QSqlQuery* getQuery();
     virtual ~basicSQL(){}
   };
@@ -130,12 +128,13 @@ class dbQueryThread: public QThread
 {
   Q_OBJECT
 public:
-  dbQueryThread(sql::basicSQL *sql,QObject *parent = 0);
+  dbQueryThread(sql::basicSQL *sql,uint tOut= 15000, QObject *parent = 0);
   ~dbQueryThread();
 protected:
   virtual void run();
 private:
   sql::basicSQL* bSql;
+  uint timeout;
 signals:
   void onSuccess();
   void onFail(const QSqlError &err);

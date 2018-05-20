@@ -1,4 +1,5 @@
 #include "db-operation.h"
+#include <QTimer>
 
 using namespace sql;
 
@@ -8,18 +9,15 @@ using namespace sql;
 
 dbWrapper::Control * basicSQL::mainDBControl = nullptr;
 
-basicSQL::basicSQL():query(mainDBControl->query()){}
+basicSQL::basicSQL():query(nullptr){}
 
-basicSQL::basicSQL(const QString &s):query(mainDBControl->query()),sql(s){}
+basicSQL::basicSQL(const QString &s):query(nullptr),sql(s){}
 
 bool basicSQL::exec()
 {
+  auto q = *(mainDBControl->query());
+  query = &q;
   return query->exec(sql);
-}
-
-QSqlError basicSQL::lastError()
-{
-  return query->lastError();
 }
 
 void basicSQL::setControl(dbWrapper::Control *c)
@@ -27,14 +25,9 @@ void basicSQL::setControl(dbWrapper::Control *c)
   mainDBControl = c;
 }
 
-bool basicSQL::isSelect()
-{
-  return query->isSelect();
-}
-
 QSqlQuery* basicSQL::getQuery()
 {
-  return &(*query);
+  return query;
 }
 
 /*
@@ -64,6 +57,8 @@ insert::insert(const QString &tableName,
 
 bool insert::exec()
 {
+  auto q = *(mainDBControl->query());
+  query = &q;
   query->prepare(sql);
   for(auto it=cont.begin();it!=cont.end();++it)
     {
@@ -94,6 +89,8 @@ update::update(const QString& tablename,
 
 bool update::exec()
 {
+  auto q = *(mainDBControl->query());
+  query = &q;
   query->prepare(sql);
   for(auto it=cont.begin();it!=cont.end();++it)
     {
@@ -112,6 +109,8 @@ del::del(const QString &tablename,const QString &condition):
 
 bool del::exec()
 {
+  auto q = *(mainDBControl->query());
+  query = &q;
   return query->exec(sql);
 }
 
@@ -196,6 +195,8 @@ void select::addOrder(const QList<QString>& cols,order sqlorder)
 
 bool select::exec()
 {
+  auto q = *(mainDBControl->query());
+  query = &q;
   return query->exec(sql);
 }
 
@@ -257,18 +258,23 @@ dbWrapper::Control* dbConn::getControl()
 
 // dbQueryThread start
 
-dbQueryThread::dbQueryThread(basicSQL *sql,QObject *parent)
-  :QThread(parent),bSql(sql){}
+dbQueryThread::dbQueryThread(basicSQL *sql, uint tOut, QObject *parent)
+  :QThread(parent),bSql(sql),timeout(tOut){}
 
 void dbQueryThread::run()
 {
+  QTimer::singleShot(timeout, this,
+                     [&]()
+  {
+      emit onFail(QSqlError(QString("Database error."),QString("Operation timeout.")));
+  });
   if(!bSql->exec())
     {
-      emit onFail(bSql->lastError());
+      emit onFail(bSql->getQuery()->lastError());
     }
   else
     {
-      if(bSql->isSelect())
+      if(bSql->getQuery()->isSelect())
         {
           sql::select* pSelect = dynamic_cast<sql::select*>(bSql);
           if(pSelect!=nullptr)

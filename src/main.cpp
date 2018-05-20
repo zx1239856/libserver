@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 
     // dbConn Init
     dbConn::setConf(conf);
+    dbConn::getInstance();
     // All init end
 
     // other miscellaneous stuffs here
@@ -83,6 +84,11 @@ int main(int argc, char *argv[])
               }
           }
     });
+    QObject::connect(&dbT,&dbQueryThread::onFail,
+                     [&](const QSqlError &err)
+    {
+        qWarning() << err;
+      });
     dbT.start();
     /*QThreadPool::globalInstance()->setMaxThreadCount(10);
 
