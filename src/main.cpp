@@ -71,11 +71,14 @@ int main(int argc, char *argv[])
     // All init end
 
     // other miscellaneous stuffs here
-    sql::select sel("lib_user.user");
-    dbQueryThread dbT(&sel);
-    QObject::connect(&dbT,&dbQueryThread::onResult,
+    sql::select sel("libserver.lib_books");
+
+
+    dbQueryThread *dbT= new dbQueryThread(&sel,1000);
+    QObject::connect(dbT,&dbQueryThread::onResult,
                      [&](const QVector<QSqlRecord>& res)
     {
+        dbT->quit();
         for(int i=0;i<res.size();++i)
           {
             for(int j=0;j<res[i].count();++j)
@@ -83,19 +86,16 @@ int main(int argc, char *argv[])
                 qWarning() << res[i].value(j);
               }
           }
+        dbT->deleteLater();
     });
-    QObject::connect(&dbT,&dbQueryThread::onFail,
+    QObject::connect(dbT,&dbQueryThread::onFail,
                      [&](const QSqlError &err)
     {
+        dbT->quit();
         qWarning() << err;
+        dbT->deleteLater();
       });
-    dbT.start();
-    /*QThreadPool::globalInstance()->setMaxThreadCount(10);
-
-    for Loop indicates how many threads
-    and put the function into QtConcurrent::run() to run
-    }*/
-
+    dbT->start();
 
     // initiate websocket
     webServer server;

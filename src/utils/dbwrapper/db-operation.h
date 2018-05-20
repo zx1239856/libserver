@@ -14,7 +14,9 @@ namespace sql
   class basicSQL
   {
   protected:
-    QSqlQuery *query;
+    std::vector<dbWrapper::Query> query;
+    // here we use vector in STL since push_back of QVector
+    // does not support rvalue reference
     QString sql;
     static dbWrapper::Control *mainDBControl;
   public:
@@ -23,6 +25,7 @@ namespace sql
     static void setControl(dbWrapper::Control *c);
     virtual bool exec();
     QSqlQuery* getQuery();
+    //QSqlError lastError();
     virtual ~basicSQL(){}
   };
 

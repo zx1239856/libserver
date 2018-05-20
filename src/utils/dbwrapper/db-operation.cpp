@@ -9,15 +9,15 @@ using namespace sql;
 
 dbWrapper::Control * basicSQL::mainDBControl = nullptr;
 
-basicSQL::basicSQL():query(nullptr){}
+basicSQL::basicSQL(){}
 
-basicSQL::basicSQL(const QString &s):query(nullptr),sql(s){}
+basicSQL::basicSQL(const QString &s):sql(s){}
 
 bool basicSQL::exec()
 {
-  auto q = *(mainDBControl->query());
-  query = &q;
-  return query->exec(sql);
+  query.clear();
+  query.push_back(mainDBControl->query());
+  return query[0]->exec(sql);
 }
 
 void basicSQL::setControl(dbWrapper::Control *c)
@@ -27,7 +27,7 @@ void basicSQL::setControl(dbWrapper::Control *c)
 
 QSqlQuery* basicSQL::getQuery()
 {
-  return query;
+  return &(*query[0]);
 }
 
 /*
@@ -57,14 +57,14 @@ insert::insert(const QString &tableName,
 
 bool insert::exec()
 {
-  auto q = *(mainDBControl->query());
-  query = &q;
-  query->prepare(sql);
+  query.clear();
+  query.push_back(mainDBControl->query());
+  query[0]->prepare(sql);
   for(auto it=cont.begin();it!=cont.end();++it)
     {
-      query->bindValue(":"+it.key(),it.value());
+      query[0]->bindValue(":"+it.key(),it.value());
     }
-  return query->exec();
+  return query[0]->exec();
 }
 
 /* insert end */
@@ -89,14 +89,14 @@ update::update(const QString& tablename,
 
 bool update::exec()
 {
-  auto q = *(mainDBControl->query());
-  query = &q;
-  query->prepare(sql);
+  query.clear();
+  query.push_back(mainDBControl->query());
+  query[0]->prepare(sql);
   for(auto it=cont.begin();it!=cont.end();++it)
     {
-      query->bindValue(":"+it.key(),it.value());
+      query[0]->bindValue(":"+it.key(),it.value());
     }
-  return query->exec();
+  return query[0]->exec();
 }
 /* update end */
 
@@ -109,9 +109,9 @@ del::del(const QString &tablename,const QString &condition):
 
 bool del::exec()
 {
-  auto q = *(mainDBControl->query());
-  query = &q;
-  return query->exec(sql);
+  query.clear();
+  query.push_back(mainDBControl->query());
+  return query[0]->exec(sql);
 }
 
 /* delete end */
@@ -195,19 +195,19 @@ void select::addOrder(const QList<QString>& cols,order sqlorder)
 
 bool select::exec()
 {
-  auto q = *(mainDBControl->query());
-  query = &q;
-  return query->exec(sql);
+  query.clear();
+  query.push_back(mainDBControl->query());
+  return query[0]->exec(sql);
 }
 
 bool select::next()
 {
-  return query->next();
+  return query[0]->next();
 }
 
 QVariant select::value(int i)
 {
-  return query->value(i);
+  return query[0]->value(i);
 }
 
 
@@ -258,39 +258,39 @@ dbWrapper::Control* dbConn::getControl()
 
 // dbQueryThread start
 
-dbQueryThread::dbQueryThread(basicSQL *sql, uint tOut, QObject *parent)
+dbQueryThread::dbQueryThread(sql::basicSQL *sql,uint tOut, QObject *parent)
   :QThread(parent),bSql(sql),timeout(tOut){}
 
 void dbQueryThread::run()
 {
-  QTimer::singleShot(timeout, this,
-                     [&]()
-  {
-      emit onFail(QSqlError(QString("Database error."),QString("Operation timeout.")));
-  });
-  if(!bSql->exec())
+  bool isConnected = false;
+  QTimer::singleShot(timeout,this,[&](){
+      if(!isConnected)
+        {
+          emit onFail(QSqlError(QString("QMYSQL: Failed to connect to database server."),QString("Operation timeout."),QSqlError::ConnectionError));
+        }
+    });
+  auto ok = bSql->exec();
+  isConnected=true;
+  if(!ok)
     {
       emit onFail(bSql->getQuery()->lastError());
     }
   else
     {
-      if(bSql->getQuery()->isSelect())
+      QSqlQuery *query = bSql->getQuery();
+      if(query && query->isSelect())
         {
-          sql::select* pSelect = dynamic_cast<sql::select*>(bSql);
-          if(pSelect!=nullptr)
-            {
-              // readEverything here
-              // and emit onResult signal
-              // after finish
-              QVector<QSqlRecord> result;
-              QSqlQuery *q=pSelect->getQuery();
-              for(int i=0;i<q->size();++i)
-                {
-                  q->seek(i);
-                  result.push_back(q->record());
-                }
-              emit onResult(result);
-            }
+          // readEverything here
+          // and emit onResult signal
+          // after finish
+          QVector<QSqlRecord> result;
+          for(int i=0;i<query->size();++i)
+          {
+             query->seek(i);
+             result.push_back(query->record());
+          }
+          emit onResult(result);
         }
       else
         {
