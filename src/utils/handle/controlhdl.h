@@ -18,8 +18,8 @@ class controlhdl
     QMap<qint64, qint32> mClient;  //<token, ID>
 
 public:
-    controlhdl(const controlhdl&)=delete;
-    controlhdl& operator=(controlhdl&)=delete;
+    controlhdl(const controlhdl&) = delete;
+    controlhdl& operator=(controlhdl&) = delete;
     static controlhdl* getInstance();
     bool ifLogin(qint64 token);
     qint32 GetID(qint64 token);

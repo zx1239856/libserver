@@ -1,6 +1,6 @@
 #include "handle.h"
 
-handle::handle(qint64 token)
+handle::handle(double token)
 {
     if(token == -1)
         ID = -1;
@@ -12,7 +12,7 @@ handle::handle(qint64 token)
     }
 }
 
-handle::~handle()
+QJsonObject handle::GetReturn()
 {
-
+    return jsonReturn;
 }

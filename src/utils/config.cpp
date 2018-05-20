@@ -35,10 +35,10 @@ void config::Load()
   try
   {
     // logpath
-    logPath = Get("server/log_path").toString();
+    logPath = Get("web/log_path").toString();
     //web
-    port = Get("server/listen_port").toInt();
-    ccurrency = Get("server/concurrency").toInt();
+    port = Get("web/listen_port").toInt();
+    ccurrency = Get("web/concurrency").toInt();
     // database
     dbHost= Get("database/host").toString();
     dbPort= Get("database/port").toInt();

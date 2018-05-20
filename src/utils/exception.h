@@ -2,7 +2,9 @@
 #define ENUM_H
 enum Exception
 {
-    FalseToken
+    FailedAnalyze,
+    FalseToken,
+    FailLogin
 };
 
 #endif // ENUM_H

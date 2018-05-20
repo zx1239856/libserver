@@ -3,12 +3,13 @@
 
 #include <QJsonObject>
 #include <QJsonDocument>
+#include "utils/handle/userhdl.h"
 #include "utils/file/logstream.h"
+#include "utils/exception.h"
 
 class requesthdl
 {
     QJsonObject jsonRequest;
-    QJsonObject jsonReturn;
 public:
     requesthdl(const QByteArray &rqtData);
     virtual QByteArray deal();

@@ -1,16 +1,30 @@
 #include "userhdl.h"
 
-userhdl::userhdl(qint64 token): handle(token)
+userhdl::userhdl(double token): handle(token){}
+
+bool userhdl::deal(const QString &command, const QJsonObject &json)
 {
+    QByteArray cpath = command.toLocal8Bit();
+    char* cmd = cpath.data();
 
-}
+    QMetaEnum me = QMetaEnum::fromType<userhdl::CMD>();
+    switch(me.keyToValue(cmd))
+    {
+    case login:
 
-userhdl::~userhdl()
-{
 
-}
+        break;
+    case forget:
 
-qint32 userhdl::deal(CMD cmd, QString username, QString password)
-{
+        break;
+    case logout:
 
+        break;
+    case changepwd:
+
+        break;
+    case updateinfo:
+
+        break;
+    }
 }

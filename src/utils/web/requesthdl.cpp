@@ -8,8 +8,45 @@ requesthdl::requesthdl(const QByteArray &rqtData)
 
 QByteArray requesthdl::deal()
 {
-    //
+    handle* hdl;
+    if(jsonRequest.take("type").toString() == "USER")
+    {
+        hdl = new userhdl(jsonRequest.take("token").toDouble());
+    }
+    else if(jsonRequest.take("type").toString() == "QUERY")
+    {
 
-    QJsonDocument jdocReturn(jsonReturn);
+    }
+    else if(jsonRequest.take("type").toString() == "APPOINT")
+    {
+
+    }
+    else if(jsonRequest.take("type").toString() == "CHECK")
+    {
+
+    }
+    else if(jsonRequest.take("type").toString() == "OPERATEUSER")
+    {
+
+    }
+    else if(jsonRequest.take("type").toString() == "OPERATEBOOK")
+    {
+
+    }
+    else if(jsonRequest.take("type").toString() == "OPERATEGROUP")
+    {
+
+    }
+    else if(jsonRequest.take("type").toString() == "OPERATE")
+    {
+
+    }
+    else
+        throw FailedAnalyze;
+
+    hdl->deal(jsonRequest.take("command").toString(), jsonRequest);
+
+    QJsonDocument jdocReturn(hdl->GetReturn());
+    delete hdl;
     return jdocReturn.toBinaryData();
 }

@@ -1,10 +1,12 @@
 #ifndef USERHDL_H
 #define USERHDL_H
+
 #include "utils/handle/handle.h"
 
 class userhdl: public handle
 {
     Q_OBJECT
+
 public:
     enum CMD
     {
@@ -16,9 +18,8 @@ public:
     };
     Q_ENUM(CMD)
 
-    userhdl(qint64 token);
-    virtual ~userhdl();
-    qint32 deal(CMD cmd, QString username, QString password);
+    userhdl(double token);
+    bool deal(const QString &cmd, const QJsonObject &json);
 };
 
 #endif // USERHDL_H
