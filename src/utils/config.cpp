@@ -44,6 +44,7 @@ void config::Load()
     dbPort= Get("database/port").toInt();
     dbUname= Get("database/username").toString();
     dbPwd= Get("database/password").toString();
+    dbConnTimeOut = Get("database/connectionTimeout").toUInt();
     //end
   }
   catch(QString &e)

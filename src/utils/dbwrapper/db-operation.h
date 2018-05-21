@@ -138,8 +138,11 @@ protected:
 private:
   sql::basicSQL* bSql;
   uint timeout;
+  QTimer *timeWatch;
 signals:
   void onSuccess();
   void onFail(const QSqlError &err);
   void onResult(const QVector<QSqlRecord> &res);
+  void timeOutStart();
+  void timeOutStop();
 };

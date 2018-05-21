@@ -259,19 +259,22 @@ dbWrapper::Control* dbConn::getControl()
 // dbQueryThread start
 
 dbQueryThread::dbQueryThread(sql::basicSQL *sql,uint tOut, QObject *parent)
-  :QThread(parent),bSql(sql),timeout(tOut){}
+  :QThread(parent),bSql(sql),timeout(tOut),timeWatch(nullptr){}
 
 void dbQueryThread::run()
 {
-  bool isConnected = false;
-  QTimer::singleShot(timeout,this,[&](){
-      if(!isConnected)
-        {
-          emit onFail(QSqlError(QString("QMYSQL: Failed to connect to database server."),QString("Operation timeout."),QSqlError::ConnectionError));
-        }
+  timeWatch = new QTimer;
+  timeWatch->setInterval(timeout);
+  timeWatch->setSingleShot(true);
+  timeWatch->moveToThread(qApp->thread());
+  connect(this,SIGNAL(timeOutStart()),timeWatch,SLOT(start()));
+  connect(this,SIGNAL(timeOutStop()),timeWatch,SLOT(stop()));
+  connect(timeWatch,&QTimer::timeout,this,[&](){
+      emit onFail(QSqlError(QString("Database error."),QString("Operation timeout.")));
     });
+  emit timeOutStart();
   auto ok = bSql->exec();
-  isConnected=true;
+  emit timeOutStop();
   if(!ok)
     {
       emit onFail(bSql->getQuery()->lastError());
@@ -299,6 +302,10 @@ void dbQueryThread::run()
     }
 }
 
-dbQueryThread::~dbQueryThread(){}
+dbQueryThread::~dbQueryThread()
+{
+  timeWatch->moveToThread(QThread::currentThread());
+  if(timeWatch)delete timeWatch;
+}
 
 // dbQueryThread end

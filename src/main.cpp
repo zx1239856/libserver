@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     sql::select sel("libserver.lib_books");
 
 
-    dbQueryThread *dbT= new dbQueryThread(&sel,1000);
+    dbQueryThread *dbT= new dbQueryThread(&sel,conf->dbConnTimeOut);
     QObject::connect(dbT,&dbQueryThread::onResult,
                      [&](const QVector<QSqlRecord>& res)
     {
@@ -91,7 +91,8 @@ int main(int argc, char *argv[])
     QObject::connect(dbT,&dbQueryThread::onFail,
                      [&](const QSqlError &err)
     {
-        dbT->quit();
+        dbT->terminate();
+        dbT->wait();
         qWarning() << err;
         dbT->deleteLater();
       });

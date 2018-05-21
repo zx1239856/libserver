@@ -37,6 +37,7 @@ public:
     unsigned int dbPort;
     QString dbUname;
     QString dbPwd;
+    uint dbConnTimeOut;
     QString logPath;
     // superUser configuration
     QString suname;
