@@ -91,9 +91,9 @@ int main(int argc, char *argv[])
     QObject::connect(dbT,&dbQueryThread::onFail,
                      [&](const QSqlError &err)
     {
+        qWarning() << err;
         dbT->terminate();
         dbT->wait();
-        qWarning() << err;
         dbT->deleteLater();
       });
     dbT->start();
