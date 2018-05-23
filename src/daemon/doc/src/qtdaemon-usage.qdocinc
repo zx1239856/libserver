@@ -1,0 +1,7 @@
+To include the definitions of the module's classes, use the following directive:
+
+\snippet use-qtdaemon.cpp include
+
+If you use qmake to build your projects, add the following line to your .pro file:
+
+\snippet use-qtdaemon.pro module

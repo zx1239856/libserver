@@ -1,0 +1,155 @@
+/****************************************************************************
+**
+** Copyright (C) 2016 Konstantin Shegunov <kshegunov@gmail.com>
+** Copyright (C) 2016 Samuel Gaist <samuel.gaist@edeltech.ch>
+**
+** This file is part of the documentation of the QtDaemon library.
+**
+** The MIT License (MIT)
+**
+** Permission is hereby granted, free of charge, to any person obtaining a copy
+** of this software and associated documentation files (the "Software"), to deal
+** in the Software without restriction, including without limitation the rights
+** to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+** copies of the Software, and to permit persons to whom the Software is
+** furnished to do so, subject to the following conditions:
+**
+** The above copyright notice and this permission notice shall be included in all
+** copies or substantial portions of the Software.
+**
+** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+** SOFTWARE.
+**
+****************************************************************************/
+/*!
+    \page qtdaemon-usage.html howto
+    \title Qt Daemon Usage
+    \brief Using the module.
+
+    This how-to page is based on the \l{Simple daemon example}, for the complete source code please refer to the \l{Simple daemon example}{example page}.
+
+    \section1 Creating a daemon application
+
+    \include examples/simpledaemon-cpp.qdocinc
+
+    \section1 Installing and using the daemon
+
+    The daemon responds based on the command line arguments passed to the application when the process is stared.
+    \include qtdaemon-cl-switches.qdocinc
+
+    \section2 Windows
+
+    \note Managing services require elevated privileges
+
+    Command line arguments for the daemon can be set when the application is installed. The arguments after a standalone double-dash \c{--} will be passed unmodified to the daemon process when it is started by the \l{https://msdn.microsoft.com/en-us/library/windows/desktop/ms685150(v=vs.85).aspx}{Service Control Manager}.
+
+    \code
+    $ simpledaemon --install -- --text="Simple daemon command line parameter with value" -i "Positional parameter"
+    \endcode
+
+    Optionally you might want to add the daemon's installation directory to the \c PATH environment variable. This may be needed if you are deploying a local copy of the Qt toolkit along with your application and you don't want to manually edit the \c PATH.
+    To do that it is enough to pass the \c{--update-path} switch along with the \c{--install}. For example:
+    \code
+    $ simpledaemon --install --update-path -- --text="Simple daemon command line parameter with value" -i "Positional parameter"
+    \endcode
+
+    \note The daemon will \e append its directory to the \c PATH variable, only if the directory is not already present in the directory list.
+
+    The so installed daemon can be started either through the system services management tool, or by invoking
+    \code
+    $ simpledaemon --start
+    \endcode
+
+    Consequently, the \l{Simple daemon example}{simple daemon} is going to log the command line arguments that were passed with the \c{--install} switch in a file named \c{simpledaemon.log}.
+    To stop the application, you either call the application with the \c{--stop} switch
+    \code
+    $ simpledaemon --stop
+    \endcode
+    or use the service control center Windows provides.
+
+    To remove the daemon, call the application with the \c{--uninstall} argument
+    \code
+    $ simpledaemon --uninstall
+    \endcode
+
+    Analogously, if you require the daemon application to remove its directory from the system \c PATH, you can use the \c{--update-path} switch
+    \code
+    $ simpledaemon --uninstall --update-path
+    \endcode
+    \warning Be careful when removing a directory from the \c PATH variable, as the directory may be shared. Use the switch only if you are convinced the directory is exclusively required for running your daemon.
+
+    \section2 Linux
+
+    \note Access to system locations require \c root privileges.
+
+    Linux distributions ordinarily don't expose an integrated central service management utility. The configuration and initialization of daemons is accomplished with the help of init scripts instead.
+    The \l{Qt Daemon} module complies with this approach and generates two files for each installed daemon:
+    \list 1
+        \li A \l{https://dbus.freedesktop.org/doc/dbus-daemon.1.html}{DBus configuration file} that is required for the interprocess communication between daemon and controller (placed by default in \c /etc/dbus-1/system.d).
+        \li An \l{https://refspecs.linuxbase.org/LSB_3.0.0/LSB-PDA/LSB-PDA/iniscrptact.html}{LSB-compliant init script} that is used for controlling the daemon (placed by default in \c /etc/init.d).
+    \endlist
+
+    To install the daemon, run the application with the \c{--install} command line switch and provide any arguments you want to be passed after a standalone double-dash \c{--}.
+    \code
+    $ simpledaemon --install -- --text="Simple daemon command line parameter with value" -i "Positional parameter"
+    \endcode
+
+    Optionally, with the help of the \c{--dbus-prefix} and \c{--initd-prefix} arguments you can specify the directories the DBus configuration file and the init script will be placed in. For example:
+    \code
+    $ simpledaemon --install --dbus-prefix=/dbus/special/dir --initd-prefix=/initd/special/dir -- --text="Simple daemon command line parameter with value" -i "Positional parameter"
+    \endcode
+
+    \note It is advised to use absolute paths for the prefix arguments.
+
+    Once the installation is completed successfully the daemon can be started, stopped, restarted and uninstalled through the init script:
+    \code
+    $ /etc/init.d/simpledaemon start
+    $ /etc/init.d/simpledaemon restart
+    $ /etc/init.d/simpledaemon stop
+    \endcode
+
+    \warning To make the script execute when the Linux is starting up some distributions require you to perform additional steps (for example invoking \c insserv or \c update-rc.d). Please consult your distribution's documentation.
+
+    \section2 macOS
+
+    \note Access to administrator provided launch-agents and system-wide daemons require \c root privileges.
+
+    On macOS, \c launchctl is used to start and stop services/user agents and \l{https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man8/launchd.8.html}{launchd} does the actual handling of the services/user agents.
+
+    The difference between a daemon and an user agent is that the user agent is run on a per-user basis. Also daemons should not attempt to display GUI or interact with the user login session. It should be done through an agent.
+
+    Agents can be provided by both the user and the administrator. A custom user agent can be installed and managed by the current active user.
+
+    To install the daemon, run the application with the \c{--install} command line switch and provide any arguments you want to be passed after a standalone double-dash \c{--}.
+    \code
+    $ sudo simpledaemon --install -- --text="Simple daemon command line parameter with value" -i "Positional parameter"
+    \endcode
+
+    To install an agent for all users, the rules are the same as for a daemon but with the additional \c{--agent} argument.
+    \code
+    $ sudo simpledaemon --install --agent -- --text="Simple daemon command line parameter with value" -i "Positional parameter"
+    \endcode
+
+    And to do that only for the current user, add the \c{--user} argument.
+
+    Alternatively, a user can install an agent for its own use.
+    \code
+    $ simpledaemon --install --agent --user -- --text="Simple daemon command line parameter with value" -i "Positional parameter"
+    \endcode
+
+    Once the installation is completed successfully the daemon can be started, stopped, restarted and uninstalled through \c launchctl or calling the executable directly:
+
+    \code
+    $ simpledaemon --start
+    $ simpledaemon --stop
+    \endcode
+
+    The need to use \c sudo follows the same rules when uninstalling.
+
+    \sa {Qt Daemon Examples}
+*/

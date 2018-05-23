@@ -1,0 +1,40 @@
+To create your daemon and its controller start by instantiating the \l{QDaemonApplication} object as is ordinarily done
+for any Qt application.
+
+\quotefromfile simpledaemon/main.cpp
+\skipto main
+\printuntil app(argc, argv)
+
+For the damon to be able to register itself with the operating system and function properly it is advised to set the \l{QCoreApplication::}{applicationName} and \l{QCoreApplication::}{organizationDomain} properties, as well as \l{QDaemonApplication::}{applicationDescription}.
+The latter will be used to provide additional information for the service management infrastructure of the operating system.
+
+\note If one of these properties isn't set, the application object will try to deduce appropriate values.
+
+\printto controller(&app)
+
+The application object will raise the appropriate signal depending on the command line arguments passed to the process.
+Whenever the application is run as a daemon the \l{QDaemonApplication::}{daemonized()} signal will be emitted as soon as the program has initialized successfully and the command line has been processed. If the application is run as a controlling terminal a signal will be raised corresponding to the requested operation.
+
+Attach a handler to the \l{QDaemonApplication::}{daemonized()} signal to initialize your daemon (e.g. opening sockets, or a serial port). You can parse the passed string list as a proper command line with the help of the \l{QCommandLineParser} class.
+
+\warning To keep your daemon responsive to the OS's service control infrastructure don't block the event loop for very long periods of time, especially when processing the \l{QDaemonApplication::}{daemonized()} signal.
+
+In case you want to perform additional operations after the daemon is started, stopped, installed or uninstalled by the controller process, then you can subscribe to one of the corresponding signals.
+
+\printto return
+
+Finally, just start the event loop for the application.
+
+\printuntil }
+
+For this simple example we won't be doing anything with the signals, but writing a few messages to the log file.
+The following slot that's been connected to the \l{QDaemonApplication::}{daemonized()} signal just logs the command line passed as parameter.
+
+\quotefromfile simpledaemon/simpledaemon.cpp
+\skipto SimpleDaemon::onDaemonReady
+\printto SimpleDaemon::onStarted
+
+If, on the other hand, the application is run as controlling terminal we will only log the performed operation.
+
+\printto SimpleDaemon::onUninstalled
+\printuntil }

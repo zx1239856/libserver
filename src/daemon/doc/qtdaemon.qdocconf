@@ -1,0 +1,54 @@
+include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
+
+project                 = QtDaemon
+description             = QtDaemon Reference Documentation
+version                 = $QT_VERSION
+
+sourcedirs += ..
+
+headerdirs += .. \
+			  ../private
+
+imagedirs += images
+
+exampledirs += ../../../examples/daemon snippets
+
+examplesinstallpath = daemon
+
+sources.fileextensions  = "*.cpp *.qdoc"
+
+depends = qtcore qtdoc qmake
+
+Cpp.ignoretokens += Q_DAEMON_EXPORT
+
+# Add a generic 'Qt Code Sample' thumbnail in Qt Creator for all examples
+manifestmeta.thumbnail.names += "QtDaemon/*"
+
+
+defines += Q_DAEMON_EXPORT
+
+qhp.projects = QtDaemon
+qhp.QtDaemon.file = qtdaemon.qhp
+qhp.QtDaemon.namespace = org.qt-project.qtdaemon.$QT_VERSION_TAG
+qhp.QtDaemon.virtualFolder = qtdaemon
+qhp.QtDaemon.indexTitle = Qt Daemon
+qhp.QtDaemon.indexRoot =
+
+qhp.QtDaemon.filterAttributes = qtdaemon $QT_VERSION qtrefdoc
+qhp.QtDaemon.customFilters.Qt.name = QtDaemon $QT_VERSION
+qhp.QtDaemon.customFilters.Qt.filterAttributes = QtDaemon $QT_VERSION
+
+qhp.QtDaemon.subprojects = classes examples
+
+qhp.QtDaemon.subprojects.classes.title = C++ Classes and Namespaces
+qhp.QtDaemon.subprojects.classes.indexTitle = Qt Daemon C++ Classes
+qhp.QtDaemon.subprojects.classes.selectors = class function namespace fake:headerfile
+qhp.QtDaemon.subprojects.classes.sortPages = true
+
+qhp.QtDaemon.subprojects.examples.title      = Examples
+qhp.QtDaemon.subprojects.examples.indexTitle = Qt Daemon Examples
+qhp.QtDaemon.subprojects.examples.selectors  = fake:example
+qhp.QtDaemon.subprojects.examples.sortPages  = true
+
+navigation.landingpage = Qt Daemon
+navigation.cppclassespage = Qt Daemon C++ Classes

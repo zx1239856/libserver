@@ -1,0 +1,3 @@
+//! [include]
+#include <QtDaemon>
+//! [include]
