@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
     else
       {
         printf("Error: settings file does not contain valid log_path. Use default log path instead.\n");
-        exit(EXIT_FAILURE);
       }
     delete set;
     set = nullptr;
