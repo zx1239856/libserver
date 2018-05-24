@@ -9,7 +9,6 @@ HEADERS += \
     utils/dbwrapper/db-operation.h \
     utils/dbwrapper/db-wrapper.h \
     utils/file/fileio.h \
-    utils/file/logstream.h \
     utils/file/pdfhandler.h \
     utils/handle/controlhdl.h \
     utils/handle/handle.h \
@@ -27,7 +26,6 @@ SOURCES += \
     utils/dbwrapper/db-operation.cpp \
     utils/dbwrapper/db-wrapper.cpp \
     utils/file/fileio.cpp \
-    utils/file/logstream.cpp \
     utils/file/pdfhandler.cpp \
     utils/handle/controlhdl.cpp \
     utils/handle/handle.cpp \

@@ -1,7 +1,6 @@
 #include "mainservice.h"
 #include "qdaemonapplication.h"
 
-LogStream* lstream;
 controlhdl* ctrl;
 
 mainService::mainService(const QString& confPath,QObject *parent) :
@@ -19,9 +18,6 @@ void mainService::start()
   // Configuration File Init
   config::setPath(conf);
   config *conf = config::getInstance();
-  //Initiate LogStream
-  LogStream::setPath(conf->logPath);
-  lstream = LogStream::getInstance();
   // dbConn Init
   dbConn::setConf(conf);
   dbConn::getInstance();

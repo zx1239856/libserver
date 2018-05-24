@@ -1,11 +1,12 @@
 #include "socketthread.h"
+#include "qdaemonlog.h"
 
 socketThread::socketThread(qintptr socketDescriptor, QObject *parent):
     QThread(parent), socketDescriptor(socketDescriptor){}
 
 socketThread::~socketThread()
 {
-    *lstream << "Disconnected from " + socketDescriptor;
+    qDaemonLog("Disconnected from " + socketDescriptor);
     tcpsocket->close();
     tcpsocket->deleteLater();
     exit(0);
@@ -16,12 +17,12 @@ void socketThread::run()
     tcpsocket = new QTcpSocket();
     if (!tcpsocket->setSocketDescriptor(socketDescriptor))
     {
-        *lstream << "Error: CANNOT set SocketDescriptor";
+        qDaemonLog("CANNOT set SocketDescriptor",QDaemonLog::ErrorEntry);
         return;
     }
     tcpsocket->setReadBufferSize(2048);
 
-    *lstream << "New thread for the connection from " + tcpsocket->peerAddress().toString();
+    qDaemonLog("New thread for the connection from " + tcpsocket->peerAddress().toString());
     connect(tcpsocket, &QAbstractSocket::disconnected, tcpsocket, &QAbstractSocket::deleteLater);
 
     Object obj(tcpsocket);
@@ -65,7 +66,7 @@ void Object::slot()
     }
     catch(QString msg)
     {
-        *lstream << "Error: " + msg;
+        qDaemonLog("Error: " + msg,QDaemonLog::ErrorEntry);
         tcpsocket->disconnect();
     }
 }

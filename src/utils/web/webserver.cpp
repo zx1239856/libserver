@@ -1,4 +1,5 @@
 #include "webserver.h"
+#include "qdaemonlog.h"
 
 webServer::webServer(QObject *parent) : QTcpServer(parent) {}
 
@@ -11,17 +12,17 @@ void webServer::init(int port, int ccurrency)
 
     if(listen(QHostAddress::Any, port))
     {
-        *lstream << "Start listening to port " + QString::number(port);
+        qDaemonLog("Start listening to port " + QString::number(port));
     }
     else
     {
-        *lstream << "Error: CANNOT listen to port " + QString::number(port);
+        qDaemonLog("CANNOT listen to port " + QString::number(port),QDaemonLog::ErrorEntry);
     }
 }
 
 void webServer::incomingConnection(qintptr socketDescriptor)
 {
-    *lstream << "Trying a new connection.";
+    qDaemonLog("Trying a new connection.");
     socketThread *skt = new socketThread(socketDescriptor);
     connect(skt, SIGNAL(finished()), skt, SLOT(deleteLater()));
     skt->start();

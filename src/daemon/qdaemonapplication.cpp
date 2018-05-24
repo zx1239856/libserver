@@ -97,8 +97,8 @@ using namespace QtDaemon;
     \warning Do not rely on the arguments() function as there are command-line
     parameters used internally by the class.
 */
-QDaemonApplication::QDaemonApplication(int & argc, char ** argv)
-    : QCoreApplication(argc, argv), d_ptr(new QDaemonApplicationPrivate(this))
+QDaemonApplication::QDaemonApplication(int & argc, char ** argv,const QString &logPath)
+    : QCoreApplication(argc, argv), d_ptr(new QDaemonApplicationPrivate(this,logPath))
 {
 }
 

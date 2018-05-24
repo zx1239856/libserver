@@ -58,7 +58,7 @@ class Q_DAEMON_EXPORT QDaemonApplicationPrivate
 {
     Q_DECLARE_PUBLIC(QDaemonApplication)
 public:
-    QDaemonApplicationPrivate(QDaemonApplication *);
+    QDaemonApplicationPrivate(QDaemonApplication *,const QString &);
     ~QDaemonApplicationPrivate();
 
 private:

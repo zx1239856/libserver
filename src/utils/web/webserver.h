@@ -3,7 +3,6 @@
 
 #include <QTcpServer>
 #include <QTcpSocket>
-#include "utils/file/logstream.h"
 #include "utils/web/socketthread.h"
 
 class webServer: public QTcpServer

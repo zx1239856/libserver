@@ -55,7 +55,7 @@ class QDaemonLogPrivate
     friend void qDaemonLog(const QString & message, QDaemonLog::EntrySeverity severity);
 
 public:
-    QDaemonLogPrivate();
+    QDaemonLogPrivate(const QString &logPath);
     ~QDaemonLogPrivate();
 
     void write(const QString &, QDaemonLog::EntrySeverity);

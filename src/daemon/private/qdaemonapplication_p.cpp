@@ -62,8 +62,8 @@ typedef ControllerBackendOSX ControllerBackend;
 
 QString QDaemonApplicationPrivate::description;
 
-QDaemonApplicationPrivate::QDaemonApplicationPrivate(QDaemonApplication * q)
-    : q_ptr(q), log(*new QDaemonLogPrivate), autoQuit(true)
+QDaemonApplicationPrivate::QDaemonApplicationPrivate(QDaemonApplication * q,const QString &logPath)
+    : q_ptr(q), log(*new QDaemonLogPrivate(logPath)), autoQuit(true)
 {
     std::signal(SIGTERM, QDaemonApplicationPrivate::processSignalHandler);
     std::signal(SIGINT, QDaemonApplicationPrivate::processSignalHandler);

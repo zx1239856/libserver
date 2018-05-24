@@ -46,7 +46,7 @@ class Q_DAEMON_EXPORT QDaemonApplication : public QCoreApplication
     Q_PROPERTY(QString applicationDescription READ applicationDescription WRITE setApplicationDescription)
 
 public:
-    QDaemonApplication(int & argc, char ** argv);
+    QDaemonApplication(int & argc, char ** argv,const QString &path);
     ~QDaemonApplication() Q_DECL_OVERRIDE;
 
     static int exec();

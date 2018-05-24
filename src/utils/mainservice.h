@@ -4,12 +4,10 @@
 #include "utils/dbwrapper/db-wrapper.h"
 #include "utils/dbwrapper/db-operation.h"
 #include "utils/config.h"
-#include "utils/file/logstream.h"
 #include "utils/web/webserver.h"
 #include "utils/handle/controlhdl.h"
 #include <QObject>
 
-extern LogStream* lstream;
 extern controlhdl* ctrl;
 
 class mainService : public QObject

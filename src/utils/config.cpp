@@ -35,7 +35,7 @@ void config::Load()
   try
   {
     // logpath
-    logPath = Get("web/log_path").toString();
+    // logPath = Get("web/log_path").toString();
     //web
     port = Get("web/listen_port").toInt();
     ccurrency = Get("web/concurrency").toInt();

@@ -38,12 +38,12 @@ QT_BEGIN_NAMESPACE
 
 QDaemonLog * QDaemonLogPrivate::logger = NULL;
 
-QDaemonLogPrivate::QDaemonLogPrivate()
-    : logStream(&logFile), logType(QDaemonLog::LogToStdout)
+QDaemonLogPrivate::QDaemonLogPrivate(const QString &logPath)
+    : logFilePath(logPath) , logStream(&logFile), logType(QDaemonLog::LogToStdout)
 {
     // Get the log file path
-    QFileInfo info(QCoreApplication::applicationFilePath());
-    logFilePath = info.absoluteDir().filePath(info.completeBaseName() + QStringLiteral(".log"));
+    //QFileInfo info(QCoreApplication::applicationFilePath());
+    //logFilePath = info.absoluteDir().filePath(info.completeBaseName() + QStringLiteral(".log"));
 
     // Open the default stdout logging
     if (Q_UNLIKELY(!logFile.open(stdout, QFile::WriteOnly | QFile::Text)))

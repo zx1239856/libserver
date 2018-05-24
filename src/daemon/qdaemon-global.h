@@ -1,7 +1,7 @@
 #ifndef QDAEMON_GLOBAL_H
 #define QDAEMON_GLOBAL_H
 
-#include <QtCore/qglobal.h>
+#include <QtGlobal>
 
 QT_BEGIN_NAMESPACE
 
