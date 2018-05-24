@@ -3,6 +3,8 @@ include(libserver.pri)
 
 QMAKE_CXXFLAGS += -Wimplicit-fallthrough=0
 
+DEFINES += VERBOSE_OUTPUT
+
 TARGET = libserver
 
 HEADERS += \
@@ -20,7 +22,8 @@ HEADERS += \
     utils/config.h \
     utils/exception.h \
     utils/cmdparser.h \
-    utils/mainservice.h
+    utils/mainservice.h \
+    globalInfo.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \

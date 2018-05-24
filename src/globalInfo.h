@@ -11,6 +11,7 @@ const QString appName = "libserver";
 const QString appDescription = "Library Management Server";
 const QString appOrgDomain = "qtdaemon.serverApps";
 const QString appVersion = "0.1.0alpha";
+const QString defaultLogPath = appName+".log";
 }
 
 #endif

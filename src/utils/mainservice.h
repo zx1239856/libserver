@@ -14,10 +14,10 @@ class mainService : public QObject
 {
   Q_OBJECT
 private:
-  const QString &conf;
+  config *conf;
   webServer *server;
 public:
-  explicit mainService(const QString &confPath, QObject *parent = nullptr);
+  explicit mainService(config *conf, QObject *parent = nullptr);
   void start();
   void stop();
   ~mainService();

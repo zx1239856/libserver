@@ -5,7 +5,6 @@
 #include "utils/cmdparser.h"
 #include "qdaemonapplication.h"
 
-
 int main(int argc, char *argv[])
 {
     // argument handler
@@ -13,24 +12,23 @@ int main(int argc, char *argv[])
 
     // Set configuration path
     QString confPath(parser.getConfPath());
-    // Get log path individually
-    // default path is
-    //QFileInfo info(QCoreApplication::applicationFilePath());
-    //QString logFilePath = info.absoluteDir().filePath(info.completeBaseName() + QStringLiteral(".log"));
-    QString logFilePath = QStringLiteral("libserver.log");
+
+    config::setPath(confPath);
+    QString logFilePath = "libserver.log";
+    config *conf= nullptr;
     if(parser.isStartCommand())
       {
-        QSettings *set=new QSettings(confPath,QSettings::NativeFormat);
-        if(set->contains("web/log_path"))
+        // Configuration File Init
+        // First check to ensure its validity
+        conf = config::getInstance();
+        if(!conf->logPath.isEmpty())
           {
-            logFilePath = set->value("web/log_path").toString();
+            logFilePath = conf->logPath;
           }
         else
           {
-            printf("Error: settings file does not contain valid log_path. Use default log path instead.\n");
+            printf("Warning: Logfile path was not set properly, use default logPath instead.\n");
           }
-        delete set;
-        set = nullptr;
       }
     // okay, now initialize the daemon
     QDaemonApplication app(parser.getArgc(),parser.getArgv(),logFilePath);
@@ -39,7 +37,7 @@ int main(int argc, char *argv[])
     QDaemonApplication::setOrganizationDomain(globalInfo::appOrgDomain);
     QDaemonApplication::setApplicationVersion(globalInfo::appVersion);
     // mainService
-    mainService service(confPath,&app);
+    mainService service(conf,&app);
     QObject::connect(&app,&QDaemonApplication::daemonized,&service,&mainService::start);
     QObject::connect(&app,&QDaemonApplication::aboutToQuit,&service,&mainService::stop);
     return QDaemonApplication::exec();

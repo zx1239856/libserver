@@ -3,8 +3,8 @@
 
 controlhdl* ctrl;
 
-mainService::mainService(const QString& confPath,QObject *parent) :
-  QObject(parent),conf(confPath),server(nullptr)
+mainService::mainService(config* _conf,QObject *parent) :
+  QObject(parent),conf(_conf),server(nullptr)
 {}
 
 mainService::~mainService()
@@ -15,9 +15,7 @@ mainService::~mainService()
 
 void mainService::start()
 {
-  // Configuration File Init
-  config::setPath(conf);
-  config *conf = config::getInstance();
+
   // dbConn Init
   dbConn::setConf(conf);
   dbConn::getInstance();
