@@ -64,7 +64,6 @@ void cmdParser::parse()
       else if(str=="--dbus-prefix"||str=="--initd-prefix")okay=false;
       else
         {
-          printf("%s %s",_argv[0],_argv[1]);
           printf("\nUnrecognized command. Please retry.\n");
           usage();
           exit(EXIT_SUCCESS);
