@@ -76,6 +76,7 @@ private:
     QCommandLineParser parser;
 
     static QString description;
+    static QString name;
 };
 
 QT_END_NAMESPACE

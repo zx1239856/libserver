@@ -85,9 +85,9 @@ bool ControllerBackendLinux::start()
     if (interface->isValid())  {
         QDBusReply<bool> reply = interface->call(QStringLiteral("isRunning"));
         if (reply.isValid() && reply.value())
-            qDaemonLog(QStringLiteral("The daemon is already running."), QDaemonLog::NoticeEntry);
+            qDaemonLog(QStringLiteral("The %1 is already running.").arg(QDaemonApplication::applicationName()), QDaemonLog::NoticeEntry);
         else
-            qDaemonLog(QStringLiteral("The daemon is not responding."), QDaemonLog::ErrorEntry);
+            qDaemonLog(QStringLiteral("The %1 is not responding.").arg(QDaemonApplication::applicationName()), QDaemonLog::ErrorEntry);
 
         return false;
     }
@@ -98,7 +98,7 @@ bool ControllerBackendLinux::start()
     //   arguments.prepend(QStringLiteral("--"));
     arguments.prepend(QStringLiteral("-d"));
     if (!QProcess::startDetached(QDaemonApplication::applicationFilePath(), arguments, QDaemonApplication::applicationDirPath()))  {
-        qDaemonLog(QStringLiteral("The daemon failed to start."), QDaemonLog::ErrorEntry);
+        qDaemonLog(QStringLiteral("The %1 failed to start.").arg(QDaemonApplication::applicationName()), QDaemonLog::ErrorEntry);
         return false;
     }
 
@@ -117,7 +117,7 @@ bool ControllerBackendLinux::start()
 
     // Check the DBus status
     if (!interface)  {
-        qDaemonLog(QStringLiteral("Connection with the daemon couldn't be established. (%1)").arg(dbus.lastError().message()), QDaemonLog::ErrorEntry);
+        qDaemonLog(QStringLiteral("Connection with the %1 daemon couldn't be established. (%2)").arg(QDaemonApplication::applicationName()).arg(dbus.lastError().message()), QDaemonLog::ErrorEntry);
         return false;
     }
 
@@ -146,7 +146,7 @@ bool ControllerBackendLinux::stop()
     // Acquire the DBus interface
     QScopedPointer<QDBusAbstractInterface> interface(new QDBusInterface(service, QStringLiteral("/"), QStringLiteral(Q_DAEMON_DBUS_CONTROL_INTERFACE), dbus));
     if (!interface->isValid())  {
-        qDaemonLog(QStringLiteral("Couldn't acquire the DBus interface. Is the daemon running? (%1)").arg(dbus.lastError().message()), QDaemonLog::ErrorEntry);
+        qDaemonLog(QStringLiteral("Couldn't acquire the DBus interface. Is the %1 daemon running? (%2)").arg(QDaemonApplication::applicationName()).arg(dbus.lastError().message()), QDaemonLog::ErrorEntry);
         return false;
     }
 

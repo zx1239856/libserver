@@ -14,6 +14,7 @@ private:
   // other stuffs
   QString serviceName;
   QString confPath;
+  bool isStart;
   void usage();
   void parse();
 public:
@@ -22,6 +23,7 @@ public:
   const QString& getConfPath();
   int& getArgc();
   char** getArgv();
+  bool isStartCommand()const;
 };
 
 #endif // CMDPARSER_H

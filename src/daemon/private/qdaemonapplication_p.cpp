@@ -61,6 +61,7 @@ typedef ControllerBackendOSX ControllerBackend;
 #endif
 
 QString QDaemonApplicationPrivate::description;
+QString QDaemonApplicationPrivate::name;
 
 QDaemonApplicationPrivate::QDaemonApplicationPrivate(QDaemonApplication * q,const QString &logPath)
     : q_ptr(q), log(*new QDaemonLogPrivate(logPath)), autoQuit(true)

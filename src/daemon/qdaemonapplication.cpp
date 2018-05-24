@@ -193,9 +193,20 @@ QString QDaemonApplication::applicationDescription()
     return QDaemonApplicationPrivate::description;
 }
 
+QString QDaemonApplication::applicationName()
+{
+    return QDaemonApplicationPrivate::name;
+}
+
 void QDaemonApplication::setApplicationDescription(const QString & description)
 {
     QDaemonApplicationPrivate::description = description;
+}
+
+void QDaemonApplication::setApplicationName(const QString & _name)
+{
+    QDaemonApplicationPrivate::name = _name;
+    QCoreApplication::setApplicationName(_name);
 }
 
 QT_END_NAMESPACE

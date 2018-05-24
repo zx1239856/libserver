@@ -3,7 +3,7 @@
 #include <QStringList>
 
 cmdParser::cmdParser(int argCount,char **argContent,const QString &serv):
-  _argc(argCount),_argv(argContent),argc(0),argv(nullptr),serviceName(serv)
+  _argc(argCount),_argv(argContent),argc(0),argv(nullptr),serviceName(serv),isStart(false)
 {
   parse();
 }
@@ -52,7 +52,11 @@ void cmdParser::parse()
       else if(str=="-u"||str=="--uninstall")okay=true;
       else if(str=="-t"||str=="--stop")okay=true;
       else if(str=="--status")okay=true;
-      else if(str=="-h"||str=="--help")okay=true;
+      else if(str=="-h"||str=="--help")
+        {
+          usage();
+          exit(EXIT_SUCCESS);
+        }
       else if(str=="-s"||str=="--start")okay=false;
 #ifdef DEBUG_MODE
       else if(str=="--fake")okay=false;
@@ -87,6 +91,7 @@ void cmdParser::parse()
           argc=_argc;
           argv=_argv;
           confPath=QString(_argv[2]);
+          isStart=true;
           return;
         }
 #ifdef DEBUG_MODE
@@ -95,6 +100,7 @@ void cmdParser::parse()
           argc=_argc-1; // here you need to parse only --fake to internal
           argv=_argv;
           confPath=QString(_argv[2]);
+          isStart=true;
           return;
         }
 #endif
@@ -132,4 +138,9 @@ char** cmdParser::getArgv()
 int& cmdParser::getArgc()
 {
   return argc;
+}
+
+bool cmdParser::isStartCommand()const
+{
+  return isStart;
 }

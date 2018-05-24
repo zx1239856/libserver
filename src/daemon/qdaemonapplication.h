@@ -56,7 +56,9 @@ public:
     void setAutoQuit(bool);
 
     static QString applicationDescription();
+    static QString applicationName();
     static void setApplicationDescription(const QString &);
+    static void setApplicationName(const QString &);
 
 Q_SIGNALS:
     void daemonized(const QStringList &);
