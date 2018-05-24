@@ -41,3 +41,6 @@ target_wrapper.*
 
 # QtCreator CMake
 CMakeLists.txt.user*
+
+# vscode file
+c_cpp_properties.json
