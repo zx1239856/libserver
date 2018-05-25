@@ -16,15 +16,16 @@ class controlhdl
     };
     static controlhdlGarbo garbo;
     controlhdl();
-    QMap<QString, QPair<int, int>> mClient;  //<token, ID>
 
 public:
+    QMap<QString, QPair<QString, int>> mClient;  //<token, ID>
     controlhdl(const controlhdl&) = delete;
     controlhdl& operator=(controlhdl&) = delete;
     static controlhdl* getInstance();
     bool ifLogin(const QString& token);
-    QPair<int, int> GetID(const QString& token);
-    void AddUser(const QString &token, QPair<int, int> ID); //QPair<groupid, ID>
+    QPair<QString, int> GetID(const QString& token);
+    void AddUser(const QString &token, const QPair<QString, int> &ID); //QPair<groupid, ID>
+    void DeleteUser(const QString &token);
 };
 
 extern controlhdl* ctrl;

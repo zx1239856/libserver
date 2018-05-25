@@ -1,12 +1,13 @@
 #include "handle.h"
 
-handle::handle(const QString& token)
+handle::handle(const QString& token): token(token)
 {
     if(token == "unknown")
         ID = -1;
     else if(ctrl->ifLogin(token))
     {
         ID = ctrl->GetID(token).second;
+        group = ctrl->GetID(token).first;
     }
     else
     {

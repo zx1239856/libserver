@@ -45,7 +45,7 @@ void socketThread::run()
     Object obj(tcpsocket);
     connect(tcpsocket, &QAbstractSocket::readyRead, &obj, &Object::slot);
     // set max Timeout for the socket
-    if(!tcpsocket->waitForDisconnected(30000))
+    if(!tcpsocket->waitForDisconnected(300000))
       {
         tcpsocket->disconnectFromHost();
       }
@@ -56,7 +56,7 @@ void Object::slot()
 {
     try
     {
-        QByteArray &&ReadData =tcpsocket->readAll();
+        QByteArray &&ReadData = tcpsocket->readAll();
         QDataStream in(&ReadData,QIODevice::ReadOnly);
         qint8 sign;
         in >> sign;
@@ -81,13 +81,10 @@ void Object::slot()
             tcpsocket->write(SendData);
             tcpsocket->flush();
         }
-        else
-            throw(QString("Bad Request"));
     }
     catch(QString msg)
     {
         qDaemonLog(msg , QDaemonLog::ErrorEntry);
     }
-    qDaemonLog("Disconnected from " + ipParser(tcpsocket->peerAddress()));
     tcpsocket->disconnectFromHost();
 }

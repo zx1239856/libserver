@@ -293,7 +293,7 @@ void dbQueryThread::run()
           // and emit onResult signal
           // after finish
           QVector<QSqlRecord> result;
-          for(int i=0;i<query->size();++i)
+          for(int i=0;i<query->size(); ++i)
           {
              query->seek(i);
              result.push_back(query->record());
@@ -309,8 +309,11 @@ void dbQueryThread::run()
 
 dbQueryThread::~dbQueryThread()
 {
-  timeWatch->moveToThread(QThread::currentThread());
-  if(timeWatch)delete timeWatch;
+  if(timeWatch)
+  {
+      delete timeWatch;
+      timeWatch->moveToThread(QThread::currentThread());
+  }
 }
 
 void dbQueryThread::setSqlQuery(sql::basicSQL *_sql)
