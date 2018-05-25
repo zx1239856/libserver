@@ -14,3 +14,12 @@
         }
     ]
 }
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
+}

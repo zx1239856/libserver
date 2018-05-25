@@ -24,6 +24,16 @@
     ]
 }
 
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
+}
+
 //添加工作人员组
 {
     "token": "该对话所对应的令牌",
@@ -35,6 +45,16 @@
             "data": "一级管理员"
         }
     ]
+}
+
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
 }
 
 //添加图书组
@@ -52,6 +72,16 @@
             "data": 10 //最长可借出时间
         }
     ]
+}
+
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
 }
 
 //更改组

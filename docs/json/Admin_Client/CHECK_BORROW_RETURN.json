@@ -5,6 +5,15 @@
     "command": "checkborrow",
     "appointid": 1 //curappoint表中的id -1
 }
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
+}
 
 //确认还书（审核归还申请）
 {
@@ -12,4 +21,13 @@
     "type": "CHECK",
     "command": "checkreturn",
     "appointid": 1 //curappoint表中的id -1
+}
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
 }

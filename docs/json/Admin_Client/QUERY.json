@@ -134,6 +134,16 @@
     "content": "关键词"
 }
 
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
+}
+
 //操作日志检索
 {
     "token": "该对话所对应的令牌",

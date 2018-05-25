@@ -42,6 +42,17 @@
         }
     ]
 }
+
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
+}
+
 //删除图书
 {
     "token": "该对话所对应的令牌",
@@ -52,6 +63,16 @@
         2,
         3
     ]
+}
+
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
 }
 
 //修改图书信息
@@ -99,6 +120,16 @@
         }
     ]
 }
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
+}
+
 //批量更改图书所在的组
 {
     "token": "该对话所对应的令牌",
@@ -110,4 +141,13 @@
         2,
         3
     ]
+}
+//Re:
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
 }

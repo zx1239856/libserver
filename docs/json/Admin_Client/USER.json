@@ -7,6 +7,18 @@
     "password": "SHA-1处理后的密码"
 }
 
+//Re:
+
+{
+    "result":true,
+    "token":"该对话所对应的令牌"
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
+}
+
 //忘记密码
 {
     "token": -1,
@@ -14,6 +26,17 @@
     "command": "forget",
     "username": "用户名",
     "auth": "验证邮箱",
+}
+
+//Re:
+
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
 }
 
 //退出
@@ -24,6 +47,17 @@
     "username": "用户名",
 }
 
+//Re:
+
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
+}
+
 //更改密码
 {
     "token": "该对话所对应的令牌",
@@ -32,6 +66,17 @@
     "username": "用户名",
     "oldpwd": "SHA-1处理后的旧密码",
     "newpwd": "SHA-1处理后的新密码",
+}
+
+//Re:
+
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
 }
 
 //更新个人信息
@@ -57,4 +102,15 @@
             "data": "邮箱"
         }
     ]
+}
+
+//Re:
+
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
 }

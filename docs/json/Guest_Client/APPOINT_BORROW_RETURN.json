@@ -6,10 +6,32 @@
     "id": 1 //书的id
 }
 
+//Re:
+
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
+}
+
 //预约还书（提出归还申请）
 {
     "token": "该对话所对应的令牌",
     "type": "APPOINT",
     "command": "appointreturn",
     "id": 1 //书的id
+}
+
+//Re:
+
+{
+    "result":true
+}
+
+{
+    "result": false,
+    "detail":"错误信息"
 }
