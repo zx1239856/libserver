@@ -12,7 +12,6 @@ bool userhdl::deal(const QString &command, const QJsonObject &json)
     {
     case login:
 
-
         break;
     case forget:
 

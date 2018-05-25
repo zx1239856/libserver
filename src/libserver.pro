@@ -23,7 +23,13 @@ HEADERS += \
     utils/exception.h \
     utils/cmdparser.h \
     utils/mainservice.h \
-    globalInfo.h
+    globalInfo.h \
+    utils/handle/queryhdl.h \
+    utils/handle/appointhdl.h \
+    utils/handle/checkhdl.h \
+    utils/handle/operateuserhdl.h \
+    utils/handle/operategrouphdl.h \
+    utils/handle/operatebookhdl.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \
@@ -39,4 +45,10 @@ SOURCES += \
     utils/config.cpp \
     main.cpp \
     utils/cmdparser.cpp \
-    utils/mainservice.cpp
+    utils/mainservice.cpp \
+    utils/handle/queryhdl.cpp \
+    utils/handle/appointhdl.cpp \
+    utils/handle/checkhdl.cpp \
+    utils/handle/operateuserhdl.cpp \
+    utils/handle/operategrouphdl.cpp \
+    utils/handle/operatebookhdl.cpp
