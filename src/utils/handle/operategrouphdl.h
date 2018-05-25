@@ -22,7 +22,7 @@ public:
     };
     Q_ENUM(CMD)
 
-    operategrouphdl(double token);
+    operategrouphdl(const QString& token);
     bool deal(const QString &cmd, const QJsonObject &json);
 };
 #endif // OPERATEGROUPHDL_H

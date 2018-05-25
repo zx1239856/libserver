@@ -15,7 +15,7 @@ public:
     };
     Q_ENUM(CMD)
 
-    appointhdl(double token);
+    appointhdl(const QString& token);
     bool deal(const QString &cmd, const QJsonObject &json);
 };
 

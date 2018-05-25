@@ -1,13 +1,13 @@
 #include "operatebookhdl.h"
 
-operatebookhdl::operatebookhdl(double token): handle(token){}
+operatebookhdl::operatebookhdl(const QString& token): handle(token){}
 
 bool operatebookhdl::deal(const QString &command, const QJsonObject &json)
 {
     QByteArray cpath = command.toLocal8Bit();
     char* cmd = cpath.data();
 
-    QMetaEnum me = QMetaEnum::fromType<userhdl::CMD>();
+    QMetaEnum me = QMetaEnum::fromType<operatebookhdl::CMD>();
     switch(me.keyToValue(cmd))
     {
     case createbook:

@@ -1,6 +1,6 @@
 #include "handle.h"
 
-handle::handle(double token)
+handle::handle(const QString& token)
 {
     if(token == -1)
         ID = -1;

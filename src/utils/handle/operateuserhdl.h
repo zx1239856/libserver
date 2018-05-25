@@ -16,7 +16,7 @@ public:
     };
     Q_ENUM(CMD)
 
-    operateuserhdl(double token);
+    operateuserhdl(const QString& token);
     bool deal(const QString &cmd, const QJsonObject &json);
 };
 

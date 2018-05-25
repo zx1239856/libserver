@@ -15,7 +15,7 @@ public:
     };
     Q_ENUM(CMD)
 
-    checkhdl(double token);
+    checkhdl(const QString& token);
     bool deal(const QString &cmd, const QJsonObject &json);
 };
 

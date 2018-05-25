@@ -1,6 +1,6 @@
 #include "userhdl.h"
 
-userhdl::userhdl(double token): handle(token){}
+userhdl::userhdl(const QString& token): handle(token){}
 
 bool userhdl::deal(const QString &command, const QJsonObject &json)
 {
@@ -11,7 +11,6 @@ bool userhdl::deal(const QString &command, const QJsonObject &json)
     switch(me.keyToValue(cmd))
     {
     case login:
-
         break;
     case forget:
 

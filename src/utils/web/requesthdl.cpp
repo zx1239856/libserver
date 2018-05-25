@@ -11,7 +11,7 @@ QByteArray requesthdl::deal()
     handle* hdl;
     if(jsonRequest.take("type").toString() == "USER")
     {
-        hdl = new userhdl(jsonRequest.take("token").toDouble());
+        hdl = new userhdl(jsonRequest.take("token").toString());
     }
     else if(jsonRequest.take("type").toString() == "QUERY")
     {

@@ -12,7 +12,7 @@ class handle:public QObject
     Q_OBJECT
 
 public:
-    handle(double token);
+    handle(const QString& token);
     virtual bool deal(const QString &cmd, const QJsonObject &json) = 0;
     QJsonObject GetReturn();
 

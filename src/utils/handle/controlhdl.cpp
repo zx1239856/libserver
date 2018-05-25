@@ -7,12 +7,12 @@ controlhdl::controlhdl()
 
 }
 
-bool controlhdl::ifLogin(qint64 token)
+bool controlhdl::ifLogin(const QString& token)
 {
     return mClient.contains(token);
 }
 
-qint32 controlhdl::GetID(qint64 token)
+qint32 controlhdl::GetID(const QString& token)
 {
     return mClient[token];
 }

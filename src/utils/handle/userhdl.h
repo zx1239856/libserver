@@ -2,6 +2,7 @@
 #define USERHDL_H
 
 #include "utils/handle/handle.h"
+#include "utils/dbwrapper/db-operation.h"
 
 class userhdl: public handle
 {
@@ -18,7 +19,7 @@ public:
     };
     Q_ENUM(CMD)
 
-    userhdl(double token);
+    userhdl(const QString& token);
     bool deal(const QString &cmd, const QJsonObject &json);
 };
 
