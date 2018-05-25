@@ -6,7 +6,7 @@
     "command": "book",
     "rule": "completesearch",
     "order": [
-        "name","author"
+        "name", "author"
     ],
     "content": [
         {

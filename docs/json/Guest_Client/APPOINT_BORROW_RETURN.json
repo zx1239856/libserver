@@ -3,6 +3,7 @@
     "token": "该对话所对应的令牌",
     "type": "APPOINT",
     "command": "appointborrow",
+    "appointtime": "2015-01-02 11:11:11", //预约借书到期时间
     "id": 1 //书的id
 }
 
@@ -23,6 +24,7 @@
     "type": "APPOINT",
     "command": "appointreturn",
     "id": 1 //书的id
+    //无需预约还书时间
 }
 
 //Re:
