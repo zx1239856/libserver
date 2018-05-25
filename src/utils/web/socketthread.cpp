@@ -37,7 +37,6 @@ void socketThread::run()
     connect(tcpsocket,&QAbstractSocket::disconnected,this,[&]()
       {
         tcpsocket->close();
-        tcpsocket->deleteLater();
         this->quit();
       });
     Object obj(tcpsocket);
