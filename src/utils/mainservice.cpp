@@ -1,5 +1,7 @@
 #include "mainservice.h"
 #include "qdaemonapplication.h"
+#include "utils/cryto/token.h"
+#include "qdaemonlog.h"
 
 controlhdl* ctrl;
 

@@ -23,7 +23,8 @@ HEADERS += \
     utils/exception.h \
     utils/cmdparser.h \
     utils/mainservice.h \
-    globalInfo.h
+    globalInfo.h \
+    utils/cryto/token.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \
@@ -39,4 +40,5 @@ SOURCES += \
     utils/config.cpp \
     main.cpp \
     utils/cmdparser.cpp \
-    utils/mainservice.cpp
+    utils/mainservice.cpp \
+    utils/cryto/token.cpp
