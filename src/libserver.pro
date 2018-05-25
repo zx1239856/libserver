@@ -30,7 +30,8 @@ HEADERS += \
     utils/handle/operateuserhdl.h \
     utils/handle/operategrouphdl.h \
     utils/handle/operatebookhdl.h \
-    utils/cryto/token.h
+    utils/cryto/token.h \
+    utils/file/imghandler.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \
@@ -53,4 +54,5 @@ SOURCES += \
     utils/handle/operateuserhdl.cpp \
     utils/handle/operategrouphdl.cpp \
     utils/handle/operatebookhdl.cpp \
-    utils/cryto/token.cpp
+    utils/cryto/token.cpp \
+    utils/file/imghandler.cpp

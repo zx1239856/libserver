@@ -23,10 +23,10 @@ void mainService::start()
   dbConn::getInstance();
   // All init end
 
-  // other miscellaneous stuffs here
+  /*// other miscellaneous stuffs here
   // this db part here would cause The acquired DBus interface replied erroneously.
   // for unknown reasons
-  /*sql::select *sel= new sql::select("libserver.lib_books");
+  sql::select *sel= new sql::select("libserver.lib_books");
   dbQueryThread *dbT= new dbQueryThread(sel,conf->dbConnTimeOut);
   QObject::connect(dbT,&dbQueryThread::onResult,this,
                    [&](const QVector<QSqlRecord>& res)
@@ -36,7 +36,7 @@ void mainService::start()
         {
           for(int j=0;j<res[i].count();++j)
             {
-              qWarning() << res[i].value(j);
+              qWarning() << res[i].fieldName(j) << res[i].value(j);
             }
         }
       dbT->deleteLater();

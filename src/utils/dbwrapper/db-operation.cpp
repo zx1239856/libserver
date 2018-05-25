@@ -258,11 +258,16 @@ dbWrapper::Control* dbConn::getControl()
 
 // dbQueryThread start
 
-dbQueryThread::dbQueryThread(sql::basicSQL *sql,uint tOut, QObject *parent)
-  :QThread(parent),bSql(sql),timeout(tOut),timeWatch(nullptr){}
+dbQueryThread::dbQueryThread(uint tOut, QObject *parent)
+  :QThread(parent),bSql(nullptr),timeout(tOut),timeWatch(nullptr){}
 
 void dbQueryThread::run()
 {
+  if(bSql == nullptr)
+    {
+      emit onFail(QSqlError(QString("Internal Error."),QString("Invalid query.")));
+      return;
+    }
   timeWatch = new QTimer;
   timeWatch->setInterval(timeout);
   timeWatch->setSingleShot(true);
@@ -306,6 +311,11 @@ dbQueryThread::~dbQueryThread()
 {
   timeWatch->moveToThread(QThread::currentThread());
   if(timeWatch)delete timeWatch;
+}
+
+void dbQueryThread::setSqlQuery(sql::basicSQL *_sql)
+{
+  bSql = _sql;
 }
 
 // dbQueryThread end

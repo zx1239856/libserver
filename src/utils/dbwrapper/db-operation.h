@@ -131,7 +131,8 @@ class dbQueryThread: public QThread
 {
   Q_OBJECT
 public:
-  dbQueryThread(sql::basicSQL *sql,uint tOut= 15000, QObject *parent = 0);
+  dbQueryThread(uint tOut= 15000, QObject *parent = 0);
+  void setSqlQuery(sql::basicSQL *sql);
   ~dbQueryThread();
 protected:
   virtual void run();
