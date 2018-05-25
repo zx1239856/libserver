@@ -18,7 +18,7 @@ public:
     Q_ENUM(CMD)
 
     operatebookhdl(const QString& token);
-    bool deal(const QString &cmd, const QJsonObject &json);
+    void deal(const QString &cmd, const QJsonObject &json);
 };
 
 #endif // OPERATEBOOKHDL_H

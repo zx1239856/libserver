@@ -42,7 +42,7 @@ void socketThread::run()
     Object obj(tcpsocket);
     connect(tcpsocket, &QAbstractSocket::readyRead, &obj, &Object::slot);
     // set max Timeout for the socket
-    if(!tcpsocket->waitForDisconnected(3000))
+    if(!tcpsocket->waitForDisconnected(30000))
       {
         qDaemonLog("Disconnected from " + ipParser(tcpsocket->peerAddress()));
         tcpsocket->disconnectFromHost();

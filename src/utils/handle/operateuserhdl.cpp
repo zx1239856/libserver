@@ -2,7 +2,7 @@
 
 operateuserhdl::operateuserhdl(const QString& token): handle(token){}
 
-bool operateuserhdl::deal(const QString &command, const QJsonObject &json)
+void operateuserhdl::deal(const QString &command, const QJsonObject &json)
 {
     QByteArray cpath = command.toLocal8Bit();
     char* cmd = cpath.data();

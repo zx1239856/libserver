@@ -1,6 +1,7 @@
 #ifndef CONTROLHDL_H
 #define CONTROLHDL_H
 #include <QMap>
+#include <QPair>
 
 class controlhdl
 {
@@ -15,15 +16,15 @@ class controlhdl
     };
     static controlhdlGarbo garbo;
     controlhdl();
-    QMap<QString, qint32> mClient;  //<token, ID>
+    QMap<QString, QPair<int, int>> mClient;  //<token, ID>
 
 public:
     controlhdl(const controlhdl&) = delete;
     controlhdl& operator=(controlhdl&) = delete;
     static controlhdl* getInstance();
     bool ifLogin(const QString& token);
-    qint32 GetID(const QString& token);
-
+    QPair<int, int> GetID(const QString& token);
+    void AddUser(const QString &token, QPair<int, int> ID); //QPair<groupid, ID>
 };
 
 extern controlhdl* ctrl;

@@ -2,13 +2,15 @@
 
 handle::handle(const QString& token)
 {
-    if(token == -1)
+    if(token == "unknown")
         ID = -1;
+    else if(ctrl->ifLogin(token))
+    {
+        ID = ctrl->GetID(token).second;
+    }
     else
     {
-        if(!ctrl->ifLogin(token))
-            throw(FalseToken);
-        ID = ctrl->GetID(token);
+        ID = -2;    //表示token错误，deal()直接返回错误json即可
     }
 }
 

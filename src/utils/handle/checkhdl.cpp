@@ -2,7 +2,7 @@
 
 checkhdl::checkhdl(const QString& token): handle(token){}
 
-bool checkhdl::deal(const QString &command, const QJsonObject &json)
+void checkhdl::deal(const QString &command, const QJsonObject &json)
 {
     QByteArray cpath = command.toLocal8Bit();
     char* cmd = cpath.data();

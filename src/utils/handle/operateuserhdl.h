@@ -17,7 +17,7 @@ public:
     Q_ENUM(CMD)
 
     operateuserhdl(const QString& token);
-    bool deal(const QString &cmd, const QJsonObject &json);
+    void deal(const QString &cmd, const QJsonObject &json);
 };
 
 #endif // OPERATEUSERHDL_H

@@ -9,11 +9,11 @@ requesthdl::requesthdl(const QByteArray &rqtData)
 QByteArray requesthdl::deal()
 {
     handle* hdl;
-    if(jsonRequest.take("type").toString() == "USER")
+    if(jsonRequest.value("type").toString() == "USER")
     {
-        hdl = new userhdl(jsonRequest.take("token").toString());
+        hdl = new userhdl(jsonRequest.value("token").toString());
     }
-    else if(jsonRequest.take("type").toString() == "QUERY")
+    else if(jsonRequest.value("type").toString() == "QUERY")
     {
 
     }

@@ -2,7 +2,7 @@
 
 queryhdl::queryhdl(const QString& token): handle(token){}
 
-bool queryhdl::deal(const QString &command, const QJsonObject &json)
+void queryhdl::deal(const QString &command, const QJsonObject &json)
 {
     QByteArray cpath = command.toLocal8Bit();
     char* cmd = cpath.data();
