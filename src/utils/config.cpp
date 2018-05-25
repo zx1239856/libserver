@@ -47,17 +47,19 @@ void config::Load()
     dbConnTimeOut = Get("database/connectionTimeout").toUInt();
     //end
   }
-  catch(QString &e)
+  catch(std::string &e)
   {
-    qWarning() << e;
+    printf("%s\n",e.c_str());
     exit(EXIT_FAILURE);
   }
   catch(...)
   {
-    qWarning() << "Unknown error occured. Exit.";
+    printf("Unknown error occured. Exit.\n");
     exit(EXIT_FAILURE);
   }
-    qWarning() << "All settings successfully loaded.";
+#ifdef VERBOSE_OUTPUT
+    printf("All settings successfully loaded.\n");
+#endif
 }
 
 QVariant config::Get(const QString &type)
@@ -66,7 +68,7 @@ QVariant config::Get(const QString &type)
         return settings->value(type);
     else
     {
-        QString errMsg =  "Error: CANNOT find settings " + type;
+        std::string errMsg =  "Error: CANNOT find settings " + type.toStdString();
         throw(errMsg);
     }
 }

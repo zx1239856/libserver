@@ -1,0 +1,94 @@
+The following command line switches are processed by the daemon application
+object:
+
+\table
+    \header
+        \li Switch
+        \li Description
+    \row
+        \li \c{--start}, \c{-s}
+        \li Run the application as controlling terminal and attempt
+            to start the daemon.
+            \note On Linux use the \c init.d script generated when the
+            daemon is installed.
+    \row
+        \li \c{--stop}, \c{-t}
+        \li Run the application as controlling terminal and attempt
+            to stop the daemon.
+            \note On Linux use the \c init.d script generated when the
+            daemon is installed.
+    \row
+        \li \c{--install}, \c{-i}
+        \li Run the application as controlling terminal and attempt
+            to install the daemon/service. Additional command line parameters
+            for the daemon can be specified after \c{--}, which
+            signifies the end of command line processing for the controlling
+            application.
+    \row
+        \li \c{--uninstall}, \c{-u}
+        \li Run the application as controlling terminal and attempt
+            to uninstall the daemon/service.
+            \note On Linux use the \c init.d script generated when the
+            daemon is installed.
+    \row
+        \li \c{--status}
+        \li Report on the daemon status.
+    \row
+        \li \c{--help}, \c{-h}
+        \li Provide help text on the command line switches.
+    \row
+        \li \c{--fake}
+        \li Runs in pseudo-daemon mode. The application object will emit
+            the daemonized() signal, but will not try to detach itself
+            from the terminal (Linux) and will not contact the service
+            control manager (Windows). It is provided as a means to debug
+            the daemon application. Additional command line parameters for
+            the daemon can be specified after \c --, which signifies the
+            end of command line processing for the controlling application.
+\endtable
+
+Some command line switches also support additional options depending on the
+operating system.
+
+\table
+    \header
+        \li Option
+        \li Applicable to
+        \li Description
+    \row
+        \li {3, 1} \b Windows
+    \row
+        \li \c{--update-path}
+        \li \c{--install}, \c{--uninstall}
+        \li Used to update the system \c PATH variable with the
+            application's directory. The application directory is added
+            when the service is installed, or removed from the \c PATH
+            when the service is uninstalled.
+
+            \warning Treat with care! The service application directory
+            may be shared by multiple programs.
+
+            \note By default the \c PATH is not modified.
+    \row
+        \li {3, 1} \b Linux
+    \row
+        \li \c{--dbus-prefix=<path>}
+        \li \c{--install}, \c{--uninstall}
+        \li Used to supply a directory path for the \c dbus configuration file.
+            \note The default path is \c{/etc/dbus-1/system.d}.
+    \row
+        \li \c{--initd-prefix=<path>}
+        \li \c{--install}, \c{--uninstall}
+        \li Used to supply a directory path for the \c{init.d} script.
+            \note The default path is \c{/etc/init.d}.
+    \row
+        \li {3, 1} \b{macOS}
+    \row
+        \li \c{--agent}
+        \li \c{--install}
+        \li Used to install the application as an agent, rather than a daemon.
+    \row
+        \li \c{--user}
+        \li \c{--agent}
+        \li Used to make an agent user-local.
+\endtable

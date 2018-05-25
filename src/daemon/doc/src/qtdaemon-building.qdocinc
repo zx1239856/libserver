@@ -1,0 +1,14 @@
+To build the module invoke \c qmake on the library's project file:
+\code
+$ qmake qtdaemon.pro
+\endcode
+
+And then use the appropriate \c make command to build the generated makefile.
+
+For example on Linux:
+\code
+$ make
+$ make install
+\endcode
+
+\note Installing will register the module with the Qt version you used to compile it with.

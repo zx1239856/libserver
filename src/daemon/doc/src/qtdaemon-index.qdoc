@@ -1,0 +1,83 @@
+/****************************************************************************
+**
+** Copyright (C) 2016 Samuel Gaist <samuel.gaist@edeltech.ch>
+** Copyright (C) 2016 Konstantin Shegunov <kshegunov@gmail.com>
+**
+** This file is part of the documentation of the QtDaemon library.
+**
+** The MIT License (MIT)
+**
+** Permission is hereby granted, free of charge, to any person obtaining a copy
+** of this software and associated documentation files (the "Software"), to deal
+** in the Software without restriction, including without limitation the rights
+** to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+** copies of the Software, and to permit persons to whom the Software is
+** furnished to do so, subject to the following conditions:
+**
+** The above copyright notice and this permission notice shall be included in all
+** copies or substantial portions of the Software.
+**
+** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+** SOFTWARE.
+**
+****************************************************************************/
+/*!
+    \page qtdaemon-index.html overview
+    \title Qt Daemon
+
+    \omit
+    \brief The Qt Daemon library faciliates the development of system-level
+    services (daemons).
+    \endomit
+
+    Qt Daemon provides the basic infrastructure to develop system-level services
+    (daemons). The library bundles both the required functionality to develop
+    daemons as well as means of controlling them.
+    
+    \note The library requires Qt 5.6 or later.
+
+    \include qtdaemon-usage.qdocinc
+
+    \section1 Building the library
+    
+    \include qtdaemon-building.qdocinc
+
+    \section2 Dependencies
+
+    \table
+        \header
+            \li Platform
+            \li Dependencies
+        \row
+            \li Linux
+            \li \c{QtCore}, \c{QtDBus}
+                \note Requires a running \c{dbus} daemon to operate correctly.
+        \row
+            \li Windows
+            \li \c{QtCore}, \c{Advapi32}, \c{User32}
+                \note The native libraries' headers and import library files
+                (\c{advapi32.lib}, \c{user32.lib}) should be provided through
+                the appropriate Windows SDK.
+        \row
+            \li OSX
+            \li \c{QtCore}
+    \endtable
+
+
+
+    \section1 License
+    The source code is distributed under the MIT license. See the LICENSE file
+       for the full text.
+
+    \section1 Reference
+    \list
+        \li \l {Qt Daemon C++ Classes}{C++ Classes}
+        \li \l {Qt Daemon Usage}{Usage}
+        \li \l {Qt Daemon Examples}{Examples}
+    \endlist
+*/

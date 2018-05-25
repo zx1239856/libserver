@@ -1,6 +1,6 @@
 #ifndef CONTROLHDL_H
 #define CONTROLHDL_H
-#include "utils/file/logstream.h"
+#include <QMap>
 
 class controlhdl
 {

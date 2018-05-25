@@ -1,0 +1,3 @@
+#! [module]
+QT += daemon
+#! [module]

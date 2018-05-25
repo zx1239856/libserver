@@ -1,0 +1,26 @@
+#ifndef MAINSERVICE_H
+#define MAINSERVICE_H
+
+#include "utils/dbwrapper/db-wrapper.h"
+#include "utils/dbwrapper/db-operation.h"
+#include "utils/config.h"
+#include "utils/web/webserver.h"
+#include "utils/handle/controlhdl.h"
+#include <QObject>
+
+extern controlhdl* ctrl;
+
+class mainService : public QObject
+{
+  Q_OBJECT
+private:
+  config *conf;
+  webServer *server;
+public:
+  explicit mainService(config *conf, QObject *parent = nullptr);
+  void start();
+  void stop();
+  ~mainService();
+};
+
+#endif // MAINSERVICE_H
