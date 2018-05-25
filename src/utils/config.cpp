@@ -45,6 +45,13 @@ void config::Load()
     dbUname= Get("database/username").toString();
     dbPwd= Get("database/password").toString();
     dbConnTimeOut = Get("database/connectionTimeout").toUInt();
+    // smtp
+    smtpServer = Get("smtp/server").toString();
+    smtpPort = Get("smtp/port").toInt();
+    authType = Get("smtp/authType").toString();
+    smtpUser = Get("smtp/username").toString();
+    smtpPwd = Get("smtp/password").toString();
+    smtpSender = Get("smtp/senderEmail").toString();
     //end
   }
   catch(std::string &e)

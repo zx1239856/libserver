@@ -42,7 +42,14 @@ public:
     // superUser configuration
     QString suname;
     QString supass;
-    //web
+    // web
     int port;
     int ccurrency;
+    // smtp
+    QString smtpServer;
+    int smtpPort;
+    QString authType;
+    QString smtpUser;
+    QString smtpPwd;
+    QString smtpSender;
 };

@@ -1,4 +1,6 @@
 #include "imghandler.h"
+#include <QDateTime>
+#include <QString>
 
 ImgHandler::ImgHandler(const QImage &_src):src(_src)
 {
@@ -6,14 +8,62 @@ ImgHandler::ImgHandler(const QImage &_src):src(_src)
 
 QImage ImgHandler::compress(compressRatio _ratio)
 {
-  qreal ratio = 0;
+  int destWidth = src.width();
+  int destHeight = src.height();
+  qreal width = 0;
+  bool bySize = false;
   switch(_ratio)
     {
-    case low: ratio = 0.8;break;
-    case mid: ratio = 0.5;break;
-    case high: ratio = 0.3;break;
+    case webLow: width = 200;break;
+    case webMid: width = 90;break;
+    case webHigh: width = 30;break;
+    case normalLow: width = 1000;break;
+    case normalMid:width = 800;break;
+    case normalHigh:width =500;break;
+    default: bySize = true;
     }
-  auto destWidth = ratio*src.width();
-  auto destHeight = ratio*src.height();
-  return src.scaled(4*destWidth,4*destHeight,Qt::KeepAspectRatio).scaled(destWidth,destHeight,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+  if(!bySize)
+    {
+      destHeight = width/ destWidth * destHeight;
+      destWidth = width;
+      return src.scaled(4*destWidth,4*destHeight,Qt::KeepAspectRatio).scaled(destWidth,destHeight,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    }
+  else
+    {
+      qreal rate = 0;
+      switch(_ratio)
+        {
+        case bySizeLow: rate = 0.3;break;
+        case bySizeMid: rate = 0.5;break;
+        case bySizeHigh: rate = 0.8;break;
+        }
+      destHeight*=rate;
+      destWidth*=rate;
+      return src.scaled(destWidth,destHeight,Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    }
+}
+
+bool ImgHandler::save(const QImage& img, const QString &fileName,const QString& dir)
+{
+  return img.save(dir+fileName);
+}
+
+bool ImgHandler::save(const QImage& img, const QString& dir)
+{
+  qint64 time = QDateTime::currentMSecsSinceEpoch();
+  if(img.hasAlphaChannel())
+    {
+        return img.save(dir+QString::number(time)+".PNG");
+    }
+  else return img.save(dir+QString::number(time)+".JPG");
+}
+
+bool ImgHandler::save(const QString &fileName,const QString& dir)
+{
+  return save(this->src,fileName,dir);
+}
+
+bool ImgHandler::save(const QString& dir)
+{
+  return save(this->src,dir);
 }

@@ -1,7 +1,7 @@
 include(daemon/daemon-lib.pri)
 include(libserver.pri)
 
-QMAKE_CXXFLAGS += -Wimplicit-fallthrough=0
+QMAKE_CXXFLAGS += -Wimplicit-fallthrough=0 -Wswitch
 
 DEFINES += VERBOSE_OUTPUT
 
@@ -31,7 +31,22 @@ HEADERS += \
     utils/handle/operategrouphdl.h \
     utils/handle/operatebookhdl.h \
     utils/cryto/token.h \
-    utils/file/imghandler.h
+    utils/file/imghandler.h \
+    utils/smtp/emailaddress.h \
+    utils/smtp/mimeattachment.h \
+    utils/smtp/mimecontentformatter.h \
+    utils/smtp/mimefile.h \
+    utils/smtp/mimehtml.h \
+    utils/smtp/mimeinlinefile.h \
+    utils/smtp/mimemessage.h \
+    utils/smtp/mimemultipart.h \
+    utils/smtp/mimepart.h \
+    utils/smtp/mimetext.h \
+    utils/smtp/quotedprintable.h \
+    utils/smtp/smtpclient.h \
+    utils/smtp/smtpexports.h \
+    utils/smtp/SmtpMime \
+    utils/smtp/sendemail.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \
@@ -55,4 +70,17 @@ SOURCES += \
     utils/handle/operategrouphdl.cpp \
     utils/handle/operatebookhdl.cpp \
     utils/cryto/token.cpp \
-    utils/file/imghandler.cpp
+    utils/file/imghandler.cpp \
+    utils/smtp/emailaddress.cpp \
+    utils/smtp/mimeattachment.cpp \
+    utils/smtp/mimecontentformatter.cpp \
+    utils/smtp/mimefile.cpp \
+    utils/smtp/mimehtml.cpp \
+    utils/smtp/mimeinlinefile.cpp \
+    utils/smtp/mimemessage.cpp \
+    utils/smtp/mimemultipart.cpp \
+    utils/smtp/mimepart.cpp \
+    utils/smtp/mimetext.cpp \
+    utils/smtp/quotedprintable.cpp \
+    utils/smtp/smtpclient.cpp \
+    utils/smtp/sendemail.cpp
