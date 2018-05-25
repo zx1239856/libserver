@@ -1,9 +1,10 @@
 //登录
 {
-    "token": -1,
+    "token": "unknown",
     "type": "USER",
     "command": "login",
     "username": "用户名",
+    "group": "readers", //readers, staffs
     "password": "SHA-1处理后的密码"
 }
 
@@ -25,6 +26,8 @@
     "token": -1,
     "type": "USER",
     "command": "forget",
+    "username": "用户名",
+    "group": "readers", //readers, staffs
     "auth": "验证邮箱",
 }
 
@@ -44,7 +47,6 @@
     "token": "该对话所对应的令牌",
     "type": "USER",
     "command": "logout",
-    "username": "用户名",
 }
 
 //Re:
@@ -63,7 +65,6 @@
     "token": "该对话所对应的令牌",
     "type": "USER",
     "command": "changepwd",
-    "username": "用户名",
     "oldpwd": "SHA-1处理后的旧密码",
     "newpwd": "SHA-1处理后的新密码",
 }
