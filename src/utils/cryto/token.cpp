@@ -15,3 +15,10 @@ QString token::getToken(const QString &username)
   ba2 = QCryptographicHash::hash(ba2,QCryptographicHash::Md5);
   return ba2.toHex();
 }
+
+QString token::getMD5(const QString &str)
+{
+  QByteArray ba;
+  ba.append(str);
+  return QCryptographicHash::hash(ba,QCryptographicHash::Md5).toHex();
+}

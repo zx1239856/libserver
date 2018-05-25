@@ -8,6 +8,7 @@ class token
 {
 public:
     static QString getToken(const QString &username);
+    static QString getMD5(const QString &str);
 };
 
 #endif

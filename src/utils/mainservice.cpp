@@ -54,7 +54,6 @@ void mainService::start()
   // initiate websocket
   server = new webServer;
   server->init(conf->port,conf->ccurrency);
-
   ctrl = controlhdl::getInstance();
 }
 
