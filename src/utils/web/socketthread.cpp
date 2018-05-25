@@ -32,10 +32,13 @@ void socketThread::run()
         return;
     }
     tcpsocket->setReadBufferSize(2048);
-    qDaemonLog("New thread for the connection from " + ipParser(tcpsocket->peerAddress()));
+    QString peerIp = "null";
+    peerIp = ipParser(tcpsocket->peerAddress());
+    qDaemonLog("New thread for the connection from " + peerIp);
     // things to do after disconnected
-    connect(tcpsocket,&QAbstractSocket::disconnected,this,[&]()
+    connect(tcpsocket,&QAbstractSocket::disconnected,this,[&,peerIp]()
       {
+        qDaemonLog("Disconnected from " + peerIp);
         tcpsocket->close();
         this->quit();
       });
@@ -44,7 +47,6 @@ void socketThread::run()
     // set max Timeout for the socket
     if(!tcpsocket->waitForDisconnected(30000))
       {
-        qDaemonLog("Disconnected from " + ipParser(tcpsocket->peerAddress()));
         tcpsocket->disconnectFromHost();
       }
 }
