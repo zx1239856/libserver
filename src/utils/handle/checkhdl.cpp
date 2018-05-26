@@ -8,7 +8,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
     char* cmd = cpath.data();
     QMetaEnum me = QMetaEnum::fromType<checkhdl::CMD>();
 
-    basicSQL* msql = nullptr;
+    sql::basicSQL* msql = nullptr;
     dbQueryThread dbQT;
     QVector<QSqlRecord> sqlresult;
     bool success;
@@ -36,12 +36,12 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
             dbQT.setSqlQuery(msql);
             dbQT.start();
             dbQT.wait();
-            if(success && sqlresult.size == 1 && sqlresult[0].value("")
+            /*if(success && sqlresult.size() == 1 && sqlresult[0].value(""))
             {
 
                 QMap<QString, QVariant> mAppoint;
                 mAppoint.insert("readerid", json.value("").toInt());
-                mAppoint.insert("bookid", );
+                //mAppoint.insert("bookid", );
                 mAppoint.insert("borrowtime", json.value("id").toString());
                 mAppoint.insert("exptime", json.value("appointtime").toString());
                 mAppoint.insert("remaintime", json.value("appointtime").toInt());
@@ -52,7 +52,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
             {
                 jsonReturn.insert("result", false);
                 jsonReturn.insert("detail", "wrong database operation");
-            }
+            }*/
         }
         else
         {

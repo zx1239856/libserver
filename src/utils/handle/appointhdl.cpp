@@ -39,7 +39,7 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
             mAppoint.insert("type", "borrow");
             mAppoint.insert("bookid", json.value("id").toInt());
             mAppoint.insert("appointtime", json.value("appointtime").toString());
-            msql = new sql::insert("libserver.lib_curappoint", mAppoint);
+            msql = new sql::insert("libserver.lib_currappoint", mAppoint);
             dbQT.setSqlQuery(msql);
             dbQT.start();
             dbQT.wait();
@@ -66,7 +66,7 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
             mAppoint.insert("type", "return");
             mAppoint.insert("bookid", json.value("id").toInt());
             mAppoint.insert("appointtime", json.value("appointtime").toString());
-            msql = new sql::insert("libserver.lib_curappoint", mAppoint);
+            msql = new sql::insert("libserver.lib_currappoint", mAppoint);
             dbQT.setSqlQuery(msql);
             dbQT.start();
             dbQT.wait();
