@@ -2,7 +2,7 @@
 
 operatebookhdl::operatebookhdl(const QString& token): handle(token){}
 
-bool operatebookhdl::deal(const QString &command, const QJsonObject &json)
+void operatebookhdl::deal(const QString &command, const QJsonObject &json)
 {
     QByteArray cpath = command.toLocal8Bit();
     char* cmd = cpath.data();

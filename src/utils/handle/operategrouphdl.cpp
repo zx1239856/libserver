@@ -2,7 +2,7 @@
 
 operategrouphdl::operategrouphdl(const QString& token): handle(token){}
 
-bool operategrouphdl::deal(const QString &command, const QJsonObject &json)
+void operategrouphdl::deal(const QString &command, const QJsonObject &json)
 {
     QByteArray cpath = command.toLocal8Bit();
     char* cmd = cpath.data();

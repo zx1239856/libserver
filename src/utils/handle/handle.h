@@ -5,6 +5,8 @@
 #include <QJsonObject>
 #include <QMetaEnum>
 #include "utils/handle/controlhdl.h"
+#include "utils/dbwrapper/db-operation.h"
+#include "utils/cryto/token.h"
 #include "utils/exception.h"
 
 class handle:public QObject
@@ -13,11 +15,13 @@ class handle:public QObject
 
 public:
     handle(const QString& token);
-    virtual bool deal(const QString &cmd, const QJsonObject &json) = 0;
+    virtual void deal(const QString &cmd, const QJsonObject &json) = 0;
     QJsonObject GetReturn();
 
 protected:
-    qint32 ID;
+    QString token;
+    int ID;
+    QString group;
     QJsonObject jsonReturn;
 };
 

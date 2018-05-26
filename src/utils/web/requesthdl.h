@@ -3,8 +3,6 @@
 
 #include <QJsonObject>
 #include <QJsonDocument>
-#include "utils/handle/userhdl.h"
-#include "utils/exception.h"
 
 class requesthdl
 {

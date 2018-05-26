@@ -131,13 +131,14 @@ class dbQueryThread: public QThread
 {
   Q_OBJECT
 public:
-  dbQueryThread(uint tOut= 15000, QObject *parent = 0);
+  dbQueryThread(uint tOut= 5000, QObject *parent = 0);
   void setSqlQuery(sql::basicSQL *sql);
+  void setSqlQuery(const QVector<sql::basicSQL*>& sqlbatches);
   ~dbQueryThread();
 protected:
   virtual void run();
 private:
-  sql::basicSQL* bSql;
+  QVector<sql::basicSQL*> bSql;
   uint timeout;
   QTimer *timeWatch;
 signals:

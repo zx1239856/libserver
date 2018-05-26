@@ -259,63 +259,89 @@ dbWrapper::Control* dbConn::getControl()
 // dbQueryThread start
 
 dbQueryThread::dbQueryThread(uint tOut, QObject *parent)
-  :QThread(parent),bSql(nullptr),timeout(tOut),timeWatch(nullptr){}
+  :QThread(parent),timeout(tOut),timeWatch(nullptr){}
 
 void dbQueryThread::run()
 {
-  if(bSql == nullptr)
+  if(bSql.empty())return; // empty queue so we do nothing
+  for(sql::basicSQL*&query:bSql)
     {
-      emit onFail(QSqlError(QString("Internal Error."),QString("Invalid query.")));
-      return;
-    }
-  timeWatch = new QTimer;
-  timeWatch->setInterval(timeout);
-  timeWatch->setSingleShot(true);
-  timeWatch->moveToThread(qApp->thread());
-  connect(this,SIGNAL(timeOutStart()),timeWatch,SLOT(start()));
-  connect(this,SIGNAL(timeOutStop()),timeWatch,SLOT(stop()));
-  connect(timeWatch,&QTimer::timeout,this,[&](){
-      emit onFail(QSqlError(QString("Database error."),QString("Operation timeout.")));
-    });
-  emit timeOutStart();
-  auto ok = bSql->exec();
-  emit timeOutStop();
-  if(!ok)
-    {
-      emit onFail(bSql->getQuery()->lastError());
-    }
-  else
-    {
-      QSqlQuery *query = bSql->getQuery();
-      if(query && query->isSelect())
+      if(query == nullptr)
         {
-          // readEverything here
-          // and emit onResult signal
-          // after finish
-          QVector<QSqlRecord> result;
-          for(int i=0;i<query->size();++i)
-          {
-             query->seek(i);
-             result.push_back(query->record());
-          }
-          emit onResult(result);
+          // nullptr exception
+          emit onFail(QSqlError(QString("Internal Error."),QString("Invalid query.")));
+          return;
+        }
+      if(timeWatch) // the watch is initialized elsewhere, destroy it and re-construct one
+        {
+          //timeWatch->moveToThread(QThread::currentThread());
+          delete timeWatch;
+        }
+      timeWatch = new QTimer;
+      timeWatch->setInterval(timeout);
+      timeWatch->setSingleShot(true);
+      timeWatch->moveToThread(qApp->thread());
+      connect(this,SIGNAL(timeOutStart()),timeWatch,SLOT(start()),Qt::QueuedConnection);
+      connect(this,SIGNAL(timeOutStop()),timeWatch,SLOT(stop()),Qt::QueuedConnection);
+      connect(timeWatch,&QTimer::timeout,this,[&](){
+          emit onFail(QSqlError(QString("Database error."),QString("Operation timeout.")));
+          this->quit();
+        },Qt::DirectConnection);
+      emit timeOutStart();
+      auto ok = query->exec();
+      // if exec returns in time, the timeWatch would stop
+      emit timeOutStop();
+      if(!ok)
+        {
+          emit onFail(query->getQuery()->lastError());
+          break;
         }
       else
         {
-           emit onSuccess();
+          QSqlQuery *basicQuery = query->getQuery();
+          if(basicQuery && basicQuery->isSelect())
+            {
+              // readEverything here
+              // and emit onResult signal
+              // after finish
+              /* expose basicQuery to generate QSqlRecord */
+              QVector<QSqlRecord> result;
+              for(int i=0;i<basicQuery->size(); ++i)
+              {
+                 basicQuery->seek(i);
+                 result.push_back(basicQuery->record());
+              }
+              emit onResult(result);
+            }
+          else
+            {
+               emit onSuccess();
+            }
         }
     }
 }
 
 dbQueryThread::~dbQueryThread()
 {
-  timeWatch->moveToThread(QThread::currentThread());
-  if(timeWatch)delete timeWatch;
+  if(timeWatch)
+  {
+      //timeWatch->moveToThread(QThread::currentThread());
+      delete timeWatch;
+  }
 }
 
 void dbQueryThread::setSqlQuery(sql::basicSQL *_sql)
 {
-  bSql = _sql;
+  if(!bSql.empty())
+    {
+      bSql.clear();
+    }
+  bSql.push_back(_sql);
+}
+
+void dbQueryThread::setSqlQuery(const QVector<sql::basicSQL*>& sqlbatches)
+{
+  bSql = sqlbatches;
 }
 
 // dbQueryThread end
