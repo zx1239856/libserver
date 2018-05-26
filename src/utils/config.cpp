@@ -45,6 +45,8 @@ void config::Load()
     dbUname= Get("database/username").toString();
     dbPwd= Get("database/password").toString();
     dbConnTimeOut = Get("database/connectionTimeout").toUInt();
+    dbReadTimeOut = Get("database/readTimeout").toUInt();
+    dbWriteTimeOut = Get("database/writeTimeout").toUInt();
     // smtp
     smtpServer = Get("smtp/server").toString();
     smtpPort = Get("smtp/port").toInt();

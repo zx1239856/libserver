@@ -38,6 +38,8 @@ public:
     QString dbUname;
     QString dbPwd;
     uint dbConnTimeOut;
+    uint dbReadTimeOut;
+    uint dbWriteTimeOut;
     QString logPath;
     // superUser configuration
     QString suname;

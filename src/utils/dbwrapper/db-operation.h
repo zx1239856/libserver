@@ -2,7 +2,8 @@
 
 #include <QtConcurrent/QtConcurrent>
 #include <QSqlError>
-#include <vector>
+#include <QVector>
+#include <QSqlRecord>
 #include <QMap>
 #include "db-wrapper.h"
 #include "../config.h"
@@ -11,22 +12,28 @@ namespace sql
 {
   // SQL-query constructor basic class
   // This can run direct SQL sentence
-  class basicSQL
+  class basicSQL:public QObject
   {
+    Q_OBJECT
   protected:
-    std::vector<dbWrapper::Query> query;
+    dbWrapper::Query query;
     // here we use vector in STL since push_back of QVector
     // does not support rvalue reference
     QString sql;
+    QSqlError err;
     static dbWrapper::Control *mainDBControl;
   public:
     basicSQL();
     basicSQL(const QString &s);
     static void setControl(dbWrapper::Control *c);
     virtual bool exec();
-    QSqlQuery* getQuery();
-    //QSqlError lastError();
+    QSqlError lastError();
+    virtual QVector<QSqlRecord> toResult();
     virtual ~basicSQL(){}
+  signals:
+    void onSuccess();
+    void onFail(const QSqlError &err);
+    void onResult(const QVector<QSqlRecord> &res);
   };
 
   /* derived specific SQL queries
@@ -63,7 +70,6 @@ namespace sql
   public:
     del(const QString &tablename,
         const QString &condition);
-    virtual bool exec();
   };
 
   // select(what,tablename,condition)
@@ -89,9 +95,6 @@ namespace sql
     void addLimit(uint limit,uint start_pos);
     void addOrder(const QString& colname, order sqlorder);
     void addOrder(const QList<QString>& cols,order sqlorder);
-    virtual bool exec();
-    bool next();
-    QVariant value(int i);
   };
 }
 
@@ -126,25 +129,3 @@ public:
   dbWrapper::Control* getControl();
 };
 
-
-class dbQueryThread: public QThread
-{
-  Q_OBJECT
-public:
-  dbQueryThread(uint tOut= 5000, QObject *parent = 0);
-  void setSqlQuery(sql::basicSQL *sql);
-  void setSqlQuery(const QVector<sql::basicSQL*>& sqlbatches);
-  ~dbQueryThread();
-protected:
-  virtual void run();
-private:
-  QVector<sql::basicSQL*> bSql;
-  uint timeout;
-  QTimer *timeWatch;
-signals:
-  void onSuccess();
-  void onFail(const QSqlError &err);
-  void onResult(const QVector<QSqlRecord> &res);
-  void timeOutStart();
-  void timeOutStop();
-};

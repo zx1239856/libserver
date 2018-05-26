@@ -36,10 +36,12 @@ private:
     PropertyDeclare(QString, DBName, setDBName)
     PropertyDeclare(QString, DBUserName, setDBUserName)
     PropertyDeclare(QString, DBPassword, setDBPassword)
+    PropertyDeclare(QString, DBConnSetting, setDBConnSetting)
 public:
     DatabaseSettings(const QString &databaseType, const QString &connectionName,
                      const QString &DBHost, const QString &DBName,
-                     const QString &DBUserName, const QString &DBPassword);
+                     const QString &DBUserName, const QString &DBPassword,
+                     const QString &DBConnSetting);
 };
 
 // Connection Settings
@@ -60,13 +62,14 @@ class Query
 private:
     QSqlQuery *m_query;
     QMutex *m_mutex = NULL;
-
+    QSqlDatabase *db = nullptr;
 public:
     Query(QSqlDatabase &dataBase, QMutex *mutex = NULL);
     Query(Query &&other);
     ~Query();
     inline QSqlQuery *operator->() { return m_query; }
     inline QSqlQuery &operator*() { return *m_query; }
+    QSqlDatabase * getDataBase(){ return db;}
 };
 
 // Connection Pool

@@ -25,6 +25,7 @@ socketThread::~socketThread()
 
 void socketThread::run()
 {
+    QMutexLocker locker(&m_mutex);
     tcpsocket = new QTcpSocket();
     if (!tcpsocket->setSocketDescriptor(socketDescriptor))
     {

@@ -5,6 +5,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QDataStream>
+#include <QMutexLocker>
 #include "utils/web/requesthdl.h"
 
 class socketThread: public QThread
@@ -18,6 +19,7 @@ protected:
     virtual void run();
 
 private:
+    QMutex m_mutex;
     qintptr socketDescriptor;
     QTcpSocket *tcpsocket;
 };
