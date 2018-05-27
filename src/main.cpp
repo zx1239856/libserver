@@ -4,9 +4,13 @@
 #include "utils/mainservice.h"
 #include "utils/cmdparser.h"
 #include "qdaemonapplication.h"
+#include "epoll/eventdispatcher_epoll.h"
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_LINUX
+    QCoreApplication::setEventDispatcher(new EventDispatcherEPoll);
+#endif
     // argument handler
     cmdParser parser(argc,argv,globalInfo::appName);
 

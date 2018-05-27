@@ -25,7 +25,7 @@ socketThread::~socketThread()
 
 void socketThread::run()
 {
-    QMutexLocker locker(&m_mutex);
+    //QMutexLocker locker(&m_mutex);
     tcpsocket = new QTcpSocket();
     if (!tcpsocket->setSocketDescriptor(socketDescriptor))
     {
@@ -46,7 +46,7 @@ void socketThread::run()
     Object obj(tcpsocket);
     QObject::connect(tcpsocket, &QAbstractSocket::readyRead, &obj, &Object::slot);
     // set max Timeout for the socket
-    if(!tcpsocket->waitForDisconnected(300000))
+    if(!tcpsocket->waitForDisconnected(10000))
       {
         tcpsocket->disconnectFromHost();
       }

@@ -53,7 +53,7 @@ private:
     PropertyDeclare(int, minWaitTime, setMinWaitTime)
 
 public:
-    ConnectSettings(const int &maxOpenTime = 60 * 1000, const QueryMode &queryMode = QueryAutoMode, const int &minWaitTime = -1);
+    ConnectSettings(const int &maxOpenTime = 10 * 1000, const QueryMode &queryMode = QueryAutoMode, const int &minWaitTime = -1);
 };
 
 // Actual DB Query

@@ -84,3 +84,17 @@ SOURCES += \
     utils/smtp/quotedprintable.cpp \
     utils/smtp/smtpclient.cpp \
     utils/smtp/sendemail.cpp
+
+unix:!macx  {
+    HEADERS += \
+    epoll/eventdispatcher_epoll.h \
+    epoll/eventdispatcher_epoll_p.h \
+    epoll/qt4compat.h
+
+    SOURCES += \
+    epoll/eventdispatcher_epoll.cpp \
+    epoll/eventdispatcher_epoll_p.cpp \
+    epoll/socknot_p.cpp \
+    epoll/timers_p.cpp
+
+}
