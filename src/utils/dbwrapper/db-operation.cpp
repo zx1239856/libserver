@@ -73,17 +73,17 @@ insert::insert(const QString &tableName,
 {
   // construct SQL sentence
   sql="INSERT INTO "+tableName +" (";  // INSERT INTO tablename (col1,col2,col3) VALUES (?, ? ,?)
-  for(auto it=content.keys().begin();it!=content.keys().end();++it)
+  for(int it=0;it<content.keys().size();++it)
     {
-      sql += *it;
-      if((it+1)!=content.keys().end())sql+=",";
+      sql.append(content.keys()[it]);
+      if((it+1)<content.keys().size())sql.append(',');
     }
   sql+=") VALUES (";
-  for(auto it=content.keys().begin();it!=content.keys().end();++it)
+  for(int it=0;it<content.keys().size();++it)
     {
       sql.append(':');
-      sql += *it;
-      if((it+1)!=content.keys().end())sql+=",";
+      sql.append(content.keys()[it]);
+      if((it+1)<content.keys().size())sql.append(',');
     }
   sql+=")";
 }
@@ -172,14 +172,14 @@ select::select(const QString& tablename,const QString &condition,const QList<QSt
   basicSQL()
 {
   sql="SELECT ";
-  if(isDistinct)sql+="DISTINCT ";
+  if(isDistinct)sql.append("DISTINCT ");
   for(auto it=what.begin();it!=what.end();++it)
     {
-      sql+=(*it);
-      if((it+1)!=what.end())sql+=",";
+      sql.append(*it);
+      if((it+1)!=what.end())sql.append(',');
     }
-  sql+=" FROM " + tablename+" WHERE ";
-  sql+=condition;
+  sql.append(" FROM " + tablename+" WHERE ");
+  sql.append(condition);
 }
 
 select::select(const QString& tablename,const QList<QString> &what,bool isDistinct):
@@ -191,21 +191,21 @@ select::select(const QString &tablename,const QString &col, func sqlfunc):
   sql="SELECT ";
   switch(sqlfunc)
     {
-    case MIN:sql+="MIN";break;
-    case MAX:sql+="MAX";break;
-    case AVG:sql+="AVG";break;
-    case SUM:sql+="SUM";break;
-    case COUNT:sql+="COUNT";break;
+    case MIN:sql.append("MIN");break;
+    case MAX:sql.append("MAX");break;
+    case AVG:sql.append("AVG");break;
+    case SUM:sql.append("SUM");break;
+    case COUNT:sql.append("COUNT");break;
     }
-  sql+=("("+col+")");
-  sql+=(" FROM "+tablename);
+  sql.append("("+col+")");
+  sql.append(" FROM "+tablename);
 }
 
 void select::addLimit(uint limit,uint start_pos)
 {
   if(!isLimit)
     {
-      sql+=(" LIMIT "+QString::number(start_pos)+","+QString::number(limit));
+      sql.append(" LIMIT "+QString::number(start_pos)+","+QString::number(limit));
       isLimit=true;
     }
 }
@@ -214,11 +214,11 @@ void select::addOrder(const QString& colname, order sqlorder)
 {
   if(!isOrder)
     {
-      sql+=(" ORDER BY "+colname);
+      sql.append(" ORDER BY "+colname);
       switch(sqlorder)
         {
-        case DESC:sql+=" DESC";break;
-        case ASC:sql+=" ASC";break;
+        case DESC:sql.append(" DESC");break;
+        case ASC:sql.append(" ASC");break;
         }
       isOrder=true;
     }
@@ -228,16 +228,16 @@ void select::addOrder(const QList<QString>& cols,order sqlorder)
 {
   if(!isOrder)
     {
-      sql+=" ORDER BY ";
+      sql.append(" ORDER BY ");
       for(auto it=cols.begin();it!=cols.end();++it)
         {
-          sql+=*it;
-          if((it+1)!=cols.end())sql+=",";
+          sql.append(*it);
+          if((it+1)!=cols.end())sql.append(',');
         }
       switch(sqlorder)
         {
-        case DESC:sql+=" DESC";break;
-        case ASC:sql+=" ASC";break;
+        case DESC:sql.append(" DESC");break;
+        case ASC:sql.append(" ASC");break;
         }
       isOrder=true;
     }

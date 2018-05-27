@@ -15,8 +15,8 @@ inline QString ipParser(const QHostAddress& addr)
   else return addr.toString();
 }
 
-socketThread::socketThread(qintptr socketDescriptor, QObject *parent):
-    QThread(parent), socketDescriptor(socketDescriptor){}
+socketThread::socketThread(qintptr socketDescriptor):
+    socketDescriptor(socketDescriptor){}
 
 socketThread::~socketThread()
 {
@@ -37,14 +37,14 @@ void socketThread::run()
     peerIp = ipParser(tcpsocket->peerAddress());
     qDaemonLog("New thread for the connection from " + peerIp);
     // things to do after disconnected
-    connect(tcpsocket,&QAbstractSocket::disconnected,this,[&,peerIp]()
+    QObject::connect(tcpsocket,&QAbstractSocket::disconnected,[&,peerIp]()
       {
         qDaemonLog("Disconnected from " + peerIp);
         tcpsocket->close();
-        this->quit();
+        //this->quit();
       });
     Object obj(tcpsocket);
-    connect(tcpsocket, &QAbstractSocket::readyRead, &obj, &Object::slot);
+    QObject::connect(tcpsocket, &QAbstractSocket::readyRead, &obj, &Object::slot);
     // set max Timeout for the socket
     if(!tcpsocket->waitForDisconnected(300000))
       {

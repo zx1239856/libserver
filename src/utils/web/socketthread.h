@@ -6,13 +6,14 @@
 #include <QTcpSocket>
 #include <QDataStream>
 #include <QMutexLocker>
+#include <QRunnable>
 #include "utils/web/requesthdl.h"
 
-class socketThread: public QThread
+class socketThread: public QRunnable
 {
-    Q_OBJECT
+    //Q_OBJECT
 public:
-    socketThread(qintptr socketDescriptor, QObject *parent = 0);
+    socketThread(qintptr socketDescriptor);
     ~socketThread();
     void react();
 protected:

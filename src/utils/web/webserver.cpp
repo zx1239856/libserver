@@ -1,15 +1,20 @@
 #include "webserver.h"
 #include "qdaemonlog.h"
 
-webServer::webServer(QObject *parent) : QTcpServer(parent) {}
+webServer::webServer(QObject *parent) : QTcpServer(parent),threadPool(new QThreadPool) {}
 
-webServer::~webServer(){}
+webServer::~webServer()
+{
+  if(threadPool)delete threadPool;
+}
 
 void webServer::init(int port, int ccurrency)
 {
     //设置最大允许连接数，不设置的话默认为30
     setMaxPendingConnections(ccurrency);
-
+    // here we set the maximum thread to process incoming conns
+    // this is supposed to be read from config file
+    threadPool->setMaxThreadCount(300);
     if(listen(QHostAddress::Any, port))
     {
         qDaemonLog("Start listening to port " + QString::number(port));
@@ -24,8 +29,9 @@ void webServer::incomingConnection(qintptr socketDescriptor)
 {
     qDaemonLog("Trying a new connection.");
     socketThread *skt = new socketThread(socketDescriptor);
-    connect(skt, SIGNAL(finished()), skt, SLOT(deleteLater()));
-    skt->start();
+    //connect(skt, SIGNAL(finished()), skt, SLOT(deleteLater()));
+    //skt->start();
+    threadPool->start(skt);
 }
 
 /*
