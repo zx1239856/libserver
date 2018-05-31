@@ -5,9 +5,11 @@ using namespace dbWrapper;
 // DatabaseSettings
 DatabaseSettings::DatabaseSettings(const QString &databaseType, const QString &connectionName,
                  const QString &DBHost, const QString &DBName,
-                 const QString &DBUserName, const QString &DBPassword):
+                 const QString &DBUserName, const QString &DBPassword,
+                                   const QString &DBConnSetting):
   m_databaseType(databaseType),m_connectionName(connectionName),
-  m_DBHost(DBHost),m_DBName(DBName),m_DBUserName(DBUserName),m_DBPassword(DBPassword)
+  m_DBHost(DBHost),m_DBName(DBName),m_DBUserName(DBUserName),m_DBPassword(DBPassword),
+  m_DBConnSetting(DBConnSetting)
 {}
 
 // ConnectSettings
@@ -17,13 +19,14 @@ ConnectSettings::ConnectSettings(const int &maxOpenTime, const QueryMode &queryM
 
 // Query
 Query::Query(QSqlDatabase &dataBase, QMutex *mutex):
-  m_query(new QSqlQuery(dataBase)),m_mutex(mutex){}
+  m_query(new QSqlQuery(dataBase)),m_mutex(mutex),db(&dataBase){}
 
 Query::Query(Query &&other): m_query(other.m_query),
-m_mutex(other.m_mutex)
+m_mutex(other.m_mutex),db(other.db)
 {
   other.m_query=nullptr;
   other.m_mutex=nullptr;
+  other.db = nullptr;
 }
 
 Query::~Query()
@@ -107,7 +110,7 @@ bool ConnectNode::addDataBase()
     m_database->setDatabaseName(m_dataBaseSettings.DBName());
     m_database->setUserName(m_dataBaseSettings.DBUserName());
     m_database->setPassword(m_dataBaseSettings.DBPassword());
-
+    m_database->setConnectOptions(m_dataBaseSettings.DBConnSetting());
     const auto &&flag = this->open();
 
     if(m_mutex){ m_mutex->unlock(); }

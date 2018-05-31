@@ -3,6 +3,7 @@
 
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QThreadPool>
 #include "utils/web/socketthread.h"
 
 class webServer: public QTcpServer
@@ -19,6 +20,7 @@ protected:
 
 private:
     QMap<QString, QTcpSocket *> m_mapClient;
+    QThreadPool *threadPool;
 };
 
 #endif // WEBSERVER_H

@@ -10,24 +10,8 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
     char* cmd = cpath.data();
     QMetaEnum me = QMetaEnum::fromType<appointhdl::CMD>();
 
-    QVector<sql::basicSQL*> msql;
-    dbQueryThread dbQT;
-    QVector<QSqlRecord> sqlresult;
+    basicSQL* msql = nullptr;
     bool success;
-
-    connect(&dbQT, &dbQueryThread::onResult, [&](const QVector<QSqlRecord> &res){
-        success = true;
-        sqlresult = res;
-    });
-
-    connect(&dbQT, &dbQueryThread::onSuccess, [&](){
-        success = true;
-    });
-
-    connect(&dbQT, &dbQueryThread::onFail, [&](const QSqlError &err){
-        success = false;
-        qDebug() << err;
-    });
 
     switch(me.keyToValue(cmd))
     {
@@ -42,12 +26,13 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
             mAppoint.insert("type", "borrow");
             mAppoint.insert("bookid", json.value("id").toInt());
             mAppoint.insert("appointtime", json.value("appointtime").toString());
-            msql.clear();
-            msql.push_back(new sql::insert("libserver.lib_currappoint", mAppoint));
+            msql = new sql::insert("libserver.lib_currappoint", mAppoint);
+            success = msql->exec();
             if(success)
                 jsonReturn.insert("result", true);
             else
             {
+                qDebug() << msql->lastError();
                 jsonReturn.insert("result", false);
                 jsonReturn.insert("detail", "wrong database operation");
             }
@@ -68,9 +53,7 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
             mAppoint.insert("bookid", json.value("id").toInt());
             mAppoint.insert("appointtime", json.value("appointtime").toString());
             msql = new sql::insert("libserver.lib_currappoint", mAppoint);
-            dbQT.setSqlQuery(msql);
-            dbQT.start();
-            dbQT.wait();
+            msql->exec();
             if(success)
                 jsonReturn.insert("result", true);
             else
@@ -86,8 +69,6 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
         }
         break;
     }
-
-    dbQT.quit();
     if(msql)
         delete msql;
 }

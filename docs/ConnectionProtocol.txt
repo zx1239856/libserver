@@ -1,4 +1,8 @@
 ﻿Client:
 'Q'(1byte) + int length(4byte) + data(json)(上限约2048byte)
+"FILE##HEAD##RCV" // file head receive okay
+"FILE##FINISH" // file transfer okay sign
+"FILE##NEXT“ // next pending file to transfer
 Server:
 'A'(1byte) + int length(4byte) + data(json)(上限约2048byte)
+"HEAD##FILE_NAME##FILE_SIZE" // file header

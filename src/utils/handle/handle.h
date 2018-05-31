@@ -9,6 +9,17 @@
 #include "utils/cryto/token.h"
 #include "utils/exception.h"
 
+#define HDL_DB_ERROR(json) json.insert("result", false); \
+json.insert("detail", "database server error");
+
+#define HDL_INV_TOKEN(json) json.insert("result", false); \
+  json.insert("detail", "invalid token");
+
+#define HDL_PERM_DENIED(json) json.insert("result", false); \
+  json.insert("detail", "permission denied");
+
+#define HDL_SUCCESS(json) json.insert("result", true);
+
 class handle:public QObject
 {
     Q_OBJECT

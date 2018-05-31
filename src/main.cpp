@@ -4,9 +4,13 @@
 #include "utils/mainservice.h"
 #include "utils/cmdparser.h"
 #include "qdaemonapplication.h"
+#include "epoll/eventdispatcher_epoll.h"
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_LINUX
+    QCoreApplication::setEventDispatcher(new EventDispatcherEPoll);
+#endif
     // argument handler
     cmdParser parser(argc,argv,globalInfo::appName);
 
@@ -14,6 +18,7 @@ int main(int argc, char *argv[])
     QString confPath(parser.getConfPath());
 
     config::setPath(confPath);
+    // default log path
     QString logFilePath = "libserver.log";
     config *conf= nullptr;
     if(parser.isStartCommand())
@@ -21,9 +26,9 @@ int main(int argc, char *argv[])
         // Configuration File Init
         // First check to ensure its validity
         conf = config::getInstance();
-        if(!conf->logPath.isEmpty())
+        if(!conf->logPath().isEmpty())
           {
-            logFilePath = conf->logPath;
+            logFilePath = conf->logPath();
           }
         else
           {

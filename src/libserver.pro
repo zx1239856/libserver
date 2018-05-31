@@ -46,7 +46,9 @@ HEADERS += \
     utils/smtp/smtpclient.h \
     utils/smtp/smtpexports.h \
     utils/smtp/SmtpMime \
-    utils/smtp/sendemail.h
+    utils/smtp/sendemail.h \
+    utils/dbwrapper/sqlarray.h \
+    utils/file/tcpfiletransfer.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \
@@ -83,4 +85,20 @@ SOURCES += \
     utils/smtp/mimetext.cpp \
     utils/smtp/quotedprintable.cpp \
     utils/smtp/smtpclient.cpp \
-    utils/smtp/sendemail.cpp
+    utils/smtp/sendemail.cpp \
+    utils/dbwrapper/sqlarray.cpp \
+    utils/file/tcpfiletransfer.cpp
+
+unix:!macx  {
+    HEADERS += \
+    epoll/eventdispatcher_epoll.h \
+    epoll/eventdispatcher_epoll_p.h \
+    epoll/qt4compat.h
+
+    SOURCES += \
+    epoll/eventdispatcher_epoll.cpp \
+    epoll/eventdispatcher_epoll_p.cpp \
+    epoll/socknot_p.cpp \
+    epoll/timers_p.cpp
+
+}

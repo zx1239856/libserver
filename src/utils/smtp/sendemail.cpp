@@ -2,11 +2,11 @@
 
 sendEmail::sendEmail(const config &_conf,const QStringList& _rcptList,
                      const QString &_subject, const QString &_content,const QStringList& _attachmentList):
-  smtpServer(_conf.smtpServer),port(_conf.smtpPort),authMethod(SmtpClient::TcpConnection),user(_conf.smtpUser),
-  password(_conf.smtpPwd),sender(new EmailAddress(_conf.smtpSender)),rcptList(_rcptList),subject(_subject),
+  smtpServer(_conf.smtpServer()),port(_conf.smtpPort()),authMethod(SmtpClient::TcpConnection),user(_conf.smtpUser()),
+  password(_conf.smtpPwd()),sender(new EmailAddress(_conf.smtpSender())),rcptList(_rcptList),subject(_subject),
   content(_content),attachmentList(_attachmentList)
 {
-  QString auth = _conf.authType;
+  QString auth = _conf.authType();
   if(auth=="SSL")
     {
       authMethod = SmtpClient::SslConnection;
@@ -21,7 +21,7 @@ sendEmail::sendEmail(const config &_conf,const QStringList& _rcptList,
     }
 }
 
-void sendEmail::run()
+void sendEmail::send()
 {
   SmtpClient smtp(smtpServer,port,authMethod);
   MimeMessage message;
@@ -41,13 +41,13 @@ void sendEmail::run()
   // email construction OK
   if (!smtp.connectToHost())
      {
-         emit onFail(QString("Connection Failed"));
+         emit onFail(QString("SMTP connection Failed"));
          return;
      }
 
   if (!smtp.login(user, password))
   {
-      emit onFail(QString("Authentification Failed"));
+      emit onFail(QString("SMTP authentification Failed"));
       return;
   }
 

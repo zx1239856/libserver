@@ -1,6 +1,8 @@
 #include "userhdl.h"
+#include "globalInfo.h"
 
 using namespace sql;
+using namespace globalInfo;
 
 userhdl::userhdl(const QString& token): handle(token){}
 
@@ -11,85 +13,80 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
     QMetaEnum me = QMetaEnum::fromType<userhdl::CMD>();
 
     basicSQL* msql = nullptr;
-    dbQueryThread dbQT;
     QVector<QSqlRecord> sqlresult;
-    bool success;
-
-    connect(&dbQT, &dbQueryThread::onResult, [&](const QVector<QSqlRecord> &res){
-        success = true;
-        sqlresult = res;
-    });
-
-    connect(&dbQT, &dbQueryThread::onSuccess, [&](){
-        success = true;
-    });
-
-    connect(&dbQT, &dbQueryThread::onFail, [&](const QSqlError &err){
-        success = false;
-        qDebug() << err;
-    });
-
     switch(me.keyToValue(cmd))
     {
     case login:
-        if(ID == -1)
+        if(ID == -1) // check token
         {
-            msql = new sql::select("libserver.lib_" + json.value("group").toString(),
-                              "username = '" + json.value("username").toString() + "' AND password = '" + json.value("password").toString() + "'");
-            dbQT.setSqlQuery(msql);
-            dbQT.start();
-            dbQT.wait();
-            if(success)
+            msql = new sql::select(dbFullPrefix + json.value("group").toString(),
+                              "username = '" + json.value("username").toString()+"'");
+            if(msql->exec())  // db okay
             {
-                if(sqlresult.size() == 1)
+                sqlresult = msql->toResult();
+                if(sqlresult.size() == 1) // user found
                 {
-                    QString token = token::getToken(json.value("username").toString());
-                    ctrl->AddUser(token,
-                                  qMakePair(json.value("group").toString(), sqlresult[0].value("ID").toInt()));
-                    jsonReturn.insert("result", true);
-                    jsonReturn.insert("token", token);
-                    qDebug() << ctrl->mClient;
+                    if(sqlresult[0].value("password").toString()==json.value("password").toString()) // pwd valid
+                      {
+                        QString token = token::getToken(json.value("username").toString());
+                        ctrl->AddUser(token,
+                                      qMakePair(json.value("group").toString(), sqlresult[0].value("ID").toInt()));
+                        jsonReturn.insert("result", true);
+                        jsonReturn.insert("token", token);
+#ifdef VERBOSE_OUTPUT
+                        qDebug() << ctrl->mClient;
+#endif
+                      }
+                    else // wrong pwd
+                      {
+                        jsonReturn.insert("result", false);
+                        jsonReturn.insert("detail", "wrong password");
+                      }
                 }
-                else
+                else // not found
                 {
                     jsonReturn.insert("result", false);
-                    jsonReturn.insert("detail", "wrong password");
+                    jsonReturn.insert("detail", "user does not exist");
                 }
             }
             else
             {
-                jsonReturn.insert("result", false);
-                jsonReturn.insert("detail", "wrong username");
+                // server error, log
+                HDL_DB_ERROR(jsonReturn)
             }
         }
         else
         {
-            jsonReturn.insert("result", false);
-            jsonReturn.insert("detail", "wrong token");
+            HDL_INV_TOKEN(jsonReturn)
         }
         break;
     case forget:
         if(ID == -1)
         {
-            msql = new sql::select("libserver.lib_" + json.value("group").toString(),
+            msql = new sql::select(dbFullPrefix + json.value("group").toString(),
                               "username = '" + json.value("username").toString() + "' AND email = '" + json.value("auth").toString() + "'");
-            dbQT.setSqlQuery(msql);
-            dbQT.start();
-            dbQT.wait();
-            if(success && sqlresult.size() == 1)
+            if(msql->exec())
             {
-                //email
+                sqlresult = msql->toResult();
+                if(sqlresult.size() == 1)
+                {
+                //email and notify the user to check it
+                jsonReturn.insert("result", true);
+                }
+                else
+                  {
+                    jsonReturn.insert("result", false);
+                    jsonReturn.insert("detail", "wrong username or email");
+                  }
             }
             else
             {
-                jsonReturn.insert("result", false);
-                jsonReturn.insert("detail", "wrong username or email");
+                HDL_DB_ERROR(jsonReturn)
             }
         }
         else
         {
-            jsonReturn.insert("result", false);
-            jsonReturn.insert("detail", "wrong token");
+            HDL_INV_TOKEN(jsonReturn)
         }
         break;
     case logout:
@@ -97,43 +94,45 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
         {
             ctrl->DeleteUser(token);
             jsonReturn.insert("result", true);
+#ifdef VERBOSE_OUTPUT
             qDebug() << ctrl->mClient;
+#endif
         }
         else
         {
-            jsonReturn.insert("result", false);
-            jsonReturn.insert("detail", "wrong token");
+            HDL_INV_TOKEN(jsonReturn)
         }
         break;
     case changepwd:
         if(ID > 0)
         {
-            msql = new sql::select("libserver.lib_" + group,
+            msql = new sql::select(dbFullPrefix + group,
                               "ID = " + QString::number(ID) + " AND  password = '" + json.value("oldpwd").toString() + "'");
-            dbQT.setSqlQuery(msql);
-            dbQT.start();
-            dbQT.wait();
-            if(success && sqlresult.size() > 0)
-            {
-                QMap<QString, QVariant> newpwd;
-                newpwd.insert("password", json.value("newpwd").toString());
-                update up("libserver.lib_" + group, newpwd, "ID = " + QString::number(ID));
-                dbQueryThread dbQT1;
-                dbQT1.setSqlQuery(&up);
-                dbQT1.start();
-                dbQT1.wait();
-                jsonReturn.insert("result", true);
-            }
+            if(msql->exec())
+              {
+                sqlresult = msql->toResult();
+                if(sqlresult.size() > 0)
+                {
+                    QMap<QString, QVariant> newpwd;
+                    newpwd.insert("password", json.value("newpwd").toString());
+                    update up(dbFullPrefix + group, newpwd, "ID = " + QString::number(ID));
+                    up.exec();
+                    jsonReturn.insert("result", true);
+                }
+                else
+                {
+                    jsonReturn.insert("result", false);
+                    jsonReturn.insert("detail", "wrong old password");
+                }
+              }
             else
-            {
-                jsonReturn.insert("result", false);
-                jsonReturn.insert("detail", "wrong old password");
-            }
+              {
+                HDL_DB_ERROR(jsonReturn)
+              }
         }
         else
         {
-            jsonReturn.insert("result", false);
-            jsonReturn.insert("detail", "wrong token");
+            HDL_INV_TOKEN(jsonReturn)
         }
         break;
     case updateinfo:
@@ -145,27 +144,20 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
             {
                 mInfo.insert((*iter).toObject().value("field").toString(), (*iter).toObject().value("data").toString());
             }
-            msql = new sql::update("libserver.lib_" + group, mInfo, "ID = " + QString::number(ID));
-            dbQT.setSqlQuery(msql);
-            dbQT.start();
-            dbQT.wait();
-            if(success)
+            msql = new sql::update(dbFullPrefix + group, mInfo, "ID = " + QString::number(ID));
+            if(msql->exec())
                 jsonReturn.insert("result", true);
             else
             {
-                jsonReturn.insert("result", false);
-                jsonReturn.insert("detail", "wrong database operation");
+                HDL_DB_ERROR(jsonReturn)
             }
         }
         else
         {
-            jsonReturn.insert("result", false);
-            jsonReturn.insert("detail", "wrong token");
+            HDL_INV_TOKEN(jsonReturn)
         }
         break;
     }
-
-    dbQT.quit();
     if(msql)
         delete msql;
 }
