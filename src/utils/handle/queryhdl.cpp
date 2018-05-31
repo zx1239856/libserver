@@ -11,7 +11,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
     switch(me.keyToValue(cmd))
     {
     case book:
-
+        
         break;
     case operationlog:
 

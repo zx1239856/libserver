@@ -10,7 +10,7 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
     char* cmd = cpath.data();
     QMetaEnum me = QMetaEnum::fromType<appointhdl::CMD>();
 
-    basicSQL* msql = nullptr;
+    QVector<sql::basicSQL*> msql;
     dbQueryThread dbQT;
     QVector<QSqlRecord> sqlresult;
     bool success;
@@ -34,15 +34,16 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
     case appointborrow:
         if(ID > 0)
         {
+            dbQT.setSqlQuery(msql);
+            dbQT.start();
+            dbQT.wait();
             QMap<QString, QVariant> mAppoint;
             mAppoint.insert("readerid", ID);
             mAppoint.insert("type", "borrow");
             mAppoint.insert("bookid", json.value("id").toInt());
             mAppoint.insert("appointtime", json.value("appointtime").toString());
-            msql = new sql::insert("libserver.lib_currappoint", mAppoint);
-            dbQT.setSqlQuery(msql);
-            dbQT.start();
-            dbQT.wait();
+            msql.clear();
+            msql.push_back(new sql::insert("libserver.lib_currappoint", mAppoint));
             if(success)
                 jsonReturn.insert("result", true);
             else
