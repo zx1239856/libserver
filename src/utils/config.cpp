@@ -34,26 +34,27 @@ void config::Load()
 {
   try
   {
-    // logpath
-    logPath = Get("web/log_path").toString();
     //web
-    port = Get("web/listen_port").toInt();
-    ccurrency = Get("web/concurrency").toInt();
+    m_port = Get("web/listen_port").toUInt();
+    m_ccurrency = Get("web/concurrency").toUInt();
+    m_dataDir = Get("web/data_dir").toString();
+    // logpath
+    m_logPath = Get("web/log_path").toString();
     // database
-    dbHost= Get("database/host").toString();
-    dbPort= Get("database/port").toInt();
-    dbUname= Get("database/username").toString();
-    dbPwd= Get("database/password").toString();
-    dbConnTimeOut = Get("database/connectionTimeout").toUInt();
-    dbReadTimeOut = Get("database/readTimeout").toUInt();
-    dbWriteTimeOut = Get("database/writeTimeout").toUInt();
+    m_dbHost= Get("database/host").toString();
+    m_dbPort= Get("database/port").toUInt();
+    m_dbUname= Get("database/username").toString();
+    m_dbPwd= Get("database/password").toString();
+    m_dbConnTimeOut = Get("database/connectionTimeout").toUInt();
+    m_dbReadTimeOut = Get("database/readTimeout").toUInt();
+    m_dbWriteTimeOut = Get("database/writeTimeout").toUInt();
     // smtp
-    smtpServer = Get("smtp/server").toString();
-    smtpPort = Get("smtp/port").toInt();
-    authType = Get("smtp/authType").toString();
-    smtpUser = Get("smtp/username").toString();
-    smtpPwd = Get("smtp/password").toString();
-    smtpSender = Get("smtp/senderEmail").toString();
+    m_smtpServer = Get("smtp/server").toString();
+    m_smtpPort = Get("smtp/port").toUInt();
+    m_authType = Get("smtp/authType").toString();
+    m_smtpUser = Get("smtp/username").toString();
+    m_smtpPwd = Get("smtp/password").toString();
+    m_smtpSender = Get("smtp/senderEmail").toString();
     //end
   }
   catch(std::string &e)

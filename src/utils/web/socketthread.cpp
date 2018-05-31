@@ -37,14 +37,14 @@ void socketThread::run()
     peerIp = ipParser(tcpsocket->peerAddress());
     qDaemonLog("New thread for the connection from " + peerIp);
     // things to do after disconnected
-    QObject::connect(tcpsocket,&QAbstractSocket::disconnected,[&,peerIp]()
+    QObject::connect(tcpsocket,&QTcpSocket::disconnected,[&,peerIp]()
       {
         qDaemonLog("Disconnected from " + peerIp);
         tcpsocket->close();
         //this->quit();
       });
     Object obj(tcpsocket);
-    QObject::connect(tcpsocket, &QAbstractSocket::readyRead, &obj, &Object::slot);
+    QObject::connect(tcpsocket, &QTcpSocket::readyRead, &obj, &Object::slot);
     // set max Timeout for the socket
     if(!tcpsocket->waitForDisconnected(10000))
       {
@@ -52,7 +52,13 @@ void socketThread::run()
       }
 }
 
-Object::Object(QTcpSocket* tcpsocket): tcpsocket(tcpsocket){}
+Object::Object(QTcpSocket* tcpsocket): tcpsocket(tcpsocket),fileTransfer(nullptr){}
+
+Object::~Object()
+{
+  if(fileTransfer)delete fileTransfer;
+}
+
 void Object::slot()
 {
     try
@@ -69,7 +75,10 @@ void Object::slot()
             in >> bytes;
             in >> rqtData;
             if(rqtData.size() != bytes)
+            {
+                // return bad request
                 throw(QString("Bad Request"));
+            }
             requesthdl hdl(rqtData);
 
             // send
@@ -82,10 +91,44 @@ void Object::slot()
             tcpsocket->write(SendData);
             tcpsocket->flush();
         }
+        if(sign == 'F') // if it is file transfer
+          {
+            fileTransfer=new tcpFileTransfer(tcpsocket);
+            // change signal receiver here
+            tcpsocket->disconnect(tcpsocket,&QTcpSocket::readyRead,this,&Object::slot);
+            QObject::connect(tcpsocket,&QTcpSocket::readyRead,fileTransfer,[&]()
+            {
+                QByteArray buf = tcpsocket->readAll();
+                if("FILE##HEAD##RCV" == QString(buf))
+                {
+                    // file header recv succeed
+                    fileTransfer->sendData();
+                }
+                else if("FILE##FINISH" == QString(buf))
+                  {
+                    // file transfer complete
+                    tcpsocket->disconnectFromHost();
+                    tcpsocket->close();
+                  }
+            });
+            QObject::connect(fileTransfer,&tcpFileTransfer::onFail,this,[&](const QString &err)
+            {
+                qDebug() << err;
+                // echo err msg to client
+            });
+            fileTransfer->sendHead("file.pdf");
+            QObject::connect(fileTransfer,&tcpFileTransfer::onFinish,this,[&]()
+            {
+                fileTransfer->deleteLater();
+                fileTransfer = nullptr;
+            });
+          }
     }
     catch(QString msg)
     {
         qDaemonLog(msg , QDaemonLog::ErrorEntry);
     }
-    tcpsocket->disconnectFromHost();
+  // if no need to transfer file, just disconnect
+    if(fileTransfer==nullptr)
+        tcpsocket->disconnectFromHost();
 }

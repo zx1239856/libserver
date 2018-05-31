@@ -252,10 +252,10 @@ unsigned int dbConn::threadCount = 4;
 
 dbConn::dbConn(const QString &dbName)
 {
-  QString conSettings = "MYSQL_OPT_CONNECT_TIMEOUT=" + QString::number(conf->dbConnTimeOut)
-      +";MYSQL_OPT_READ_TIMEOUT=" + QString::number(conf->dbReadTimeOut) + ";MYSQL_OPT_WRITE_TIMEOUT="
-      + QString::number(conf->dbWriteTimeOut);
-  control = new dbWrapper::Control({"QMYSQL","DBConn",conf->dbHost,dbName,conf->dbUname,conf->dbPwd,conSettings});
+  QString conSettings = "MYSQL_OPT_CONNECT_TIMEOUT=" + QString::number(conf->dbConnTimeOut())
+      +";MYSQL_OPT_READ_TIMEOUT=" + QString::number(conf->dbReadTimeOut()) + ";MYSQL_OPT_WRITE_TIMEOUT="
+      + QString::number(conf->dbWriteTimeOut());
+  control = new dbWrapper::Control({"QMYSQL","DBConn",conf->dbHost(),dbName,conf->dbUname(),conf->dbPwd(),conSettings});
   sql::basicSQL::setControl(control);
 }
 

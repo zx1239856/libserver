@@ -4,7 +4,7 @@
 #include "utils/smtp/SmtpMime"
 #include "utils/config.h"
 
-class sendEmail:public QThread
+class sendEmail:public QObject
 {
   Q_OBJECT
 private:
@@ -23,7 +23,7 @@ private:
 public:
   sendEmail(const config &conf,const QStringList& rcptList,
             const QString &subject, const QString &content,const QStringList& attachmentList=QStringList());
-  void run()override;
+  void send();
 signals:
   void onSuccess();
   void onFail(const QString &what);

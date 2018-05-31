@@ -8,6 +8,7 @@
 #include <QMutexLocker>
 #include <QRunnable>
 #include "utils/web/requesthdl.h"
+#include "utils/file/tcpfiletransfer.h"
 
 class socketThread: public QRunnable
 {
@@ -30,11 +31,11 @@ class Object:public QObject
     Q_OBJECT
 public:
     Object(QTcpSocket* tcpsocket);
-
+    ~Object();
 public slots:
     void slot();
-
 private:
     QTcpSocket* tcpsocket;
+    tcpFileTransfer *fileTransfer;
 };
 #endif // SOCKETTHREAD_H
