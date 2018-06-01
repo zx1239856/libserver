@@ -3,8 +3,9 @@
     "token": "该对话所对应的令牌",
     "type": "CHECK",
     "command": "checkborrow",
-    "appointid": 1 //curappoint表中的id -1代表未预约
+    "appointid": 1 //curappoint表中的id
 }
+
 //Re:
 {
     "result":true
@@ -19,9 +20,10 @@
 {
     "token": "该对话所对应的令牌",
     "type": "CHECK",
-    "command": "checkreturn",
-    "appointid": 1 //curappoint表中的id -1代表未预约
+    "command": "checkreturn", 
+    "appointid": 1 //curappoint表中的id
 }
+
 //Re:
 {
     "result":true
