@@ -53,7 +53,7 @@ void mainService::start()
 
   // initiate websocket
   server = new webServer;
-  server->init(conf->port(),conf->ccurrency());
+  server->init(conf->port(),conf->ccurrency(),conf->threadKeepAliveTimeout()*1000);
   ctrl = controlhdl::getInstance();
 }
 

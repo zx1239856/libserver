@@ -59,6 +59,8 @@ public:
     Property(QString,logPath)
     Property(uint,ccurrency)
     Property(QString,dataDir)
+    Property(uint,threadKeepAliveTimeout)
+    Property(bool,epoll)
     // smtp
     Property(QString,smtpServer)
     Property(uint,smtpPort)

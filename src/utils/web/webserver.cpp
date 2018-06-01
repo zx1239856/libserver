@@ -8,13 +8,13 @@ webServer::~webServer()
   if(threadPool)delete threadPool;
 }
 
-void webServer::init(int port, int ccurrency)
+void webServer::init(int port, int ccurrency, uint keepAlive)
 {
     //设置最大允许连接数，不设置的话默认为30
     Q_UNUSED(ccurrency)
     setMaxPendingConnections(50);
     // ExpiryTimeout = thread KeepAliveTime
-    threadPool->setExpiryTimeout(3000);
+    threadPool->setExpiryTimeout(keepAlive);
     if(listen(QHostAddress::Any, port))
     {
         qDaemonLog("Start listening to port " + QString::number(port));

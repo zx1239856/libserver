@@ -8,9 +8,6 @@
 
 int main(int argc, char *argv[])
 {
-#ifdef Q_OS_LINUX
-    QCoreApplication::setEventDispatcher(new EventDispatcherEPoll);
-#endif
     // argument handler
     cmdParser parser(argc,argv,globalInfo::appName);
 
@@ -33,6 +30,12 @@ int main(int argc, char *argv[])
         else
           {
             printf("Warning: Logfile path was not set properly, use default logPath instead.\n");
+          }
+        if(conf->epoll())
+          {
+#ifdef Q_OS_LINUX
+    QCoreApplication::setEventDispatcher(new EventDispatcherEPoll);
+#endif
           }
       }
     // okay, now initialize the daemon
