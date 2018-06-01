@@ -20,7 +20,7 @@ namespace globalInfo
   const QString dbFullPrefix = db::dbName + "." + db::dbPrefix;
   inline QString emailContent(const QString &newpwd)
   {
-      return "Your temporary password is " + newpwd + "."  + "Please change your password as soon as possible.";
+      return "Your temporary password is " + newpwd + ". Please change your password as soon as possible.";
   }
 }
 #endif
