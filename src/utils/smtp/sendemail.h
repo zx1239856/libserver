@@ -16,14 +16,15 @@ private:
   QString password;
   EmailAddress *sender;
   // other parameters
-  const QStringList& rcptList;
-  const QString &subject;
-  const QString &content;
-  const QStringList& attachmentList;
+  const QStringList rcptList;
+  const QString subject;
+  const QString content;
+  const QStringList attachmentList;
 public:
   sendEmail(const config &conf,const QStringList& rcptList,
             const QString &subject, const QString &content,const QStringList& attachmentList=QStringList());
   void send();
+
 signals:
   void onSuccess();
   void onFail(const QString &what);

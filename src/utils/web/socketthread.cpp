@@ -35,7 +35,7 @@ void socketThread::run()
     tcpsocket->setReadBufferSize(2048);
     QString peerIp = "null";
     peerIp = ipParser(tcpsocket->peerAddress());
-    qDaemonLog("New thread for the connection from " + peerIp);
+    qDaemonLog("New incoming connection from " + peerIp);
     // things to do after disconnected
     QObject::connect(tcpsocket,&QTcpSocket::disconnected,[&,peerIp]()
       {

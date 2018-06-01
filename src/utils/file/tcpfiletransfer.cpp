@@ -77,4 +77,54 @@ void tcpFileTransfer::sendData()
   emit onFinish();
 }
 
+void tcpFileTransfer::receiveFile(QString dir)
+{
+  if(dir.isEmpty())
+    {
+      dir=config::getInstance()->dataDir();
+    }
+  while(true)
+    {
+      QByteArray buf = socket->readAll();
+      if(true == isStart){
+          isStart = false;
+          // get head
+          fileName = QString(buf).section("##",1,1);
+          fileSize = QString(buf).section("##",2,2).toInt();
+          recvSize = 0;
+          QString str = QString("File receive:[%1:%2kB]").arg(fileName).arg(fileSize/1024);
+#ifdef VERBOSE_OUTPUT
+          qDebug() << str;
+#endif
+          if(fileName.isEmpty())
+            {
+              emit onFail("File name empty, maybe file head is corrupted?");
+            }
+          file = new QFile(dir + fileName);
+          if(false == file->open(QIODevice::WriteOnly)){
+              emit onFail("Failed to open the file to write");
+              // error handling
+          }
+          socket->write("FILE##HEAD##RCV");
+          break;
+      }else{
+          qint64 len = file->write(buf);
+          recvSize += len;
+          if(recvSize == fileSize){
+              file->close();
+              socket->write("FILE##FINISH");
+              socket->disconnectFromHost();
+              socket->close();
+              if(file)
+                {
+                  delete file;
+                  file = nullptr;
+                }
+              emit onFinish();
+              break;
+          }
+      }
+   }
+}
+
 
