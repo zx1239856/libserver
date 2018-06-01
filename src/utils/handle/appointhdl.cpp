@@ -18,6 +18,9 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
     case appointborrow:
         if(ID > 0)
         {
+            dbQT.setSqlQuery(msql);
+            dbQT.start();
+            dbQT.wait();
             QMap<QString, QVariant> mAppoint;
             mAppoint.insert("readerid", ID);
             mAppoint.insert("type", "borrow");
