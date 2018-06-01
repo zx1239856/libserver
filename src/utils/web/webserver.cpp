@@ -13,9 +13,7 @@ void webServer::init(int port, int ccurrency)
     //设置最大允许连接数，不设置的话默认为30
     Q_UNUSED(ccurrency)
     setMaxPendingConnections(50);
-    // here we set the maximum thread to process incoming conns
-    // this is supposed to be read from config file
-    threadPool->setMaxThreadCount(200);
+    // ExpiryTimeout = thread KeepAliveTime
     threadPool->setExpiryTimeout(3000);
     if(listen(QHostAddress::Any, port))
     {

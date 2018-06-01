@@ -2,7 +2,7 @@
 #define IMGHANDLER_H
 
 #include <QImage>
-#include "../cryto/token.h"
+#include "../crypto/token.h"
 
 class ImgHandler
 {

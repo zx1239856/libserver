@@ -30,7 +30,7 @@ HEADERS += \
     utils/handle/operateuserhdl.h \
     utils/handle/operategrouphdl.h \
     utils/handle/operatebookhdl.h \
-    utils/cryto/token.h \
+    utils/crypto/token.h \
     utils/file/imghandler.h \
     utils/smtp/emailaddress.h \
     utils/smtp/mimeattachment.h \
@@ -71,7 +71,7 @@ SOURCES += \
     utils/handle/operateuserhdl.cpp \
     utils/handle/operategrouphdl.cpp \
     utils/handle/operatebookhdl.cpp \
-    utils/cryto/token.cpp \
+    utils/crypto/token.cpp \
     utils/file/imghandler.cpp \
     utils/smtp/emailaddress.cpp \
     utils/smtp/mimeattachment.cpp \
