@@ -1,5 +1,6 @@
 include(daemon/daemon-lib.pri)
 include(libserver.pri)
+include(qcron/qcron.pri)
 
 QMAKE_CXXFLAGS += -Wimplicit-fallthrough=0 -Wswitch
 
@@ -48,7 +49,8 @@ HEADERS += \
     utils/smtp/SmtpMime \
     utils/smtp/sendemail.h \
     utils/dbwrapper/sqlarray.h \
-    utils/file/tcpfiletransfer.h
+    utils/file/tcpfiletransfer.h \
+    utils/worker/bgworker.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \
@@ -87,7 +89,8 @@ SOURCES += \
     utils/smtp/smtpclient.cpp \
     utils/smtp/sendemail.cpp \
     utils/dbwrapper/sqlarray.cpp \
-    utils/file/tcpfiletransfer.cpp
+    utils/file/tcpfiletransfer.cpp \
+    utils/worker/bgworker.cpp
 
 unix:!macx  {
     HEADERS += \

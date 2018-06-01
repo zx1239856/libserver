@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
           {
             printf("Warning: Logfile path was not set properly, use default logPath instead.\n");
           }
+        // EventPool works if and only if for linux
         if(conf->epoll())
           {
 #ifdef Q_OS_LINUX

@@ -2,6 +2,7 @@
 #include "qdaemonapplication.h"
 #include "utils/crypto/token.h"
 #include "qdaemonlog.h"
+#include "qcron.h"
 
 controlhdl* ctrl;
 
