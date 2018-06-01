@@ -1,6 +1,6 @@
 //登录
 {
-    "token": -1,
+    "token": "unknown",
     "type": "USER",
     "command": "login",
     "username": "用户名",
@@ -22,10 +22,12 @@
 
 //忘记密码
 {
-    "token": -1,
+    "token": "unknown",
     "type": "USER",
     "command": "forget",
-    "auth": "验证邮箱",
+    "group": "readers",//"staffs"
+    "username": "用户名",
+    "email": "验证邮箱",
 }
 
 //Re:

@@ -53,7 +53,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEBOOK",
-    "commond": "deletebook",
+    "command": "deletebook",
     "bookid": [
         1,
         2,
@@ -75,7 +75,7 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEBOOK",
-    "commond": "changebook",
+    "command": "changebook",
     "bookid": 1,
     "info": [
         {
@@ -126,14 +126,15 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEBOOK",
-    "commond": "changegroup",
-    "groupid": 1,
+    "command": "changegroup",
+    "groupid": 2,
     "bookid": [
         1,
         2,
         3
     ]
 }
+
 //Re:
 {
     "result":true

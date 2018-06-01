@@ -5,13 +5,13 @@
     "type": "QUERY",
     "command": "book",
     "rule": "completesearch",
-    "content": [
+    "info": [
         {
             "field": "name",
             "data": "C++ Primer Plus"
         },
         {
-            "field": "auther",
+            "field": "author",
             "data": "Stephen Prata"
         },
         {
@@ -64,13 +64,13 @@
     "type": "QUERY",
     "command": "book",
     "rule": "fuzzysearch",
-    "content": [
+    "info": [
         {
             "field": "name",
             "data": "Primer Plus"
         },
         {
-            "field": "auther",
+            "field": "author",
             "data": "Stephen"
         },
         {
@@ -131,7 +131,7 @@
     "type": "QUERY",
     "command": "book",
     "rule": "intelligentsearch",
-    "content": "关键词"
+    "info": "关键词"
 }
 
 //Re:
@@ -149,7 +149,7 @@
     "token": "该对话所对应的令牌",
     "type": "QUERY",
     "command": "operationlog",
-    "content": [
+    "info": [
         {
             "field": "logid",
             "data": 102
@@ -182,7 +182,7 @@
     "token": "该对话所对应的令牌",
     "type": "QUERY",
     "command": "borrowlog",
-    "content": [
+    "info": [
         {
             "field": "logid",
             "data": 102
