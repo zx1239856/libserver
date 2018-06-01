@@ -40,6 +40,8 @@ void config::Load()
     m_dataDir = Get("web/data_dir").toString();
     // logpath
     m_logPath = Get("web/log_path").toString();
+    m_threadKeepAliveTimeout = Get("web/threadKeepAliveTimeout").toUInt();
+    m_epoll = Get("web/useEpoll").toBool();
     // database
     m_dbHost= Get("database/host").toString();
     m_dbPort= Get("database/port").toUInt();

@@ -2,14 +2,18 @@
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEBOOK",
-    "commond": "createbook",
+    "command": "createbook",
     "info": [
         {
             "field": "name",
             "data": "C++ Primer Plus"
         },
+		{
+			"field": "groupID",
+            "data": 1
+		},
         {
-            "field": "auther",
+            "field": "author",
             "data": "Stephen Prata"
         },
         {
@@ -20,23 +24,15 @@
             "field": "ISBN",
             "data": "978-7-115-27946-0"
         },
-        {
-            "field": "tags",
-            "data": [
-                1,
-                2,
-                3
-            ]
-        },
-        {
+		{
             "field": "price",
             "data": 99.0
         },
-        {
+		{
             "field": "bookcase",
             "data": 1
         },
-        {
+		{
             "field": "available",
             "data": true
         }
@@ -86,8 +82,12 @@
             "field": "name",
             "data": "C++ Primer Plus"
         },
+		{
+			"field": "groupID",
+            "data": 1
+		},
         {
-            "field": "auther",
+            "field": "author",
             "data": "Stephen Prata"
         },
         {
@@ -98,23 +98,15 @@
             "field": "ISBN",
             "data": "978-7-115-27946-0"
         },
-        {
-            "field": "tags",
-            "data": [
-                1,
-                2,
-                3
-            ]
-        },
-        {
+		{
             "field": "price",
             "data": 99.0
         },
-        {
+		{
             "field": "bookcase",
-            "data":
+            "data": 1
         },
-        {
+		{
             "field": "available",
             "data": true
         }

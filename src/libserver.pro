@@ -1,5 +1,6 @@
 include(daemon/daemon-lib.pri)
 include(libserver.pri)
+include(qcron/qcron.pri)
 
 QMAKE_CXXFLAGS += -Wimplicit-fallthrough=0 -Wswitch
 
@@ -30,7 +31,7 @@ HEADERS += \
     utils/handle/operateuserhdl.h \
     utils/handle/operategrouphdl.h \
     utils/handle/operatebookhdl.h \
-    utils/cryto/token.h \
+    utils/crypto/token.h \
     utils/file/imghandler.h \
     utils/smtp/emailaddress.h \
     utils/smtp/mimeattachment.h \
@@ -48,7 +49,8 @@ HEADERS += \
     utils/smtp/SmtpMime \
     utils/smtp/sendemail.h \
     utils/dbwrapper/sqlarray.h \
-    utils/file/tcpfiletransfer.h
+    utils/file/tcpfiletransfer.h \
+    utils/worker/bgworker.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \
@@ -71,7 +73,7 @@ SOURCES += \
     utils/handle/operateuserhdl.cpp \
     utils/handle/operategrouphdl.cpp \
     utils/handle/operatebookhdl.cpp \
-    utils/cryto/token.cpp \
+    utils/crypto/token.cpp \
     utils/file/imghandler.cpp \
     utils/smtp/emailaddress.cpp \
     utils/smtp/mimeattachment.cpp \
@@ -87,7 +89,8 @@ SOURCES += \
     utils/smtp/smtpclient.cpp \
     utils/smtp/sendemail.cpp \
     utils/dbwrapper/sqlarray.cpp \
-    utils/file/tcpfiletransfer.cpp
+    utils/file/tcpfiletransfer.cpp \
+    utils/worker/bgworker.cpp
 
 unix:!macx  {
     HEADERS += \

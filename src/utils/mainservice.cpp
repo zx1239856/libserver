@@ -1,7 +1,8 @@
 #include "mainservice.h"
 #include "qdaemonapplication.h"
-#include "utils/cryto/token.h"
+#include "utils/crypto/token.h"
 #include "qdaemonlog.h"
+#include "qcron.h"
 
 controlhdl* ctrl;
 
@@ -53,7 +54,7 @@ void mainService::start()
 
   // initiate websocket
   server = new webServer;
-  server->init(conf->port(),conf->ccurrency());
+  server->init(conf->port(),conf->ccurrency(),conf->threadKeepAliveTimeout()*1000);
   ctrl = controlhdl::getInstance();
 }
 

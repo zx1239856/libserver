@@ -6,7 +6,7 @@
 #include <QMetaEnum>
 #include "utils/handle/controlhdl.h"
 #include "utils/dbwrapper/db-operation.h"
-#include "utils/cryto/token.h"
+#include "utils/crypto/token.h"
 #include "utils/exception.h"
 #include "globalInfo.h"
 

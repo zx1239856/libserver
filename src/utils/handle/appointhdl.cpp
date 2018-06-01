@@ -12,7 +12,6 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
     QMetaEnum me = QMetaEnum::fromType<appointhdl::CMD>();
 
     basicSQL* msql = nullptr;
-    bool success;
 
     switch(me.keyToValue(cmd))
     {

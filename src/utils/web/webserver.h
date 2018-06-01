@@ -11,7 +11,7 @@ class webServer: public QTcpServer
     Q_OBJECT
 public:
     explicit webServer(QObject *parent = 0);
-    void init(int port, int ccurrency);
+    void init(int port, int ccurrency, uint keepAlive);
     ~webServer();
 
 protected:
