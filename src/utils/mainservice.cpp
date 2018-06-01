@@ -2,7 +2,8 @@
 #include "qdaemonapplication.h"
 #include "utils/crypto/token.h"
 #include "qdaemonlog.h"
-#include "qcron.h"
+#include "utils/worker/bgworker.h"
+#include "utils/worker/bgworkercontroller.h"
 
 controlhdl* ctrl;
 
@@ -53,6 +54,10 @@ void mainService::start()
   dbT->start();*/
 
   // initiate websocket
+  pdfConversion *conv= new pdfConversion("./data/","./output/",pdfConversion::multiFile);
+  bgWorkerController *controller = new bgWorkerController();
+  controller->start();
+  controller->addWork(conv);
   server = new webServer;
   server->init(conf->port(),conf->ccurrency(),conf->threadKeepAliveTimeout()*1000);
   ctrl = controlhdl::getInstance();
