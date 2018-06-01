@@ -5,7 +5,6 @@
     "command": "bookpic",
     "id": 1 //书的id
 }
-
 //下载PDF的预览图
 {
     "token": "该对话所对应的令牌",
