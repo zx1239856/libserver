@@ -3,7 +3,7 @@
     "token": "该对话所对应的令牌",
     "type": "OPERATE",
     "command": "setting",
-    "content":[
+    "info":[
         {
             "field": "",
             "data": ""

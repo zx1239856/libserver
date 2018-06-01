@@ -8,7 +8,7 @@
     "order": [
         "name", "author"
     ],
-    "content": [
+    "info": [
         {
             "field": "name",
             "data": "C++ Primer Plus"
@@ -71,13 +71,13 @@
     "order": [
         "name","author"
     ],
-    "content": [
+    "info": [
         {
             "field": "name",
             "data": "Primer Plus"
         },
         {
-            "field": "auther",
+            "field": "author",
             "data": "Stephen"
         },
         {
@@ -138,5 +138,5 @@
     "type": "QUERY",
     "command": "book",
     "rule": "intelligentsearch",
-    "content": "关键词"
+    "info": "关键词"
 }

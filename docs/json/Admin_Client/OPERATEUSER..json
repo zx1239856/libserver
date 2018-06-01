@@ -9,6 +9,10 @@
             "data": 1
         },
         {
+            "field": "username",
+            "data": "登录用户名"
+        },
+        {
             "field": "password",
             "data": "SHA-1处理后的密码"
         },

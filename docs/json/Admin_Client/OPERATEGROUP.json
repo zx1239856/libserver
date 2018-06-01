@@ -4,13 +4,13 @@
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
     "command": "createreader",
-    "content":[
+    "info":[
         {
             "field": "name",
             "data": "一级读者"
         },
         {
-            "field": "max_num",
+            "field": "max_borrow_num",
             "data": 10 //最多同时借书本数
         },
         {
@@ -39,10 +39,14 @@
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
     "command": "createstaff",
-    "content":[
+    "info":[
         {
             "field": "name",
             "data": "一级管理员"
+        },
+        {
+            "field": "privileges",
+            "data": 1
         }
     ]
 }
@@ -62,7 +66,7 @@
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
     "command": "createbook",
-    "content":[
+    "info":[
         {
             "field": "name",
             "data": "常用书"
@@ -91,13 +95,13 @@
     "type": "OPERATEGROUP",
     "command": "changereader",
     "groupid": 1,
-    "content":[
+    "info":[
         {
             "field": "name",
             "data": "一级读者"
         },
         {
-            "field": "max_num",
+            "field": "max_borrow_num",
             "data": 10 //最多同时借书本数
         },
         {
@@ -117,10 +121,14 @@
     "type": "OPERATEGROUP",
     "command": "changestaff",
     "groupid": 1,
-    "content":[
+    "info":[
         {
             "field": "name",
             "data": "一级管理员"
+        },
+        {
+            "field": "privileges",
+            "data": 1
         }
     ]
 }
@@ -131,7 +139,7 @@
     "type": "OPERATEGROUP",
     "command": "changebook",
     "groupid": 1,
-    "content":[
+    "info":[
         {
             "field": "name",
             "data": "常用书"
@@ -143,13 +151,14 @@
     ]
 }
 
+
 //删除组（注意：删除的组必须为空）
 //删除读者组
 {
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
     "command": "deletereader",
-    "groupid": 1,
+    "groupid": 1
 }
 
 //删除工作人员组
@@ -157,7 +166,7 @@
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
     "command": "deletestaff",
-    "groupid": 1,
+    "groupid": 1
 }
 
 //删除图书组
@@ -165,5 +174,5 @@
     "token": "该对话所对应的令牌",
     "type": "OPERATEGROUP",
     "command": "deletebook",
-    "groupid": 1,
+    "groupid": 1
 }
