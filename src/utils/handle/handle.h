@@ -8,6 +8,7 @@
 #include "utils/dbwrapper/db-operation.h"
 #include "utils/cryto/token.h"
 #include "utils/exception.h"
+#include "globalInfo.h"
 
 #define HDL_DB_ERROR(json) json.insert("result", false); \
 json.insert("detail", "database server error");

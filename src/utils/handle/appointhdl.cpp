@@ -1,6 +1,7 @@
 #include "appointhdl.h"
 
 using namespace sql;
+using namespace globalInfo;
 
 appointhdl::appointhdl(const QString& token): handle(token){}
 
@@ -18,32 +19,24 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
     case appointborrow:
         if(ID > 0)
         {
-            dbQT.setSqlQuery(msql);
-            dbQT.start();
-            dbQT.wait();
             QMap<QString, QVariant> mAppoint;
             mAppoint.insert("readerid", ID);
             mAppoint.insert("type", "borrow");
             mAppoint.insert("bookid", json.value("id").toInt());
             mAppoint.insert("appointtime", json.value("appointtime").toString());
-            msql = new sql::insert("libserver.lib_currappoint", mAppoint);
-            success = msql->exec();
-            if(success)
-                jsonReturn.insert("result", true);
-            else
-            {
-                qDebug() << msql->lastError();
-                jsonReturn.insert("result", false);
-                jsonReturn.insert("detail", "wrong database operation");
-            }
+            msql = new sql::insert(dbFullPrefix + "currappoint", mAppoint);
+            if(msql->exec())
+                HDL_SUCCESS(jsonReturn)
+                        else
+                {
+                    HDL_DB_ERROR(jsonReturn)
+                }
         }
         else
         {
-            jsonReturn.insert("result", false);
-            jsonReturn.insert("detail", "wrong token");
+            HDL_INV_TOKEN(jsonReturn)
         }
         break;
-
     case appointreturn:
         if(ID > 0)
         {
@@ -52,20 +45,17 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
             mAppoint.insert("type", "return");
             mAppoint.insert("bookid", json.value("id").toInt());
             mAppoint.insert("appointtime", json.value("appointtime").toString());
-            msql = new sql::insert("libserver.lib_currappoint", mAppoint);
-            msql->exec();
-            if(success)
-                jsonReturn.insert("result", true);
-            else
-            {
-                jsonReturn.insert("result", false);
-                jsonReturn.insert("detail", "wrong database operation");
-            }
+            msql = new sql::insert(dbFullPrefix + "currappoint", mAppoint);
+            if(msql->exec())
+                HDL_SUCCESS(jsonReturn)
+                        else
+                {
+                    HDL_DB_ERROR(jsonReturn)
+                }
         }
         else
         {
-            jsonReturn.insert("result", false);
-            jsonReturn.insert("detail", "wrong token");
+            HDL_INV_TOKEN(jsonReturn)
         }
         break;
     }

@@ -29,9 +29,9 @@ void controlhdl::DeleteUser(const QString &token)
 
 controlhdl* controlhdl::getInstance()
 {
-  if(instance==nullptr)
-  {
-      instance = new controlhdl();
-  }
-  return instance;
+    if(instance==nullptr)
+    {
+        instance = new controlhdl();
+    }
+    return instance;
 }

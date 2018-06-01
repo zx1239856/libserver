@@ -1,4 +1,5 @@
 #include "userhdl.h"
+#include "utils/smtp/sendemail.h"
 #include "globalInfo.h"
 
 using namespace sql;
@@ -20,14 +21,14 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
         if(ID == -1) // check token
         {
             msql = new sql::select(dbFullPrefix + json.value("group").toString(),
-                              "username = '" + json.value("username").toString()+"'");
+                                   "username = '" + json.value("username").toString()+"'");
             if(msql->exec())  // db okay
             {
                 sqlresult = msql->toResult();
                 if(sqlresult.size() == 1) // user found
                 {
                     if(sqlresult[0].value("password").toString()==json.value("password").toString()) // pwd valid
-                      {
+                    {
                         QString token = token::getToken(json.value("username").toString());
                         ctrl->AddUser(token,
                                       qMakePair(json.value("group").toString(), sqlresult[0].value("ID").toInt()));
@@ -36,12 +37,12 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
 #ifdef VERBOSE_OUTPUT
                         qDebug() << ctrl->mClient;
 #endif
-                      }
+                    }
                     else // wrong pwd
-                      {
+                    {
                         jsonReturn.insert("result", false);
                         jsonReturn.insert("detail", "wrong password");
-                      }
+                    }
                 }
                 else // not found
                 {
@@ -64,20 +65,33 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
         if(ID == -1)
         {
             msql = new sql::select(dbFullPrefix + json.value("group").toString(),
-                              "username = '" + json.value("username").toString() + "' AND email = '" + json.value("auth").toString() + "'");
+                                   "username = '" + json.value("username").toString() + "' AND email = '" + json.value("email").toString() + "'");
             if(msql->exec())
             {
                 sqlresult = msql->toResult();
                 if(sqlresult.size() == 1)
                 {
-                //email and notify the user to check it
-                jsonReturn.insert("result", true);
+                    QString newpwd = token::getToken(json.value("username").toString());
+                    QMap<QString, QVariant> map;
+                    map.insert("password", newpwd);
+                    sql::update updatepwd(dbFullPrefix + json.value("group").toString(), map, "username = '" + json.value("username").toString() + "' AND email = '" + json.value("email").toString() + "'");
+                    if(updatepwd.exec())
+                    {
+                        QStringList rcp(json.value("email").toString());
+                        sendEmail email(*config::getInstance(), rcp, "Fetch Your Password", emailContent(newpwd));
+                        email.send();
+                        HDL_SUCCESS(jsonReturn);
+                    }
+                    else
+                    {
+                        HDL_DB_ERROR(jsonReturn)
+                    }
                 }
                 else
-                  {
+                {
                     jsonReturn.insert("result", false);
                     jsonReturn.insert("detail", "wrong username or email");
-                  }
+                }
             }
             else
             {
@@ -107,9 +121,9 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
         if(ID > 0)
         {
             msql = new sql::select(dbFullPrefix + group,
-                              "ID = " + QString::number(ID) + " AND  password = '" + json.value("oldpwd").toString() + "'");
+                                   "ID = " + QString::number(ID) + " AND  password = '" + json.value("oldpwd").toString() + "'");
             if(msql->exec())
-              {
+            {
                 sqlresult = msql->toResult();
                 if(sqlresult.size() > 0)
                 {
@@ -124,11 +138,11 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                     jsonReturn.insert("result", false);
                     jsonReturn.insert("detail", "wrong old password");
                 }
-              }
+            }
             else
-              {
+            {
                 HDL_DB_ERROR(jsonReturn)
-              }
+            }
         }
         else
         {

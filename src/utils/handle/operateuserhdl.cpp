@@ -1,4 +1,6 @@
 #include "operateuserhdl.h"
+using namespace sql;
+using namespace globalInfo;
 
 operateuserhdl::operateuserhdl(const QString& token): handle(token){}
 
@@ -11,13 +13,116 @@ void operateuserhdl::deal(const QString &command, const QJsonObject &json)
     switch(me.keyToValue(cmd))
     {
     case createuser:
-
+        if(ID>0)
+        {
+            if(group!="staffs")
+            {
+                HDL_PERM_DENIED(jsonReturn)
+            }
+            else
+            {
+                QJsonArray info = json.value("info").toArray();
+                QMap<QString,QVariant> map;
+                map.insert(map.end(),"ID",0);
+                for(const QJsonValue& x:info)
+                {
+                    QJsonObject obj = x.toObject();
+                    if(obj.value("data").isString())
+                        map.insert(map.end(),obj.value("field").toString(),obj.value("data").toString());
+                    else if(obj.value("data").isBool())
+                        map.insert(map.end(),obj.value("field").toString(),obj.value("data").toBool());
+                    else if(obj.value("data").isDouble())
+                        map.insert(map.end(),obj.value("field").toString(),obj.value("data").toDouble());
+                }
+                sql::insert msql(dbFullPrefix + "readers", map);
+                connect(&msql, &sql::insert::onFail, [=](const QSqlError &err){
+                    qDebug()<<err;
+                });
+                if(msql.exec())
+                {
+                    HDL_SUCCESS(jsonReturn)
+                }
+                else
+                {
+                    HDL_DB_ERROR(jsonReturn)
+                }
+            }
+        }
+        else
+        {
+            HDL_INV_TOKEN(jsonReturn)
+        }
         break;
     case deleteuser:
-
+        if(ID>0)
+        {
+            if(group!="staffs")
+            {
+                HDL_PERM_DENIED(jsonReturn)
+            }
+            else
+            {
+                auto userid = json.value("userid").toArray();
+                bool success = true;
+                for(auto x:userid)
+                {
+                    sql::del msql(dbFullPrefix + "readers", "ID = " + QString::number(x.toInt()));
+                    if(!msql.exec())
+                    {
+                        success = false;
+                    }
+                }
+                if(success)
+                {
+                    HDL_SUCCESS(jsonReturn)
+                }
+                else
+                {
+                    HDL_DB_ERROR(jsonReturn)
+                }
+            }
+        }
+        else
+        {
+            HDL_INV_TOKEN(jsonReturn)
+        }
         break;
     case changegroup:
-
+        if(ID>0)
+        {
+            if(group!="staffs")
+            {
+                HDL_PERM_DENIED(jsonReturn)
+            }
+            else
+            {
+                auto userid = json.value("userid").toArray();
+                int groupid = json.value("groupid").toInt();
+                QMap<QString, QVariant> map;
+                map.insert("groupid", groupid);
+                bool success = true;
+                for(auto x:userid)
+                {
+                    sql::update msql(dbFullPrefix + "readers", map, "ID = " + QString::number(x.toInt()));
+                    if(!msql.exec())
+                    {
+                        success = false;
+                    }
+                }
+                if(success)
+                {
+                    HDL_SUCCESS(jsonReturn)
+                }
+                else
+                {
+                    HDL_DB_ERROR(jsonReturn)
+                }
+            }
+        }
+        else
+        {
+            HDL_INV_TOKEN(jsonReturn)
+        }
         break;
     }
 }
