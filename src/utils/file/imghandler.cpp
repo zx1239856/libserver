@@ -36,6 +36,7 @@ QImage ImgHandler::compress(compressRatio _ratio)
         case bySizeLow: rate = 0.3;break;
         case bySizeMid: rate = 0.5;break;
         case bySizeHigh: rate = 0.8;break;
+        default: break;
         }
       destHeight*=rate;
       destWidth*=rate;
@@ -43,27 +44,27 @@ QImage ImgHandler::compress(compressRatio _ratio)
     }
 }
 
-bool ImgHandler::save(const QImage& img, const QString &fileName,const QString& dir)
+bool ImgHandler::save(const QImage& img, const QString &fileName,const QString& dir,int quality)
 {
-  return img.save(dir+fileName);
+  return img.save(dir+fileName,nullptr,quality);
 }
 
-bool ImgHandler::save(const QImage& img, const QString& dir)
+bool ImgHandler::save(const QImage& img, const QString& dir,int quality)
 {
   qint64 time = QDateTime::currentMSecsSinceEpoch();
   if(img.hasAlphaChannel())
     {
-        return img.save(dir+QString::number(time)+".PNG");
+        return img.save(dir+QString::number(time)+".PNG",nullptr,quality);
     }
-  else return img.save(dir+QString::number(time)+".JPG");
+  else return img.save(dir+QString::number(time)+".JPG",nullptr,quality);
 }
 
-bool ImgHandler::save(const QString &fileName,const QString& dir)
+bool ImgHandler::save(const QString &fileName,const QString& dir,int quality)
 {
-  return save(this->src,fileName,dir);
+  return save(this->src,fileName,dir,quality);
 }
 
-bool ImgHandler::save(const QString& dir)
+bool ImgHandler::save(const QString& dir,int quality)
 {
-  return save(this->src,dir);
+  return save(this->src,dir,quality);
 }

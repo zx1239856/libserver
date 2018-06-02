@@ -7,6 +7,8 @@
 #include "bgworker.h"
 #include "qcron.h"
 
+class mainService;
+
 namespace bgControllerPriv {
   class process:public QObject
   {
@@ -23,17 +25,18 @@ namespace bgControllerPriv {
 class bgWorkerController:public QThread
 {
   Q_OBJECT
+  friend class mainService;
   QThread *managedThread = nullptr;
   std::set<AbstractWorker*> singleWork;
   std::map<QCron*,AbstractWorker*> multiWork;
   bgControllerPriv::process *proc;
-public:
   explicit bgWorkerController(QObject *parent = nullptr);
+  void run()override;
+public:
   // for works run only once
   void addWork(AbstractWorker *newWork);
   // for works run multiple times
   void addWork(AbstractWorker *newWork, const QString cronPattern);
-  void run()override;
   ~bgWorkerController();
 signals:
   void singleWorkAdded(AbstractWorker *work);

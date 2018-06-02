@@ -18,39 +18,47 @@ pdfHandler::~pdfHandler()
   if(document)delete document;
 }
 
+QImage pdfHandler::getPdfImage(int pNum, uint dpi)const
+{
+  using namespace pdf;
+  QImage image;
+  Poppler::Page* pdfPage = document->page(pNum);
+  if (pdfPage == nullptr) {
+      throw("Invalid page number specified");
+      return image;
+  }
+  // Generate image from a certain page
+  image = pdfPage->renderToImage(dpi, dpi, -1, -1, -1, -1);
+  if(waterMark)
+    {
+       addWaterMark(image,*waterMark,rotation,opacity,line,full);
+    }
+  if (image.isNull()) {
+      delete pdfPage;
+      throw("Image conversion failed.");
+      return image;
+  }
+  delete pdfPage;
+  return image;
+}
+
 QImage pdfHandler::getPdfImage(int pNum, pdf::resolution res)const
 {
-    using namespace pdf;
-    QImage image;
-    Poppler::Page* pdfPage = document->page(pNum);
-    if (pdfPage == nullptr) {
-        throw("Invalid page number specified");
-        return image;
+  using namespace pdf;
+  uint dpi;
+  switch(res)
+    {
+    case normal: dpi=72;break;
+    case low: dpi=50;break;
+    case mid: dpi=150;break;
+    case good: dpi=225;break;
+    case high: dpi=300;break;
+    case ultra: dpi=600;break;
+    default: dpi=72;
     }
-    // Generate image from a certain page
-    int dpi;
-    switch(res)
-      {
-      case normal: dpi=72;break;
-      case low: dpi=50;break;
-      case mid: dpi=150;break;
-      case high: dpi=300;break;
-      case ultra: dpi=600;break;
-      default: dpi=72;
-      }
-    image = pdfPage->renderToImage(dpi, dpi, -1, -1, -1, -1); // 72 dpi
-    if(waterMark)
-      {
-         addWaterMark(image,*waterMark,rotation,opacity,line,full);
-      }
-    if (image.isNull()) {
-        delete pdfPage;
-        throw("Image conversion failed.");
-        return image;
-    }
-    delete pdfPage;
-    return image;
+  return getPdfImage(pNum,dpi);
 }
+
 int pdfHandler::getNumPages()const
 {
     return numPages;
@@ -90,7 +98,7 @@ bool pdfHandler::addWaterMark(QImage &src,const QImage &watermark,qreal rotation
   int ylines = line;
   qreal yoffset = static_cast<qreal>(src.height())/(ylines);
   // resize the watermark to fit with the bg
-  qreal ratio=1.0*std::min(src.height(),src.width())/std::max(watermark.height(),watermark.width());
+  qreal ratio=0.8*std::min(src.height(),src.width())/std::max(watermark.height(),watermark.width());
   QImage water = watermark.scaledToHeight(watermark.height()*ratio/ylines);
   water = water.scaledToWidth(watermark.width()*ratio/ylines);
   // set opacity

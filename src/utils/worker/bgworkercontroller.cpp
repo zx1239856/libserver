@@ -103,4 +103,6 @@ bgWorkerController::~bgWorkerController()
       if(it->first)it->first->deleteLater();
     }
   if(proc)delete proc;
+  this->quit();
+  this->wait();
 }

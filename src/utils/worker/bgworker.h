@@ -33,13 +33,16 @@ public:
     multiFile
   };
 private:
+  QString watermk;
+  QImage *watermkImg = nullptr;
   const QString src;
   const QString dst;
   mode currentMode;
   pdfHandler *pdf;
+  uint dpi;
   bool process(const QString file);
 public:
-  pdfConversion(const QString &src, const QString &dst, mode Mode);
+  pdfConversion(const QString &src, const QString &dst, mode Mode,uint dp=200);
   void run() override;
   ~pdfConversion()override;
 };

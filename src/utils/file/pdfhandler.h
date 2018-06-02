@@ -7,7 +7,7 @@
 
 namespace pdf
 {
-  enum resolution{normal,low,mid,high,ultra};
+  enum resolution{normal,low,mid,good,high,ultra};
 }
 
 class pdfHandler
@@ -15,6 +15,7 @@ class pdfHandler
 public:
     explicit pdfHandler(const QString& filePath);
     ~pdfHandler();
+    QImage getPdfImage(int pageNum, uint dpi)const;
     QImage getPdfImage(int pageNum, pdf::resolution res = pdf::normal)const;
     int getNumPages()const;
     QSize getPageSize()const;

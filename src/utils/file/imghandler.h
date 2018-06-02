@@ -17,11 +17,11 @@ public:
   };
   ImgHandler(const QImage& src);
   QImage compress(compressRatio ratio);
-  bool save(const QString &fileName,const QString& dir);
-  bool save(const QString& dir);
-  static bool save(const QImage& img, const QString &fileName,const QString& dir);
+  bool save(const QString &fileName,const QString& dir,int quality=-1);
+  bool save(const QString& dir,int quality=-1);
+  static bool save(const QImage& img, const QString &fileName,const QString& dir,int quality=-1);
   // default timestamp filename, auto detect alpha channel
-  static bool save(const QImage& img, const QString& dir);
+  static bool save(const QImage& img, const QString& dir,int quality=-1);
 };
 
 #endif // IMGHANDLER_H

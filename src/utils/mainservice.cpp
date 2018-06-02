@@ -7,56 +7,36 @@
 
 controlhdl* ctrl;
 
+std::shared_ptr<bgWorkerController> mainService::pdfTasks = nullptr;
+std::shared_ptr<bgWorkerController> mainService::cronTasks = nullptr;
+
 mainService::mainService(config* _conf,QObject *parent) :
   QObject(parent),conf(_conf),server(nullptr)
-{}
+{
+  bgTasks.push_back(std::shared_ptr<bgWorkerController>(new bgWorkerController()));
+  bgTasks.push_back(std::shared_ptr<bgWorkerController>(new bgWorkerController()));
+  pdfTasks = bgTasks[0];
+  cronTasks = bgTasks[1];
+  bgTasks[0]->start();
+  bgTasks[1]->start();
+}
 
 mainService::~mainService()
 {
   if(server)
     server->deleteLater();
+  bgTasks.clear();
 }
 
 void mainService::start()
 {
-
   // dbConn Init
   dbConn::setConf(conf);
   dbConn::getInstance();
   // All init end
-
-  /*// other miscellaneous stuffs here
-  // this db part here would cause The acquired DBus interface replied erroneously.
-  // for unknown reasons
-  sql::select *sel= new sql::select("libserver.lib_books");
-  dbQueryThread *dbT= new dbQueryThread(sel,conf->dbConnTimeOut);
-  QObject::connect(dbT,&dbQueryThread::onResult,this,
-                   [&](const QVector<QSqlRecord>& res)
-  {
-      dbT->quit();
-      for(int i=0;i<res.size();++i)
-        {
-          for(int j=0;j<res[i].count();++j)
-            {
-              qWarning() << res[i].fieldName(j) << res[i].value(j);
-            }
-        }
-      dbT->deleteLater();
-  },Qt::DirectConnection);
-  QObject::connect(dbT,&dbQueryThread::onFail,this,
-                   [&](const QSqlError &err)
-  {
-      qWarning() << err;
-      dbT->terminate();
-      dbT->wait();
-      dbT->deleteLater();
-    },Qt::DirectConnection);
-  dbT->start();*/
-
+  pdfConversion* conv = new pdfConversion(conf->dataDir()+"file.pdf",conf->dataDir()+"output/",pdfConversion::singleFile,200);
+  pdfTasks->addWork(conv);
   // initiate websocket
-  //bgWorkerController *controller = new bgWorkerController();  // add controller
-  ///controller->start();
-  ///controller->addWork(work,QString("*/1 * * * * *"));
   server = new webServer;
   server->init(conf->port(),conf->ccurrency(),conf->threadKeepAliveTimeout()*1000);
   ctrl = controlhdl::getInstance();
@@ -66,4 +46,14 @@ void mainService::stop()
 {
   // may reimplement here
   QDaemonApplication::quit();
+}
+
+std::shared_ptr<bgWorkerController> mainService::getCronController()
+{
+  return cronTasks;
+}
+
+std::shared_ptr<bgWorkerController> mainService::getPdfTaskController()
+{
+  return pdfTasks;
 }
