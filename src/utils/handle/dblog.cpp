@@ -14,32 +14,22 @@ void dbLog::log(const QString type, const QString content, uint operatorID, oper
   QString t;
   switch(opType)
     {
-    case staff: t="staff";
-    case reader: t="reader";
+    case staff: t="staff";break;
+    case reader: t="reader";break;
     default: t="other";
     }
-  sql::basicSQL resetter("ALTER TABLE "+dbFullPrefix +"operation_log AUTO_INCREMENT =1");
-  if(!resetter.exec())
+  QMap<QString,QVariant> list;
+  list["ID"]=0;
+  list["type"]=type;
+  list["content"]=content;
+  list["time"]=QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss");
+  list["operatorID"] = operatorID;
+  list["operatorType"] = t;
+  sql::insert ins(dbFullPrefix+"operation_log",list);
+  if(!ins.exec())
     {
       qDaemonLog("Log to db failed.",QDaemonLog::ErrorEntry);
-      qDaemonLog("Opeation: ["+ type + "] " + content + " " + operatorID + " " + t);
+      qDaemonLog("Opeation: ["+ type + "] " + content + ", ID: " + QString::number(operatorID) + " " + t);
       return;
-    }
-  else
-    {
-      QMap<QString,QVariant> list;
-      list["ID"]=0;
-      list["type"]=type;
-      list["content"]=content;
-      list["time"]=QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss");
-      list["operatorID"] = operatorID;
-      list["operatorType"] = t;
-      sql::insert ins(dbFullPrefix+"operation_log",list);
-      if(!ins.exec())
-        {
-          qDaemonLog("Log to db failed.",QDaemonLog::ErrorEntry);
-          qDaemonLog("Opeation: ["+ type + "] " + content + " " + operatorID + " " + t);
-          return;
-        }
     }
 }
