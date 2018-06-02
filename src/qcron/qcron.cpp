@@ -57,21 +57,21 @@ _checkState()
     int interval_ms = 0;
     if (match(QDateTime::currentDateTime()))
     {
-        emit activated();
+        emit activated(this);
         _is_active = true;
-        interval_ms = 1000 * 60; // one minute
+        interval_ms = 500 * 60; // half minute
     }
     else
     {
         if (_is_active)
         {
-            emit deactivated();
+            emit deactivated(this);
             _is_active = false;
         }
         interval_ms = QDateTime::currentDateTime().secsTo(next()) * 1000;
     }
     QTimer::singleShot(interval_ms,
-                       Qt::VeryCoarseTimer,
+                       Qt::CoarseTimer,
                        this,
                        SLOT(_checkState()));
 }

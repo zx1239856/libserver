@@ -54,10 +54,9 @@ void mainService::start()
   dbT->start();*/
 
   // initiate websocket
-  pdfConversion *conv= new pdfConversion("./data/","./output/",pdfConversion::multiFile);
-  bgWorkerController *controller = new bgWorkerController();
-  controller->start();
-  controller->addWork(conv);
+  //bgWorkerController *controller = new bgWorkerController();  // add controller
+  ///controller->start();
+  ///controller->addWork(work,QString("*/1 * * * * *"));
   server = new webServer;
   server->init(conf->port(),conf->ccurrency(),conf->threadKeepAliveTimeout()*1000);
   ctrl = controlhdl::getInstance();

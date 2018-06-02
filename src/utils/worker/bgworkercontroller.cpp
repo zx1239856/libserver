@@ -34,35 +34,47 @@ bgWorkerController::bgWorkerController(QObject *parent):QThread(parent),proc(nul
 
 void bgWorkerController::addWork(AbstractWorker *newWork)
 {
-  if(managedThread)
+  while(true)
     {
-      newWork->moveToThread(managedThread);
-    }
-  else
-    {
-      qDebug() << "Warning, thread not started.";
+      if(managedThread)
+        {
+          newWork->moveToThread(managedThread);
+          break;
+        }
+      else
+        {
+          qDebug() << "Warning, controller thread not started. Wait until it start";
+        }
     }
   singleWork.insert(newWork);
   emit singleWorkAdded(newWork);
 }
 
-void bgWorkerController::addWork(AbstractWorker *newWork, const QString &cronPattern)
+void bgWorkerController::addWork(AbstractWorker *newWork, const QString cronPattern)
 {
-  if(managedThread)
+  while(true)
     {
-      newWork->moveToThread(managedThread);
-    }
-  else
-    {
-      qDebug() << "Warning, thread not started.";
+      if(managedThread)
+        {
+          newWork->moveToThread(managedThread);
+          break;
+        }
+      else
+        {
+          qDebug() << "Warning, controller thread not started. Wait until it start";
+        }
     }
   auto cron = new QCron(cronPattern);
-  multiWork.insert({newWork,cron});
+  multiWork.insert({cron,newWork});
   // the work is processed when the cron is active
   // no need to destroy after finish
-  connect(cron,&QCron::activated,proc,[&]()
+  connect(cron,&QCron::activated,proc,[&](QCron *c)
   {
-      proc->processMulti(newWork);
+    auto it = multiWork.find(c);
+    if(it!=multiWork.end())
+      {
+        proc->processMulti(it->second);
+      }
   },Qt::QueuedConnection);
 }
 

@@ -44,5 +44,4 @@ public:
   ~pdfConversion()override;
 };
 
-
 #endif // BGWORKER_H
