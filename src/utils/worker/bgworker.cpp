@@ -1,8 +1,8 @@
 #include "bgworker.h"
 #include "utils/file/pdfhandler.h"
 #include "utils/file/imghandler.h"
-#include "utils/dbwrapper/db-operation.h"
-#include "globalInfo.h"
+#include "utils/handle/dbsettings.h"
+#include "utils/config.h"
 #include <QDir>
 
 AbstractWorker::AbstractWorker()
@@ -34,6 +34,7 @@ bool pdfConversion::process(const QString file)
     {
       return false;
     }
+  watermk = dbSettings::getSetting("pdfWaterMark");
   if(watermkImg)
   {
      pdf->setWatermark(*watermkImg,45,0.2,1);
@@ -53,25 +54,8 @@ bool pdfConversion::process(const QString file)
 
 void pdfConversion::run()
 {
-  using namespace globalInfo;
   // get watermark filename
-  sql::select sel(dbFullPrefix+"settings","variable='pdfWaterMark'",{"value"});
-  if(sel.exec())
-    {
-      auto res = sel.toResult();
-      if(!res.empty())
-        {
-          watermk = res[0].value("value").toString();
-        }
-      else
-        {
-          qDebug() << "Watermark settings not present in db";
-        }
-    }
-  else
-    {
-      qDebug() << "Failed to fetch watermark filename from db";
-    }
+
   if(!watermk.isEmpty())
     {
       watermkImg = new QImage(config::getInstance()->dataDir()+"watermark/"+watermk);

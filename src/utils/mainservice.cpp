@@ -5,6 +5,7 @@
 #include "utils/worker/bgworker.h"
 #include "utils/worker/bgworkercontroller.h"
 #include "utils/handle/dblog.h"
+#include "utils/handle/dbsettings.h"
 
 controlhdl* ctrl;
 
@@ -38,6 +39,7 @@ void mainService::start()
   pdfConversion* conv = new pdfConversion(conf->dataDir()+"file.pdf",conf->dataDir()+"output/",pdfConversion::singleFile,200);
   pdfTasks->addWork(conv);
   dbLog::log("logout","User logout",123,dbLog::staff);
+  dbSettings::setSetting("libLogo","test",13);
   // initiate websocket
   server = new webServer;
   server->init(conf->port(),conf->ccurrency(),conf->threadKeepAliveTimeout()*1000);

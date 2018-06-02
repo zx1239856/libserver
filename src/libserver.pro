@@ -52,7 +52,8 @@ HEADERS += \
     utils/file/tcpfiletransfer.h \
     utils/worker/bgworker.h \
     utils/worker/bgworkercontroller.h \
-    utils/handle/dblog.h
+    utils/handle/dblog.h \
+    utils/handle/dbsettings.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \
@@ -94,7 +95,8 @@ SOURCES += \
     utils/file/tcpfiletransfer.cpp \
     utils/worker/bgworker.cpp \
     utils/worker/bgworkercontroller.cpp \
-    utils/handle/dblog.cpp
+    utils/handle/dblog.cpp \
+    utils/handle/dbsettings.cpp
 
 unix:!macx  {
     HEADERS += \
