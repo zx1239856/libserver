@@ -36,7 +36,7 @@ bool pdfConversion::process(const QString file)
     }
   if(watermkImg)
   {
-     pdf->setWatermark(*watermkImg,45,0.18,1);
+     pdf->setWatermark(*watermkImg,45,0.2,1);
   }
   for(int i=0;i<pages;++i)
     {

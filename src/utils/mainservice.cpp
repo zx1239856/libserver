@@ -4,6 +4,7 @@
 #include "qdaemonlog.h"
 #include "utils/worker/bgworker.h"
 #include "utils/worker/bgworkercontroller.h"
+#include "utils/handle/dblog.h"
 
 controlhdl* ctrl;
 
@@ -36,6 +37,7 @@ void mainService::start()
   // All init end
   pdfConversion* conv = new pdfConversion(conf->dataDir()+"file.pdf",conf->dataDir()+"output/",pdfConversion::singleFile,200);
   pdfTasks->addWork(conv);
+  //dbLog::log("logout","User logout",123,dbLog::reader);
   // initiate websocket
   server = new webServer;
   server->init(conf->port(),conf->ccurrency(),conf->threadKeepAliveTimeout()*1000);

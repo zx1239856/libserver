@@ -51,7 +51,8 @@ HEADERS += \
     utils/dbwrapper/sqlarray.h \
     utils/file/tcpfiletransfer.h \
     utils/worker/bgworker.h \
-    utils/worker/bgworkercontroller.h
+    utils/worker/bgworkercontroller.h \
+    utils/handle/dblog.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \
@@ -92,7 +93,8 @@ SOURCES += \
     utils/dbwrapper/sqlarray.cpp \
     utils/file/tcpfiletransfer.cpp \
     utils/worker/bgworker.cpp \
-    utils/worker/bgworkercontroller.cpp
+    utils/worker/bgworkercontroller.cpp \
+    utils/handle/dblog.cpp
 
 unix:!macx  {
     HEADERS += \
