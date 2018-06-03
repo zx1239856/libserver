@@ -35,6 +35,10 @@ bool pdfConversion::process(const QString file)
       return false;
     }
   watermk = dbSettings::getSetting("pdfWaterMark");
+  if(!watermk.isEmpty() && !watermkImg)
+    {
+      watermkImg = new QImage(config::getInstance()->dataDir()+"watermark/"+watermk);
+    }
   if(watermkImg)
   {
      pdf->setWatermark(*watermkImg,45,0.2,1);
@@ -54,12 +58,6 @@ bool pdfConversion::process(const QString file)
 
 void pdfConversion::run()
 {
-  // get watermark filename
-
-  if(!watermk.isEmpty())
-    {
-      watermkImg = new QImage(config::getInstance()->dataDir()+"watermark/"+watermk);
-    }
   if(currentMode == singleFile)
     {
       if(!process(src))

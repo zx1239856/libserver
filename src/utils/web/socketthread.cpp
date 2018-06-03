@@ -46,7 +46,7 @@ void socketThread::run()
     Object obj(tcpsocket);
     QObject::connect(tcpsocket, &QTcpSocket::readyRead, &obj, &Object::slot);
     // set max Timeout for the socket
-    if(!tcpsocket->waitForDisconnected(10000))
+    if(!tcpsocket->waitForDisconnected(100000))
       {
         tcpsocket->disconnectFromHost();
       }
@@ -93,6 +93,8 @@ void Object::slot()
         }
         if(sign == 'F') // if it is file transfer
           {
+            qint32 page;
+            in >> page;
             fileTransfer=new tcpFileTransfer(tcpsocket);
             // change signal receiver here
             tcpsocket->disconnect(tcpsocket,&QTcpSocket::readyRead,this,&Object::slot);
@@ -116,7 +118,7 @@ void Object::slot()
                 qDebug() << err;
                 // echo err msg to client
             });
-            fileTransfer->sendHead("file.pdf");
+            fileTransfer->sendHead("output/file_" + QString::number(page)+".jpg");
             QObject::connect(fileTransfer,&tcpFileTransfer::onFinish,this,[&]()
             {
                 fileTransfer->deleteLater();

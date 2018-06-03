@@ -63,6 +63,7 @@ void tcpFileTransfer::sendData()
       len = 0;
       len = file->read(buf,BUF_SIZE);  //len为读取的字节数
       len = socket->write(buf,len);    //len为发送的字节数
+      socket->flush();
       sendSize += len;
   }
   while(len > 0);
@@ -77,6 +78,7 @@ void tcpFileTransfer::sendData()
   emit onFinish();
 }
 
+// this function blocks until transfer finish
 void tcpFileTransfer::receiveFile(QString dir)
 {
   if(dir.isEmpty())
@@ -85,6 +87,7 @@ void tcpFileTransfer::receiveFile(QString dir)
     }
   while(true)
     {
+      socket->waitForReadyRead();
       QByteArray buf = socket->readAll();
       if(true == isStart){
           isStart = false;
@@ -106,7 +109,6 @@ void tcpFileTransfer::receiveFile(QString dir)
               // error handling
           }
           socket->write("FILE##HEAD##RCV");
-          break;
       }else{
           qint64 len = file->write(buf);
           recvSize += len;
