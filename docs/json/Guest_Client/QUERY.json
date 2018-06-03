@@ -8,6 +8,8 @@
     "order": [
         "name", "author"
     ],
+    "records": 10, //每页10条记录
+    "page": 2, //第2页
     "info": [
         {
             "field": "name",
@@ -27,7 +29,7 @@
         },
         //以下固定进行完全匹配检索
         {
-            "field": "id",
+            "field": "ID",
             "data": 1
         },
         {
@@ -71,6 +73,8 @@
     "order": [
         "name","author"
     ],
+    "records": 10, //每页10条记录
+    "page": 2, //第2页
     "info": [
         {
             "field": "name",
@@ -97,7 +101,7 @@
         },
         //以下固定进行完全匹配检索
         {
-            "field": "id",
+            "field": "ID",
             "data": 1
         },
         {
@@ -139,4 +143,51 @@
     "command": "book",
     "rule": "intelligentsearch",
     "info": "关键词"
+}
+
+//返回书籍信息
+{
+    "result": true,
+    "info":[
+        {
+            "ID": 0,
+            "name": "C++ Primer Plus",
+            "groupID": 0,
+            "author": "Stephen Prata",
+            "press": "人民邮电出版社",
+            "tags": [
+                "C++",
+                "Program"
+            ],
+            "ISBN": "978-7-115-27946-0",
+            "price": 99,
+            "pages": 0,
+            "bookcase": 1,
+            "inTime": "2018-06-01 17:39:37",
+            "operatorID": 1,
+            "available": true,
+            "coverImgID": 0,
+            "pdfID": 2
+        },
+        {
+            "ID": 0,
+            "name": "C++ Primer Plus",
+            "groupID": 0,
+            "author": "Stephen Prata",
+            "press": "人民邮电出版社",
+            "tags": [
+                "C++",
+                "Program"
+            ],
+            "ISBN": "978-7-115-27946-0",
+            "price": 99,
+            "pages": 0,
+            "bookcase": 1,
+            "inTime": "2018-06-01 17:39:37",
+            "operatorID": 1,
+            "available": true,
+            "coverImgID": 0,
+            "pdfID": 2
+        }
+    ]
 }
