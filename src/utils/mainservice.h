@@ -8,6 +8,7 @@
 #include "utils/handle/controlhdl.h"
 #include "utils/worker/bgworkercontroller.h"
 #include <QObject>
+#include <memory>
 
 extern controlhdl* ctrl;
 

@@ -11,8 +11,7 @@ public:
     enum CMD
     {
         book,
-        operationlog,
-        borrowlog,
+        info
     };
     Q_ENUM(CMD)
 

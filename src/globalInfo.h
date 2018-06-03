@@ -4,6 +4,7 @@
 /* Modify these things to change some global constants!
 */
 #include <QString>
+#include <QVector>
 
 namespace globalInfo
 {

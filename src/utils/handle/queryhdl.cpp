@@ -22,7 +22,11 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
                 auto x = y.toObject();
                 if(x.value("field").toString() == "tags")
                 {
-
+                    QJsonArray tags = x.value("data").toArray();
+                    for(auto iter:tags)
+                    {
+                        conditions += ("tags LIKE '%," +iter.toString() + ",%' AND ");
+                    }
                 }
                 else if(x.value("field").toString() == "bookcase")
                 {
@@ -74,7 +78,8 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
                     {
                         if(record.fieldName(i) == "tags")
                         {
-
+                            QStringList tagslist = record.value(i).toString().split(',', QString::SkipEmptyParts);
+                            info0.insert("tags", tagslist);
                         }
                         else
                         {
@@ -99,7 +104,11 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
                 auto x = y.toObject();
                 if(x.value("field").toString() == "tags")
                 {
-
+                    QJsonArray tags = x.value("data").toArray();
+                    for(auto iter:tags)
+                    {
+                        conditions += ("tags LIKE '%" +iter.toString() + "%' AND ");
+                    }
                 }
                 else if(x.value("field").toString() == "bookcase")
                 {
@@ -150,7 +159,8 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
                     {
                         if(record.fieldName(i) == "tags")
                         {
-
+                            QStringList tagslist = record.value(i).toString().split(',', QString::SkipEmptyParts);
+                            info0.insert("tags", tagslist);
                         }
                         else
                         {
@@ -166,17 +176,87 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
                 HDL_DB_ERROR(jsonReturn)
             }
         }
-        else if(json.value("rule").toString() == "fuzzysearch")
+        else if(json.value("rule").toString() == "intelligentsearch")
         {
+            QString conditions;
+            QString info = json.value("info").toString();
+            conditions += "name LIKE '%" + info +"%' OR author LIKE '%" + info + "%' OR press LIKE '%" + info + "%' OR tags LIKE '%" + info + "%'";
 
+            //添加排序
+            conditions += " ORDER BY ";
+            for(const QJsonValue &x:json.value("order").toArray())
+            {
+                conditions += x.toString() + ",";
+            }
+            conditions.chop(1);
+
+            //添加分页
+            conditions += " LIMIT " + QString::number(json.value("records").toInt() * (json.value("page").toInt() - 1)) + "," + QString::number(json.value("records").toInt());
+
+            sql::select msql(dbFullPrefix + "books", conditions);
+            if(msql.exec())
+            {
+                HDL_SUCCESS(jsonReturn)
+                QJsonArray info;
+                for(const QSqlRecord &record:msql.toResult())
+                {
+                    QVariantMap info0;
+                    for(int i = 0; i < record.count(); i++)
+                    {
+                        if(record.fieldName(i) == "tags")
+                        {
+                            QStringList tagslist = record.value(i).toString().split(',', QString::SkipEmptyParts);
+                            info0.insert("tags", tagslist);
+                        }
+                        else
+                        {
+                            info0.insert(record.fieldName(i), record.value(i));
+                        }
+                    }
+                    info.push_back(QJsonValue(QJsonObject::fromVariantMap(info0)));
+                }
+                jsonReturn.insert("info", QJsonValue(info));
+            }
+            else
+            {
+                HDL_DB_ERROR(jsonReturn)
+            }
         }
         break;
+    case info:
+        QString conditions = json.value("conditions").toString();
+        QString table = json.value("table").toString();
+        //添加排序
+        conditions += " ORDER BY ";
+        for(const QJsonValue &x:json.value("order").toArray())
+        {
+            conditions += x.toString() + ",";
+        }
+        conditions.chop(1);
 
-    case operationlog:
+        //添加分页
+        conditions += " LIMIT " + QString::number(json.value("records").toInt() * (json.value("page").toInt() - 1)) + "," + QString::number(json.value("records").toInt());
 
-        break;
-    case borrowlog:
-
+        sql::select msql(dbFullPrefix + table, conditions);
+        if(msql.exec())
+        {
+            HDL_SUCCESS(jsonReturn)
+            QJsonArray info;
+            for(const QSqlRecord &record:msql.toResult())
+            {
+                QVariantMap info0;
+                for(int i = 0; i < record.count(); i++)
+                {
+                    info0.insert(record.fieldName(i), record.value(i));
+                }
+                info.push_back(QJsonValue(QJsonObject::fromVariantMap(info0)));
+            }
+            jsonReturn.insert("info", QJsonValue(info));
+        }
+        else
+        {
+            HDL_DB_ERROR(jsonReturn)
+        }
         break;
     }
 }

@@ -30,7 +30,13 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
                     QJsonObject obj = x.toObject();
                     if(obj.value("field").toString() == "tags")
                     {
-                        //处理tags
+                        QJsonArray tags = obj.value("data").toArray();
+                        QString strtags = ",";
+                        for(auto iter:tags)
+                        {
+                            strtags.append(iter.toString() + ",");
+                        }
+                        map.insert("tags", strtags);
                     }
                     else if(obj.value("data").isString())
                         map.insert(map.end(),obj.value("field").toString(),obj.value("data").toString());
@@ -109,7 +115,13 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
                     QJsonObject obj = x.toObject();
                     if(obj.value("field").toString() == "tags")
                     {
-                        //处理tags
+                        QJsonArray tags = obj.value("data").toArray();
+                        QString strtags = ",";
+                        for(auto iter:tags)
+                        {
+                            strtags.append(iter.toString() + ",");
+                        }
+                        map.insert("tags", strtags);
                     }
                     else if(obj.value("data").isString())
                         map.insert(map.end(),obj.value("field").toString(),obj.value("data").toString());
