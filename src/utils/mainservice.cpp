@@ -36,8 +36,8 @@ void mainService::start()
   dbConn::setConf(conf);
   dbConn::getInstance();
   // All init end
-  pdfConversion* conv = new pdfConversion(conf->dataDir()+"file.pdf",conf->dataDir()+"output/",pdfConversion::singleFile,200);
-  pdfTasks->addWork(conv);
+  //pdfConversion* conv = new pdfConversion(conf->dataDir()+"file.pdf",conf->dataDir()+"output/",pdfConversion::singleFile,200);
+  //pdfTasks->addWork(conv);
   dbLog::log("logout","User logout",123,dbLog::staff);
   dbSettings::setSetting("libLogo","test",13);
   // initiate websocket
