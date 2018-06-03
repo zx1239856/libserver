@@ -1,10 +1,15 @@
-//检索书籍（和用户一样）
+//检索书籍
 //完全匹配检索
 {
     "token": "该对话所对应的令牌",
     "type": "QUERY",
     "command": "book",
     "rule": "completesearch",
+    "order": [
+        "name", "author"
+    ],//顺序（目前只支持升序）
+    "records": 10, //每页10条记录
+    "page": 2, //第2页
     "info": [
         {
             "field": "name",
@@ -22,9 +27,9 @@
             "field": "ISBN",
             "data": "978-7-115-27946-0"
         },
-        //以下只能进行完全匹配检索
+        //以下固定进行完全匹配检索
         {
-            "field": "bookid",
+            "field": "ID",
             "data": 1
         },
         {
@@ -48,7 +53,7 @@
             "field": "available",
             "data": true
         },
-        //以下只能进行模糊检索
+        //以下固定进行模糊检索
         {
             "field": "price",
             "data": {
@@ -58,12 +63,18 @@
         }
     ]
 }
+
 //模糊检索
 {
     "token": "该对话所对应的令牌",
     "type": "QUERY",
     "command": "book",
     "rule": "fuzzysearch",
+    "order": [
+        "name","author"
+    ],
+    "records": 10, //每页10条记录
+    "page": 2, //第2页
     "info": [
         {
             "field": "name",
@@ -88,9 +99,9 @@
             "field": "ISBN",
             "data": "115-27946"
         },
-        //以下只能进行完全匹配检索
+        //以下固定进行完全匹配检索
         {
-            "field": "bookid",
+            "field": "ID",
             "data": 1
         },
         {
@@ -114,7 +125,7 @@
             "field": "available",
             "data": true
         },
-        //以下只能进行模糊检索
+        //以下固定进行模糊检索
         {
             "field": "price",
             "data": {
@@ -131,87 +142,86 @@
     "type": "QUERY",
     "command": "book",
     "rule": "intelligentsearch",
+    "order": [
+        "name", "author"
+    ],
+    "records": 10, //每页10条记录
+    "page": 2, //第2页
     "info": "关键词"
 }
 
-//Re:
+//返回书籍信息
 {
-    "result":true
-}
-
-{
-    "result": false,
-    "detail":"错误信息"
-}
-
-//操作日志检索
-{
-    "token": "该对话所对应的令牌",
-    "type": "QUERY",
-    "command": "operationlog",
-    "info": [
+    "result": true,
+    "info":[
         {
-            "field": "logid",
-            "data": 102
+            "ID": 0,
+            "name": "C++ Primer Plus",
+            "groupID": 0,
+            "author": "Stephen Prata",
+            "press": "人民邮电出版社",
+            "tags": [
+                "C++",
+                "Program"
+            ],
+            "ISBN": "978-7-115-27946-0",
+            "price": 99,
+            "pages": 0,
+            "bookcase": 1,
+            "inTime": "2018-06-01 17:39:37",
+            "operatorID": 1,
+            "available": true,
+            "coverImgID": 0,
+            "pdfID": 2
         },
         {
-            "field": "type",
-            "data": [
-                "log", //登录/退出
-                "user", //用户的创建/删除/权限变更
-                "book", //书的添加/删除
-                "setting" //设置的变更
-            ]
-        },
-        {
-            "field": "time",
-            "data": {
-                "sup": 20180130,
-                "inf": 20171231
-            }
-        },
-        {
-            "field": "operator",
-            "data": 2
+            "ID": 0,
+            "name": "C++ Primer Plus",
+            "groupID": 0,
+            "author": "Stephen Prata",
+            "press": "人民邮电出版社",
+            "tags": [
+                "C++",
+                "Program"
+            ],
+            "ISBN": "978-7-115-27946-0",
+            "price": 99,
+            "pages": 0,
+            "bookcase": 1,
+            "inTime": "2018-06-01 17:39:37",
+            "operatorID": 1,
+            "available": true,
+            "coverImgID": 0,
+            "pdfID": 2
         }
     ]
 }
 
-//借阅/归还记录检索
+//普通信息检索
 {
     "token": "该对话所对应的令牌",
     "type": "QUERY",
-    "command": "borrowlog",
-    "info": [
+    "command": "info",
+    "order": [
+        "fieldname1", "fieldname2"
+    ],
+    "records": 10, //每页10条记录
+    "page": 2, //第2页
+    "table":"operation_log", //表名参考mysql中的设置
+    "conditions": "type = 'logout' AND operatorID = 123" //查询条件
+}
+
+//返回普通信息
+{
+    "result": true,
+    "info":[
         {
-            "field": "logid",
-            "data": 102
+            "fieldname1": 0,
+            "fieldname2": "C++ Primer Plus",
         },
         {
-            "field": "readerid",
-            "data": 1
-        },
-        {
-            "field": "bookid",
-            "data": 1
-        },
-        {
-            "field": "borrowTime",
-            "data": {
-                "sup": 20180130,
-                "inf": 20171231
-            }
-        },
-        {
-            "field": "returnTime",  //为0表示正在外借
-            "data": {
-                "sup": 20180130,
-                "inf": 20171231
-            }
-        },
-        {
-            "field": "operatorid",
-            "data": 1
-        },
+            "fieldname1": 0,
+            "fieldname2": "C++ Primer Plus",
+        }
     ]
 }

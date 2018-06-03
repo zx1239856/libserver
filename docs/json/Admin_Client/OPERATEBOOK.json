@@ -35,6 +35,13 @@
 		{
             "field": "available",
             "data": true
+        },
+        //可选
+        {
+            "field": "tags",
+            "data": [
+                "C++","Computer Science"
+            ]
         }
     ]
 }
@@ -109,6 +116,12 @@
 		{
             "field": "available",
             "data": true
+        },
+        {
+            "field": "tags",
+            "data": [
+                "C++","Computer Science"
+            ]
         }
     ]
 }
