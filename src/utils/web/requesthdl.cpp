@@ -44,17 +44,16 @@ QByteArray requesthdl::deal()
     {
         hdl = new operategrouphdl(jsonRequest.value("token").toString());
     }
-    else if(jsonRequest.value("type").toString() == "OPERATE")
-    {
-        //hdl = new operatehdl(jsonRequest.value("token").toString());
-    }
     else
     {
-
+        QJsonObject jsonReturn;
+        jsonReturn.insert("result", false);
+        jsonReturn.insert("detail", "wrong json");
+        QJsonDocument jdocReturn(jsonReturn);
+        return jdocReturn.toBinaryData();
     }
 
     hdl->deal(jsonRequest.take("command").toString(), jsonRequest);
-
     QJsonDocument jdocReturn(hdl->GetReturn());
     delete hdl;
     return jdocReturn.toBinaryData();

@@ -7,7 +7,7 @@
     "rule": "completesearch",
     "order": [
         "name", "author"
-    ],
+    ],//顺序（目前只支持升序）
     "records": 10, //每页10条记录
     "page": 2, //第2页
     "info": [
@@ -142,6 +142,11 @@
     "type": "QUERY",
     "command": "book",
     "rule": "intelligentsearch",
+    "order": [
+        "name", "author"
+    ],
+    "records": 10, //每页10条记录
+    "page": 2, //第2页
     "info": "关键词"
 }
 
@@ -188,6 +193,35 @@
             "available": true,
             "coverImgID": 0,
             "pdfID": 2
+        }
+    ]
+}
+
+//普通信息检索
+{
+    "token": "该对话所对应的令牌",
+    "type": "QUERY",
+    "command": "info",
+    "order": [
+        "fieldname1", "fieldname2"
+    ],
+    "records": 10, //每页10条记录
+    "page": 2, //第2页
+    "table":"operation_log", //表名参考mysql中的设置
+    "conditions": "type = 'logout' AND operatorID = 123" //查询条件
+}
+
+//返回普通信息
+{
+    "result": true,
+    "info":[
+        {
+            "fieldname1": 0,
+            "fieldname2": "C++ Primer Plus",
+        },
+        {
+            "fieldname1": 0,
+            "fieldname2": "C++ Primer Plus",
         }
     ]
 }
