@@ -8,6 +8,29 @@ DEFINES += VERBOSE_OUTPUT
 
 TARGET = libserver
 
+BINDIR = ../bin
+# build output
+CONFIG(debug, debug|release) {
+    DESTDIR = $$BINDIR/debug
+    OBJECTS_DIR = $$BINDIR/debug/.obj
+    MOC_DIR = $$BINDIR/debug/.moc
+    RCC_DIR = $$BINDIR/debug/.rcc
+    UI_DIR = $$BINDIR/debug/.ui
+} else {
+    DESTDIR = $$BINDIR/release
+    OBJECTS_DIR = $$BINDIR/release/.obj
+    MOC_DIR = $$BINDIR/release/.moc
+    RCC_DIR = $$BINDIR/release/.rcc
+    UI_DIR = $$BINDIR/release/.ui
+}
+
+
+# poppler qt5 lib
+INCLUDEPATH += /usr/local/include/poppler/qt5 \
+    /usr/include/poppler/qt5
+LIBS += -L"/usr/local/lib64" -L"/usr/local/lib" \
+    -L"/usr/lib64" -L"/usr/lib" -lpoppler-qt5
+
 HEADERS += \
     utils/dbwrapper/db-operation.h \
     utils/dbwrapper/db-wrapper.h \

@@ -71,6 +71,6 @@ esac
 
 
 ## Third-party libraries or projects involved
-[QtDaemon](https://bitbucket.org/nye/qtdaemon/overview)
-[Epoll eventdispatcher](https://github.com/sjinks/qt_eventdispatcher_epoll)
+[QtDaemon](https://bitbucket.org/nye/qtdaemon/overview)  
+[Epoll eventdispatcher](https://github.com/sjinks/qt_eventdispatcher_epoll)  
 [Smtp Email](https://github.com/bluetiger9/SmtpClient-for-Qt)
