@@ -3,7 +3,7 @@ sudo: required
 language: cpp
 compiler: g++
 before_install:
-        - sudo apt-get install -y qt5-dev-tools
+        - sudo apt-get install -y qt5-default
         - sudo apt-get install -y libpoppler-qt5-dev pkg-config
         - pkg-config --cflags poppler-qt5
 script:
