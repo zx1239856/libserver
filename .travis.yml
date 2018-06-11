@@ -1,12 +1,28 @@
 dist: trusty
 sudo: required
 language: cpp
-compiler: g++
+compiler: gcc
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - gcc-7
+            - g++-7
+            - qt5-default
+            - libpoppler-qt5-dev
+            - pkg-config
 before_install:
-        - sudo apt-get install -y qt5-default
-        - sudo apt-get install -y libpoppler-qt5-dev pkg-config
         - pkg-config --cflags poppler-qt5
 script:
+        # Link gcc-6 and g++-7 to their standard commands
+        - ln -s /usr/bin/gcc-7 /usr/local/bin/gcc
+        - ln -s /usr/bin/g++-7 /usr/local/bin/g++
+        # Export CC and CXX to tell cmake which compiler to use
+        - export CC=/usr/bin/gcc-7
+        - export CXX=/usr/bin/g++-7
+        # Check versions of gcc, g++ and cmake
+        - gcc -v && g++ -v 
         - cd src
         - qmake
         - make
