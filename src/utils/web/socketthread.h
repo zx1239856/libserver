@@ -26,14 +26,15 @@ private:
     QTcpSocket *tcpsocket;
 };
 
-class Object:public QObject
+
+class socketThreadHandler:public QObject
 {
     Q_OBJECT
 public:
-    Object(QTcpSocket* tcpsocket);
-    ~Object();
+    socketThreadHandler(QTcpSocket* tcpsocket);
+    ~socketThreadHandler();
 public slots:
-    void slot();
+    void slotFunc();
 private:
     QTcpSocket* tcpsocket;
     tcpFileTransfer *fileTransfer;

@@ -43,8 +43,8 @@ void socketThread::run()
         tcpsocket->close();
         //this->quit();
       });
-    Object obj(tcpsocket);
-    QObject::connect(tcpsocket, &QTcpSocket::readyRead, &obj, &Object::slot);
+    socketThreadHandler obj(tcpsocket);
+    QObject::connect(tcpsocket, &QTcpSocket::readyRead, &obj, &socketThreadHandler::slotFunc);
     // set max Timeout for the socket
     if(!tcpsocket->waitForDisconnected(100000))
       {
@@ -52,15 +52,15 @@ void socketThread::run()
       }
 }
 
-Object::Object(QTcpSocket* tcpsocket): tcpsocket(tcpsocket),fileTransfer(nullptr)
+socketThreadHandler::socketThreadHandler(QTcpSocket* tcpsocket): tcpsocket(tcpsocket),fileTransfer(nullptr)
 {}
 
-Object::~Object()
+socketThreadHandler::~socketThreadHandler()
 {
   if(fileTransfer)delete fileTransfer;
 }
 
-void Object::slot()
+void socketThreadHandler::slotFunc()
 {
     try
     {
@@ -98,7 +98,7 @@ void Object::slot()
             in >> page;
             fileTransfer=new tcpFileTransfer(tcpsocket);
             // change signal receiver here
-            tcpsocket->disconnect(tcpsocket,&QTcpSocket::readyRead,this,&Object::slot);
+            tcpsocket->disconnect(tcpsocket,&QTcpSocket::readyRead,this,&socketThreadHandler::slotFunc);
             QObject::connect(tcpsocket,&QTcpSocket::readyRead,fileTransfer,[&]()
             {
                 QByteArray buf = tcpsocket->readAll();
