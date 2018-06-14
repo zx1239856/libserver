@@ -4,7 +4,15 @@
 
 class cmdParser
 {
+public:
+    enum state
+    {
+        success,
+        invalid_cmd,
+        failure
+    };
 private:
+  state result = success;
   // original parameter
   int _argc;
   char **_argv;
@@ -18,6 +26,7 @@ private:
   void usage();
   void parse();
 public:
+  state getParseResult()const;
   cmdParser(int _argc,char **_argv,const QString &serviceName);
   ~cmdParser();
   const QString& getConfPath();

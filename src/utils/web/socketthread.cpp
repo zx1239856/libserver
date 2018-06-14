@@ -52,7 +52,8 @@ void socketThread::run()
       }
 }
 
-Object::Object(QTcpSocket* tcpsocket): tcpsocket(tcpsocket),fileTransfer(nullptr){}
+Object::Object(QTcpSocket* tcpsocket): tcpsocket(tcpsocket),fileTransfer(nullptr)
+{}
 
 Object::~Object()
 {

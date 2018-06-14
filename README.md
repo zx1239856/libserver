@@ -1,6 +1,6 @@
 # libserver
 [![Build Status](https://travis-ci.org/zx1239856/libserver.svg?branch=master)](https://travis-ci.org/zx1239856/libserver)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zx1239856/libserver/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zx1239856/libserver/blob/master/LICENSE)  
 Library Mgmt Server Side Application
 
 ## 2018 Spring
