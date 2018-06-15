@@ -66,7 +66,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
         if(ID == -1)
         {
             msql = new sql::select(dbFullPrefix + json.value("group").toString(),
-                                   "username = '" + json.value("username").toString() + "' AND email = '" + json.value("email").toString() + "'");
+                                   "username = '" + json.value("username").toString() + "' AND email = '" + json.value("auth").toString() + "'");
             if(msql->exec())
             {
                 sqlresult = msql->toResult();
