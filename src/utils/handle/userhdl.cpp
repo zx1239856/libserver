@@ -54,6 +54,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
             {
                 // server error, log
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(msql);
             }
         }
         else
@@ -85,6 +86,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                     else
                     {
                         HDL_DB_ERROR(jsonReturn)
+                        logDbErr(&updatepwd);
                     }
                 }
                 else
@@ -96,6 +98,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
             else
             {
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(msql);
             }
         }
         else
@@ -142,6 +145,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
             else
             {
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(msql);
             }
         }
         else
@@ -164,6 +168,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
             else
             {
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(msql);
             }
         }
         else

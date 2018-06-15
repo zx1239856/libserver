@@ -93,6 +93,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
             else
             {
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(&msql);
             }
         }
         else if(json.value("rule").toString() == "fuzzysearch")
@@ -174,6 +175,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
             else
             {
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(&msql);
             }
         }
         else if(json.value("rule").toString() == "intelligentsearch")
@@ -220,6 +222,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
             else
             {
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(&msql);
             }
         }
         break;
@@ -256,6 +259,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
         else
         {
             HDL_DB_ERROR(jsonReturn)
+            logDbErr(&msql);
         }
         break;
     }

@@ -56,6 +56,7 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(msql);
                 }
                 delete msql;
             }
@@ -75,21 +76,19 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
             else
             {
                 QJsonArray bookid = json.value("bookid").toArray();
-                bool success = true;
                 for(const QJsonValue& x : bookid)
                 {
                     msql= new sql::del(dbFullPrefix + "books", "ID = " + QString::number(x.toInt()));
-                    if(!msql->exec())
-                        success = false;
+                    if(msql->exec())
+                    {
+                        HDL_SUCCESS(jsonReturn)
+                    }
+                    else
+                    {
+                        HDL_DB_ERROR(jsonReturn)
+                        logDbErr(msql);
+                    }
                     delete msql;
-                }
-                if(success)
-                {
-                    HDL_SUCCESS(jsonReturn)
-                }
-                else
-                {
-                    HDL_DB_ERROR(jsonReturn)
                 }
             }
         }
@@ -134,15 +133,16 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
                 connect(msql, &sql::basicSQL::onFail, [=](const QSqlError &err){
                     qDebug()<<err;
                 });
-                if(msql->exec())
-                {
-                    HDL_SUCCESS(jsonReturn)
-                }
-                else
-                {
-                    HDL_DB_ERROR(jsonReturn)
-                }
-                delete msql;
+                 if(msql->exec())
+                    {
+                        HDL_SUCCESS(jsonReturn)
+                    }
+                    else
+                    {
+                        HDL_DB_ERROR(jsonReturn)
+                        logDbErr(msql);
+                    }
+                    delete msql;
             }
         }
         else
@@ -163,7 +163,6 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
                 int groupid = json.value("groupid").toInt();
                 QMap<QString,QVariant> map;
                 map.insert("groupid", groupid);
-                bool success = true;
                 for(const QJsonValue& x:books)
                 {
                     QString bookid = QString::number(x.toInt());
@@ -171,17 +170,16 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
                     connect(msql, &sql::insert::onFail, [=](const QSqlError &err){
                         qDebug()<<err;
                     });
-                    if(!msql->exec())
-                        success = false;
+                     if(msql->exec())
+                    {
+                        HDL_SUCCESS(jsonReturn)
+                    }
+                    else
+                    {
+                        HDL_DB_ERROR(jsonReturn)
+                        logDbErr(msql);
+                    }
                     delete msql;
-                }
-                if(success)
-                {
-                    HDL_SUCCESS(jsonReturn)
-                }
-                else
-                {
-                    HDL_DB_ERROR(jsonReturn)
                 }
             }
         }

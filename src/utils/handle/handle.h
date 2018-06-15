@@ -12,14 +12,13 @@
 #include "qdaemonlog.h"
 
 #define HDL_DB_ERROR(json) json.insert("result", false); \
-json.insert("detail", "database server error"); \
-qDaemonLog("database server error",QDaemonLog::ErrorEntry);
+json.insert("detail", "SQL query failed");
 
 #define HDL_INV_TOKEN(json) json.insert("result", false); \
-  json.insert("detail", "invalid token");
+  json.insert("detail", "Invalid token");
 
 #define HDL_PERM_DENIED(json) json.insert("result", false); \
-  json.insert("detail", "permission denied");
+  json.insert("detail", "Permission denied");
 
 #define HDL_SUCCESS(json) json.insert("result", true);
 
@@ -38,5 +37,11 @@ protected:
     QString group;
     QJsonObject jsonReturn;
 };
+
+inline void logDbErr(sql::basicSQL* query)
+{
+    auto err = query->lastError();
+    qDaemonLog("Error code: "+err.nativeErrorCode()+","+err.driverText()+err.databaseText(),QDaemonLog::ErrorEntry);
+}
 
 #endif // HANDLE_H

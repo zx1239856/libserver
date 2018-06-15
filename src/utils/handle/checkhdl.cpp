@@ -55,16 +55,19 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                                 else
                                 {
                                     HDL_DB_ERROR(jsonReturn)
+                                    logDbErr(&msql4);
                                 }
                             }
                             else
                             {
                                 HDL_DB_ERROR(jsonReturn)
+                                logDbErr(&msql3);
                             }
                         }
                         else
                         {
                             HDL_DB_ERROR(jsonReturn)
+                            logDbErr(&msql2);
                         }
                     }
                     else
@@ -76,6 +79,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(&msql1);
                 }
             }
         }
@@ -109,6 +113,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                         else
                         {
                             HDL_DB_ERROR(jsonReturn)
+                            logDbErr(&msql2);
                         }
                     }
                     else
@@ -120,6 +125,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(&msql1);
                 }
             }
         }

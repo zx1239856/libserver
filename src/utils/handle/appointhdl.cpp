@@ -29,6 +29,7 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
                         else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(msql);
                 }
         }
         else
@@ -50,6 +51,7 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
                         else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(msql);
                 }
         }
         else

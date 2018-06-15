@@ -45,6 +45,7 @@ void operateuserhdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(&msql);
                 }
             }
         }
@@ -70,6 +71,7 @@ void operateuserhdl::deal(const QString &command, const QJsonObject &json)
                     if(!msql.exec())
                     {
                         success = false;
+                        logDbErr(&msql);
                     }
                 }
                 if(success)
@@ -107,6 +109,7 @@ void operateuserhdl::deal(const QString &command, const QJsonObject &json)
                     if(!msql.exec())
                     {
                         success = false;
+                        logDbErr(&msql);
                     }
                 }
                 if(success)
