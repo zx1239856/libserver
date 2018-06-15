@@ -1,6 +1,7 @@
 #include "userhdl.h"
 #include "utils/smtp/sendemail.h"
 #include "globalInfo.h"
+#include "qdaemonlog.h"
 
 using namespace sql;
 using namespace globalInfo;
@@ -80,8 +81,17 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                     {
                         QStringList rcp(json.value("email").toString());
                         sendEmail email(*config::getInstance(), rcp, "Fetch Your Password", emailContent(newpwd));
+                        QObject::connect(&email,&sendEmail::onFail,this,[&](const QString& what)
+                        {
+                            qDaemonLog(what,QDaemonLog::ErrorEntry);
+                            jsonReturn.insert("result", false);
+                            jsonReturn.insert("detail", "Wrong username or email");
+                        });
+                        QObject::connect(&email,&sendEmail::onSuccess,this,[&]()
+                        {
+                            HDL_SUCCESS(jsonReturn);
+                        });
                         email.send();
-                        HDL_SUCCESS(jsonReturn);
                     }
                     else
                     {
@@ -92,7 +102,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     jsonReturn.insert("result", false);
-                    jsonReturn.insert("detail", "wrong username or email");
+                    jsonReturn.insert("detail", "Wrong username or email");
                 }
             }
             else
@@ -139,7 +149,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     jsonReturn.insert("result", false);
-                    jsonReturn.insert("detail", "wrong old password");
+                    jsonReturn.insert("detail", "Wrong old password");
                 }
             }
             else
