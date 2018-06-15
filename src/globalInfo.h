@@ -19,10 +19,11 @@ namespace globalInfo
     const QString dbPrefix = "lib_";
   }
   const QString dbFullPrefix = db::dbName + "." + db::dbPrefix;
-  const QString emailTitle = "libserver - 用户密码重置通知";
-  inline QString emailContent(const QString &newpwd)
+  // Default email parameters
+  const QString emailChangePwdTitle = appName + " - 用户密码重置通知";
+  inline QString emailChangePwdContent(const QString &newpwd)
   {
-      return "您的临时密码为： " + newpwd + "请尽快修改您的密码，谢谢！";
+      return "您的密码已重置为随机密码: " + newpwd + "，请及时用该密码登陆账号并修改密码。";
   }
 }
 #endif

@@ -1,3 +1,4 @@
+#include <QFileInfo>
 #include "userhdl.h"
 #include "utils/smtp/sendemail.h"
 #include "globalInfo.h"
@@ -76,11 +77,26 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                     QString newpwd = token::getToken(json.value("username").toString());
                     QMap<QString, QVariant> map;
                     map.insert("password", token::getMD5(newpwd));
-                    sql::update updatepwd(dbFullPrefix + json.value("group").toString(), map, "username = '" + json.value("username").toString() + "' AND email = '" + json.value("email").toString() + "'");
+                    sql::update updatepwd(dbFullPrefix + json.value("group").toString(), map, "username = '" + json.value("username").toString() + "' AND email = '" + json.value("auth").toString() + "'");
                     if(updatepwd.exec())
                     {
+                        QString emailContent = emailChangePwdContent(newpwd);
+                        // find email template
+                        QString tplPath = config::getInstance()->templateDir() + "/forgetPwd.html";
+                        QFileInfo tpl(tplPath);
+                        if(tpl.isFile())
+                        {
+                            QFile file(tplPath);
+                            if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+                            {
+                                QTextStream in(&file);
+                                emailContent = in.readAll();
+                                emailContent.replace("%%Servicename",appName);
+                                emailContent.replace("%%Newpwd",newpwd);
+                            }
+                        }
                         QStringList rcp(json.value("auth").toString());
-                        sendEmail email(*config::getInstance(), rcp, emailTitle, emailContent(newpwd));
+                        sendEmail email(*config::getInstance(), rcp, emailChangePwdTitle, emailContent);
                         QObject::connect(&email,&sendEmail::onFail,this,[&](const QString& what)
                         {
                             qDaemonLog(what,QDaemonLog::ErrorEntry);

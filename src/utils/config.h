@@ -68,4 +68,5 @@ public:
     Property(QString,smtpUser)
     Property(QString,smtpPwd)
     Property(QString,smtpSender)
+    Property(QString,templateDir)
 };

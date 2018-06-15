@@ -57,6 +57,7 @@ void config::Load()
     m_smtpUser = Get("smtp/username").toString();
     m_smtpPwd = Get("smtp/password").toString();
     m_smtpSender = Get("smtp/senderEmail").toString();
+    m_templateDir = Get("smtp/templateDir").toString();
     //end
   }
   catch(std::string &e)
