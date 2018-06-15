@@ -9,9 +9,11 @@
 #include "utils/crypto/token.h"
 #include "utils/exception.h"
 #include "globalInfo.h"
+#include "qdaemonlog.h"
 
 #define HDL_DB_ERROR(json) json.insert("result", false); \
-json.insert("detail", "database server error");
+json.insert("detail", "database server error"); \
+qDaemonLog("database server error",QDaemonLog::ErrorEntry);
 
 #define HDL_INV_TOKEN(json) json.insert("result", false); \
   json.insert("detail", "invalid token");
