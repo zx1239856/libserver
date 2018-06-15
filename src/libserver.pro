@@ -2,7 +2,7 @@ include(daemon/daemon-lib.pri)
 include(libserver.pri)
 include(qcron/qcron.pri)
 
-QMAKE_CXXFLAGS += -Wimplicit-fallthrough=0 -Wswitch
+QMAKE_CXXFLAGS += -Wswitch
 
 DEFINES += VERBOSE_OUTPUT
 

@@ -1,6 +1,6 @@
 INCLUDEPATH += $$PWD
 
-QT = core
+QT += core
 
 #load(qt_build_config)
 QMAKE_DOCS = $$PWD/doc/qtdaemon.qdocconf
