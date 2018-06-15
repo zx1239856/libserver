@@ -13,7 +13,7 @@ HELP_TEXT="Usage: $0 {start|stop|restart|uninstall|force-reload|status|help}"
 
 case "$1" in
     start)
-       %%DAEMON%% --start %%ARGUMENTS%%
+       %%DAEMON%% --start %%ARGUMENTS%% <config-path>
        ;;
     stop)
        %%DAEMON%% --stop
@@ -22,7 +22,7 @@ case "$1" in
        ;&
     restart)
        %%DAEMON%% --stop
-       %%DAEMON%% --start %%ARGUMENTS%%
+       %%DAEMON%% --start %%ARGUMENTS%% <config-path>
        ;;
     uninstall)
        %%DAEMON%% --uninstall --initd-prefix=%%INITD_PREFIX%% --dbus-prefix=%%DBUS_PREFIX%%

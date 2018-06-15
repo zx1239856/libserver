@@ -10,6 +10,11 @@ cmdParser::cmdParser(int argCount,char **argContent,const QString &serv):
 
 cmdParser::~cmdParser(){}
 
+cmdParser::state cmdParser::getParseResult()const
+{
+    return result;
+}
+
 void cmdParser::usage()
 {
   QByteArray ba = serviceName.toLatin1();
@@ -37,12 +42,14 @@ void cmdParser::parse()
   if(_argc<=0)
     {
       printf("\nInternal error: argc smaller than one occured.\n");
-      exit(EXIT_FAILURE);
+      result = failure;
+      return;
     }
   if(_argc==1)
     {
       usage();
-      exit(EXIT_SUCCESS);
+      result = invalid_cmd;
+      return;
     }
   else if(_argc==2)
     {
@@ -55,7 +62,8 @@ void cmdParser::parse()
       else if(str=="-h"||str=="--help")
         {
           usage();
-          exit(EXIT_SUCCESS);
+          result = invalid_cmd;
+          return;
         }
       else if(str=="-s"||str=="--start")okay=false;
 #ifdef DEBUG_MODE
@@ -66,7 +74,8 @@ void cmdParser::parse()
         {
           printf("\nUnrecognized command. Please retry.\n");
           usage();
-          exit(EXIT_SUCCESS);
+          result = invalid_cmd;
+          return;
         }
       if(okay)
         {
@@ -79,7 +88,8 @@ void cmdParser::parse()
         {
           printf("\nPlease specify a parameter for the command. \n");
           usage();
-          exit(EXIT_SUCCESS);
+          result = invalid_cmd;
+          return;
         }
     }
   else if(_argc==3)
@@ -113,14 +123,16 @@ void cmdParser::parse()
         {
           printf("\nUnrecognized command. Please retry.\n");
           usage();
-          exit(EXIT_SUCCESS);
+          result = invalid_cmd;
+          return;
         }
     }
   else
     {
       printf("\nExtra invalid command detected. Please retry.\n");
       usage();
-      exit(EXIT_SUCCESS);
+      result = invalid_cmd;
+      return;
     }
 }
 

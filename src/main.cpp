@@ -10,7 +10,10 @@ int main(int argc, char *argv[])
 {
     // argument handler
     cmdParser parser(argc,argv,globalInfo::appName);
-
+    if(parser.getParseResult()==cmdParser::failure || parser.getParseResult() == cmdParser::invalid_cmd)
+    {
+        return -1;
+    }
     // Set configuration path
     QString confPath(parser.getConfPath());
 
