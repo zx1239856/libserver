@@ -19,9 +19,10 @@ namespace globalInfo
     const QString dbPrefix = "lib_";
   }
   const QString dbFullPrefix = db::dbName + "." + db::dbPrefix;
+  const QString emailTitle = "libserver - 用户密码重置通知";
   inline QString emailContent(const QString &newpwd)
   {
-      return "Your temporary password is " + newpwd + ". Please change your password as soon as possible.";
+      return "您的临时密码为： " + newpwd + "请尽快修改您的密码，谢谢！";
   }
 }
 #endif

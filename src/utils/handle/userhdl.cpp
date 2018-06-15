@@ -75,12 +75,12 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                 {
                     QString newpwd = token::getToken(json.value("username").toString());
                     QMap<QString, QVariant> map;
-                    map.insert("password", newpwd);
+                    map.insert("password", token::getMD5(newpwd));
                     sql::update updatepwd(dbFullPrefix + json.value("group").toString(), map, "username = '" + json.value("username").toString() + "' AND email = '" + json.value("email").toString() + "'");
                     if(updatepwd.exec())
                     {
                         QStringList rcp(json.value("auth").toString());
-                        sendEmail email(*config::getInstance(), rcp, "Fetch Your Password", emailContent(newpwd));
+                        sendEmail email(*config::getInstance(), rcp, emailTitle, emailContent(newpwd));
                         QObject::connect(&email,&sendEmail::onFail,this,[&](const QString& what)
                         {
                             qDaemonLog(what,QDaemonLog::ErrorEntry);
