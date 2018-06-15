@@ -32,6 +32,7 @@
 
 #include <QtCore/QScopedPointer>
 
+
 QT_BEGIN_NAMESPACE
 
 using namespace QtDaemon;
