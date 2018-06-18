@@ -25,5 +25,7 @@ namespace globalInfo
   {
       return "您的密码已重置为随机密码: " + newpwd + "，请及时用该密码登陆账号并修改密码。";
   }
+  const QString emailNotifyTitle = appName + " - 用户还书提醒";
+  const QString emailNotifyContent = "您所借阅的 %%Bookname 将于 %%Exptime 到期，请及时还书";
 }
 #endif

@@ -2,6 +2,8 @@
 #define BGWORKER_H
 
 #include <QObject>
+#include <QVector>
+class QSqlRecord;
 
 /* Copyright 2018 Zhang Xiang
  * zx1239856@gmail.com
@@ -47,4 +49,14 @@ public:
   ~pdfConversion()override;
 };
 
+class borrowNotifier: public AbstractWorker
+{
+    Q_OBJECT
+private:
+    uint currMax = 0;
+    QVector<QSqlRecord> res;
+public:
+    void run()override;
+    ~borrowNotifier()override;
+};
 #endif // BGWORKER_H

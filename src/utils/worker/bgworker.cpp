@@ -3,6 +3,10 @@
 #include "utils/file/imghandler.h"
 #include "utils/handle/dbsettings.h"
 #include "utils/config.h"
+#include "utils/dbwrapper/db-operation.h"
+#include "globalInfo.h"
+#include "utils/handle/handle.h"
+#include "utils/smtp/sendemail.h"
 #include <QDir>
 
 AbstractWorker::AbstractWorker()
@@ -84,3 +88,74 @@ void pdfConversion::run()
       emit onFinish();
     }
 }
+
+void borrowNotifier::run()
+{
+  while(true)
+  {
+    sql::select sel(globalInfo::dbFullPrefix+"currborrow","DATEDIFF(CURRENT_TIMESTAMP,exptime)<="+QString::number(3));
+    sel.addLimit(50,currMax);
+    if(sel.exec())
+    {
+      QVector<QSqlRecord> res = sel.toResult();
+      if(res.isEmpty())break;
+      for(const QSqlRecord x:res)
+      {
+        ++currMax;
+        QString expTime = x.value("exptime").toDateTime().toString("yyyy-MM-dd");
+        QString reader = x.value("readerid").toString();
+        QString book = x.value("bookid").toString();
+        QString readerEmail;
+        QString bookName;
+        sql::select sel2(globalInfo::dbFullPrefix+"readers","ID="+reader,{"email"});
+        if(sel2.exec())
+        {
+           auto r = sel2.toResult();
+           if(!r.isEmpty())readerEmail = r[0].value("email").toString();
+        }
+        sql::select sel3(globalInfo::dbFullPrefix+"books","ID="+book,{"name"});
+        if(sel3.exec())
+        {
+           auto r = sel3.toResult();
+           if(!r.isEmpty())bookName = r[0].value("name").toString();
+        }
+        // echo the name of the book & reader's email
+        qDebug()<<readerEmail<<" "<<bookName << " " << expTime;
+        // send email
+        QString emailContent = globalInfo::emailNotifyContent;
+        // find email template
+        QString tplPath = config::getInstance()->templateDir() + "/returnNotify.html";
+        QFileInfo tpl(tplPath);
+        if(tpl.isFile())
+        {
+            QFile file(tplPath);
+            if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+            {
+                QTextStream in(&file);
+                emailContent = in.readAll();
+                emailContent.replace("%%Servicename",globalInfo::appName);
+            }
+        }
+        emailContent.replace("%%Bookname",bookName);
+        emailContent.replace("%%Exptime",expTime);
+        QStringList rcp;
+        rcp << readerEmail;
+        sendEmail email(*config::getInstance(), rcp, globalInfo::emailNotifyTitle, emailContent);
+        QObject::connect(&email,&sendEmail::onFail,this,[&](const QString& what)
+        {
+            qDaemonLog(what,QDaemonLog::ErrorEntry);
+        });
+        email.send();
+      }
+    }
+    else
+    {
+      logDbErr(&sel);  // abort while occuring error
+      break;
+    }
+  }
+  currMax = 0;
+}
+
+borrowNotifier::~borrowNotifier()
+{}

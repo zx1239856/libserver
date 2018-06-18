@@ -44,6 +44,9 @@ void mainService::start()
   server = new webServer;
   server->init(conf->port(),conf->ccurrency(),conf->threadKeepAliveTimeout()*1000);
   ctrl = controlhdl::getInstance();
+
+  // test cron
+  cronTasks->addWork(new borrowNotifier());
 }
 
 void mainService::stop()
