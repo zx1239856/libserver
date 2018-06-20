@@ -1,5 +1,5 @@
 # libserver
-[![Build Status](https://travis-ci.org/zx1239856/libserver.svg?branch=master)](https://travis-ci.org/zx1239856/libserver) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zx1239856/libserver/blob/master/LICENSE)  
+[![Build Status](https://travis-ci.org/zx1239856/libserver.svg?branch=master)](https://travis-ci.org/zx1239856/libserver) [![Build status](https://ci.appveyor.com/api/projects/status/ig4gmoo8mf317b9x?svg=true)](https://ci.appveyor.com/project/zx1239856/libserver) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zx1239856/libserver/blob/master/LICENSE)  
 
 A cross-platform, versatile library management system 
 
