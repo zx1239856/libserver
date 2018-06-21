@@ -115,16 +115,19 @@ case "$1" in
 esac
 ```
 
+For **Ubuntu 17.10** or earlier, or any other linux system using initd to manage services other than systemd: 
+
 Now you would be able to manage the server using systemctl.
 
 ### A little reminder
 
-For **CentOS**, you need extra procedures:
+For **CentOS** or **Ubuntu 18.04**, you need extra procedures:
 
-*Step1*: Create a service file in /usr/lib/systemd/system, you may type
+*Step1*: Create a service file in (**CentOS**) /usr/lib/systemd/system, (**Ubuntu**) /etc/systemd/system, you may type
 
 ```bash
-vim /usr/lib/systemd/system/libserver.service
+vim /usr/lib/systemd/system/libserver.service  ## CentOS
+vim /etc/systemd/system/libserver.service  ## Ubuntu
 ```
 
 The content of the service file is
