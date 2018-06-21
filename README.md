@@ -5,9 +5,11 @@ A cross-platform, versatile library management system
 
 Server side application
 
-Tested on Ubuntu 14.04-18.04 , CentOS 7
+Tested on Ubuntu 14.04-18.04 , CentOS 7 , Windows 10(MSVC)
 
 **Warning**: Ubuntu 18.04 uses a newer version of OpenSSL(OpenSSL 1.1.0g  2 Nov 2017), which is not compatible with SSLSocket of Qt, and thus you won't be able to send Email via SSL if you are using Ubuntu 18.04
+
+For Windows platform, owing to the infirmities of Poppler-Qt5 library, we currently do not support PDF file handling. If you want to use this function, feel free to embrace Linux system such as Ubuntu.
 
 ## 2018 Spring
 **O**bject-**O**riented **P**rogramming Project
@@ -40,6 +42,10 @@ If everything goes without error and you have successfully acquired all the libr
 git clone https://github.com/zx1239856/libserver.git
 cd libserver && qmake && make
 ```
+
+#### Build on Windows
+
+Assume you have installed Qt creator, so gently open libserver.pro file with that. Now, don't tell me about your unawareness of the building procedure!
 
 ## Usage
 

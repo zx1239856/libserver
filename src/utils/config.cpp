@@ -1,4 +1,4 @@
-#include "config.h"
+﻿#include "config.h"
 #include <exception>
 #include <QDebug>
 
@@ -7,7 +7,7 @@ QString config::path = "";
 
 config::config(const QString &path)
 {
-    settings = new QSettings(path, QSettings::NativeFormat);
+    settings = new QSettings(path, QSettings::IniFormat);
     Load();
 }
 
