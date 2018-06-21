@@ -1,3 +1,4 @@
+﻿#ifdef Q_OS_LINUX
 #include "pdfhandler.h"
 #include <QPainter>
 #include <QtMath>
@@ -144,3 +145,5 @@ void pdfHandler::setWatermark(const QImage &water,qreal rot, qreal op, int l,boo
   line=l;
   full=f;
 }
+
+#endif

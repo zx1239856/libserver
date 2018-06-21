@@ -1,3 +1,4 @@
+﻿#ifdef Q_OS_LINUX  // disable this function if not linux
 #ifndef PDFHANDLER_H
 #define PDFHANDLER_H
 
@@ -37,3 +38,4 @@ private:
 };
 
 #endif // PDFHANDLER_H
+#endif

@@ -1,4 +1,4 @@
-#ifndef _GLOBALINFO_H
+﻿#ifndef _GLOBALINFO_H
 #define _GLOBALINFO_H
 
 /* Modify these things to change some global constants!
@@ -23,7 +23,8 @@ namespace globalInfo
   const QString emailChangePwdTitle = appName + " - 用户密码重置通知";
   inline QString emailChangePwdContent(const QString &newpwd)
   {
-      return "您的密码已重置为随机密码: " + newpwd + "，请及时用该密码登陆账号并修改密码。";
+      QString val = "您的密码已重置为随机密码: " + newpwd + "，请及时用该密码登陆账号并修改密码。";
+      return val;
   }
   const QString emailNotifyTitle = appName + " - 用户还书提醒";
   const QString emailNotifyContent = "您所借阅的 %%Bookname 将于 %%Exptime 到期，请及时还书";

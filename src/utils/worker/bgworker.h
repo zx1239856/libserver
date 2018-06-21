@@ -1,4 +1,4 @@
-#ifndef BGWORKER_H
+﻿#ifndef BGWORKER_H
 #define BGWORKER_H
 
 #include <QObject>
@@ -23,6 +23,7 @@ signals:
   void onFail(const QString &err);
 };
 
+#ifdef Q_OS_LINUX
 class pdfHandler;
 
 class pdfConversion: public AbstractWorker
@@ -48,6 +49,7 @@ public:
   void run() override;
   ~pdfConversion()override;
 };
+#endif
 
 class borrowNotifier: public AbstractWorker
 {

@@ -1,4 +1,4 @@
-#include "bgworker.h"
+﻿#include "bgworker.h"
 #include "utils/file/pdfhandler.h"
 #include "utils/file/imghandler.h"
 #include "utils/handle/dbsettings.h"
@@ -15,6 +15,7 @@ AbstractWorker::AbstractWorker()
 AbstractWorker::~AbstractWorker()
 {}
 
+#ifdef Q_OS_LINUX
 pdfConversion::pdfConversion(const QString &_src, const QString &_dst, mode Mode,uint dp):src(_src),dst(_dst),currentMode(Mode),pdf(nullptr)
 {
   dpi = dp;
@@ -88,6 +89,7 @@ void pdfConversion::run()
       emit onFinish();
     }
 }
+#endif
 
 void borrowNotifier::run()
 {
