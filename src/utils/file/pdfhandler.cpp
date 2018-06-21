@@ -1,8 +1,7 @@
-﻿#ifdef Q_OS_LINUX
-#include "pdfhandler.h"
+﻿#include "pdfhandler.h"
 #include <QPainter>
 #include <QtMath>
-
+#ifdef Q_OS_LINUX
 pdfHandler::pdfHandler(const QString& Path):
   document(nullptr),filePath(Path),waterMark(nullptr),rotation(0),opacity(0.5),line(1),full(true),numPages(0),pageSize(0,0)
 {

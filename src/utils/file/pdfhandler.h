@@ -1,11 +1,10 @@
-﻿#ifdef Q_OS_LINUX  // disable this function if not linux
-#ifndef PDFHANDLER_H
+﻿#ifndef PDFHANDLER_H
 #define PDFHANDLER_H
-
 #include <poppler-qt5.h>
 #include <QImage>
 #include <QDebug>
 
+#ifdef Q_OS_LINUX
 namespace pdf
 {
   enum resolution{normal,low,mid,good,high,ultra};
@@ -36,6 +35,5 @@ private:
     void getPdfInfo();
     bool addWaterMark(QImage &src, const QImage &watermark,qreal rotation, qreal opacity, int line, bool full)const;
 };
-
-#endif // PDFHANDLER_H
 #endif
+#endif // PDFHANDLER_H
