@@ -2,30 +2,31 @@
 {
     "token": "该对话所对应的令牌",
     "type": "LOAD",
-    "command": "downcover",
+    "command": "down",
+    "object": "cover",
     "id": 1 //书的id
 }
-
 //下载PDF
 {
     "token": "该对话所对应的令牌",
     "type": "LOAD",
-    "command": "downpdf",
+    "command": "down",
+    "object": "pdf",
     "id": 1, //书的id
 }
-
 //上传书的封面/缩略图
 {
     "token": "该对话所对应的令牌",
     "type": "LOAD",
-    "command": "upcover",
+    "command": "up",
+    "object": "cover",
     "id": 1 //书的id
 }
-
 //上传PDF
 {
     "token": "该对话所对应的令牌",
     "type": "LOAD",
-    "command": "uppdf",
+    "command": "up",
+    "object": "pdf",
     "id": 1, //书的id
 }
