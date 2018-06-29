@@ -38,9 +38,6 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                                       qMakePair(json.value("group").toString(), sqlresult[0].value("ID").toInt()));
                         jsonReturn.insert("result", true);
                         jsonReturn.insert("token", token);
-#ifdef VERBOSE_OUTPUT
-                        qDebug() << ctrl->mClient;
-#endif
                     }
                     else // wrong pwd
                     {
@@ -139,9 +136,6 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
         {
             ctrl->DeleteUser(token);
             jsonReturn.insert("result", true);
-#ifdef VERBOSE_OUTPUT
-            qDebug() << ctrl->mClient;
-#endif
         }
         else
         {
