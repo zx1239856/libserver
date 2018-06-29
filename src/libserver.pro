@@ -20,6 +20,7 @@ CONFIG(debug, debug|release) {
     MOC_DIR = $$BINDIR/release/.moc
     RCC_DIR = $$BINDIR/release/.rcc
     UI_DIR = $$BINDIR/release/.ui
+    DEFINES+= QT_NO_DEBUG_OUTPUT
 }
 
 
