@@ -1,4 +1,4 @@
-#include "queryhdl.h"
+﻿#include "queryhdl.h"
 
 using namespace globalInfo;
 
@@ -10,6 +10,10 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
     char* cmd = cpath.data();
 
     QMetaEnum me = QMetaEnum::fromType<queryhdl::CMD>();
+
+    // update token status
+    ctrl->UpdateStatus(token);
+
     switch(me.keyToValue(cmd))
     {
     case book:

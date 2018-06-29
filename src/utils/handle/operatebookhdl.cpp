@@ -1,4 +1,4 @@
-#include "operatebookhdl.h"
+﻿#include "operatebookhdl.h"
 using namespace globalInfo;
 
 operatebookhdl::operatebookhdl(const QString& token): handle(token){}
@@ -9,6 +9,9 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
     char* cmd = cpath.data();
     sql::basicSQL *msql = nullptr;
     QMetaEnum me = QMetaEnum::fromType<operatebookhdl::CMD>();
+
+    // update token status
+    ctrl->UpdateStatus(token);
 
     switch(me.keyToValue(cmd))
     {

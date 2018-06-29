@@ -1,4 +1,4 @@
-#include "operateuserhdl.h"
+﻿#include "operateuserhdl.h"
 using namespace sql;
 using namespace globalInfo;
 
@@ -8,6 +8,9 @@ void operateuserhdl::deal(const QString &command, const QJsonObject &json)
 {
     QByteArray cpath = command.toLocal8Bit();
     char* cmd = cpath.data();
+
+    // update token status
+    ctrl->UpdateStatus(token);
 
     QMetaEnum me = QMetaEnum::fromType<operateuserhdl::CMD>();
     switch(me.keyToValue(cmd))

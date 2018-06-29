@@ -1,4 +1,4 @@
-#include "checkhdl.h"
+﻿#include "checkhdl.h"
 #include <QDate>
 using namespace sql;
 using namespace globalInfo;
@@ -10,6 +10,9 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
     QByteArray cpath = command.toLocal8Bit();
     char* cmd = cpath.data();
     QMetaEnum me = QMetaEnum::fromType<checkhdl::CMD>();
+
+    // update token status
+    ctrl->UpdateStatus(token);
 
     switch(me.keyToValue(cmd))
     {

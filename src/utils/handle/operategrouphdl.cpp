@@ -1,4 +1,4 @@
-#include "operategrouphdl.h"
+﻿#include "operategrouphdl.h"
 
 using namespace sql;
 using namespace globalInfo;
@@ -11,6 +11,10 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
     char* cmd = cpath.data();
 
     QMetaEnum me = QMetaEnum::fromType<operategrouphdl::CMD>();
+
+    // update token status
+    ctrl->UpdateStatus(token);
+
     switch(me.keyToValue(cmd))
     {
     case createreader:

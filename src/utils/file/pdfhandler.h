@@ -1,10 +1,10 @@
 ﻿#ifndef PDFHANDLER_H
 #define PDFHANDLER_H
-#include <poppler-qt5.h>
 #include <QImage>
 #include <QDebug>
 
 #ifdef Q_OS_LINUX
+#include <poppler-qt5.h>
 namespace pdf
 {
   enum resolution{normal,low,mid,good,high,ultra};

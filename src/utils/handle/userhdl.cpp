@@ -1,4 +1,4 @@
-#include <QFileInfo>
+﻿#include <QFileInfo>
 #include "userhdl.h"
 #include "utils/smtp/sendemail.h"
 #include "globalInfo.h"
@@ -17,6 +17,8 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
 
     basicSQL* msql = nullptr;
     QVector<QSqlRecord> sqlresult;
+    // update token status
+    ctrl->UpdateStatus(token);
     switch(me.keyToValue(cmd))
     {
     case login:

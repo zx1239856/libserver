@@ -1,4 +1,4 @@
-#include "mainservice.h"
+﻿#include "mainservice.h"
 #include "qdaemonapplication.h"
 #include "utils/crypto/token.h"
 #include "qdaemonlog.h"
@@ -38,8 +38,7 @@ void mainService::start()
   // All init end
   //pdfConversion* conv = new pdfConversion(conf->dataDir()+"file.pdf",conf->dataDir()+"output/",pdfConversion::singleFile,200);
   //pdfTasks->addWork(conv);
-  dbLog::log("logout","User logout",123,dbLog::staff);
-  dbSettings::setSetting("libLogo","test",13);
+
   // initiate websocket
   server = new webServer;
   server->init(conf->port(),conf->ccurrency(),conf->threadKeepAliveTimeout()*1000);
