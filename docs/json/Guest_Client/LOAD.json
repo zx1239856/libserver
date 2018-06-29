@@ -1,0 +1,31 @@
+//下载书的封面/缩略图
+{
+    "token": "该对话所对应的令牌",
+    "type": "LOAD",
+    "command": "downcover",
+    "id": 1 //书的id
+}
+
+//下载PDF
+{
+    "token": "该对话所对应的令牌",
+    "type": "LOAD",
+    "command": "downpdf",
+    "id": 1, //书的id
+}
+
+//上传书的封面/缩略图
+{
+    "token": "该对话所对应的令牌",
+    "type": "LOAD",
+    "command": "upcover",
+    "id": 1 //书的id
+}
+
+//上传PDF
+{
+    "token": "该对话所对应的令牌",
+    "type": "LOAD",
+    "command": "uppdf",
+    "id": 1, //书的id
+}
