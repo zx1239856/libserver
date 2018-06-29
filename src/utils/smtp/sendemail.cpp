@@ -58,6 +58,7 @@ void sendEmail::send()
   }
   else
   {
+      smtp.quit();
       emit onSuccess();
       return;
   }
