@@ -1,4 +1,4 @@
-#include "checkhdl.h"
+﻿#include "checkhdl.h"
 #include <QDate>
 using namespace sql;
 using namespace globalInfo;
@@ -10,6 +10,9 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
     QByteArray cpath = command.toLocal8Bit();
     char* cmd = cpath.data();
     QMetaEnum me = QMetaEnum::fromType<checkhdl::CMD>();
+
+    // update token status
+    ctrl->UpdateStatus(token);
 
     switch(me.keyToValue(cmd))
     {
@@ -55,16 +58,19 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                                 else
                                 {
                                     HDL_DB_ERROR(jsonReturn)
+                                    logDbErr(&msql4);
                                 }
                             }
                             else
                             {
                                 HDL_DB_ERROR(jsonReturn)
+                                logDbErr(&msql3);
                             }
                         }
                         else
                         {
                             HDL_DB_ERROR(jsonReturn)
+                            logDbErr(&msql2);
                         }
                     }
                     else
@@ -76,6 +82,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(&msql1);
                 }
             }
         }
@@ -109,6 +116,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                         else
                         {
                             HDL_DB_ERROR(jsonReturn)
+                            logDbErr(&msql2);
                         }
                     }
                     else
@@ -120,6 +128,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(&msql1);
                 }
             }
         }

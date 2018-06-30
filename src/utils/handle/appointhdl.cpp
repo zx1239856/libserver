@@ -1,4 +1,4 @@
-#include "appointhdl.h"
+﻿#include "appointhdl.h"
 
 using namespace sql;
 using namespace globalInfo;
@@ -12,6 +12,9 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
     QMetaEnum me = QMetaEnum::fromType<appointhdl::CMD>();
 
     basicSQL* msql = nullptr;
+
+    // update token status
+    ctrl->UpdateStatus(token);
 
     switch(me.keyToValue(cmd))
     {
@@ -29,6 +32,7 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
                         else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(msql);
                 }
         }
         else
@@ -50,6 +54,7 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
                         else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(msql);
                 }
         }
         else

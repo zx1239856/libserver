@@ -1,7 +1,9 @@
-#ifndef BGWORKER_H
+﻿#ifndef BGWORKER_H
 #define BGWORKER_H
 
 #include <QObject>
+#include <QVector>
+class QSqlRecord;
 
 /* Copyright 2018 Zhang Xiang
  * zx1239856@gmail.com
@@ -21,6 +23,7 @@ signals:
   void onFail(const QString &err);
 };
 
+#ifdef Q_OS_LINUX
 class pdfHandler;
 
 class pdfConversion: public AbstractWorker
@@ -46,5 +49,16 @@ public:
   void run() override;
   ~pdfConversion()override;
 };
+#endif
 
+class borrowNotifier: public AbstractWorker
+{
+    Q_OBJECT
+private:
+    uint currMax = 0;
+    QVector<QSqlRecord> res;
+public:
+    void run()override;
+    ~borrowNotifier()override;
+};
 #endif // BGWORKER_H

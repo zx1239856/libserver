@@ -1,6 +1,8 @@
+﻿#include <QFileInfo>
 #include "userhdl.h"
 #include "utils/smtp/sendemail.h"
 #include "globalInfo.h"
+#include "qdaemonlog.h"
 
 using namespace sql;
 using namespace globalInfo;
@@ -15,6 +17,8 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
 
     basicSQL* msql = nullptr;
     QVector<QSqlRecord> sqlresult;
+    // update token status
+    ctrl->UpdateStatus(token);
     switch(me.keyToValue(cmd))
     {
     case login:
@@ -34,9 +38,6 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                                       qMakePair(json.value("group").toString(), sqlresult[0].value("ID").toInt()));
                         jsonReturn.insert("result", true);
                         jsonReturn.insert("token", token);
-#ifdef VERBOSE_OUTPUT
-                        qDebug() << ctrl->mClient;
-#endif
                     }
                     else // wrong pwd
                     {
@@ -54,6 +55,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
             {
                 // server error, log
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(msql);
             }
         }
         else
@@ -65,7 +67,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
         if(ID == -1)
         {
             msql = new sql::select(dbFullPrefix + json.value("group").toString(),
-                                   "username = '" + json.value("username").toString() + "' AND email = '" + json.value("email").toString() + "'");
+                                   "username = '" + json.value("username").toString() + "' AND email = '" + json.value("auth").toString() + "'");
             if(msql->exec())
             {
                 sqlresult = msql->toResult();
@@ -73,29 +75,55 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                 {
                     QString newpwd = token::getToken(json.value("username").toString());
                     QMap<QString, QVariant> map;
-                    map.insert("password", newpwd);
-                    sql::update updatepwd(dbFullPrefix + json.value("group").toString(), map, "username = '" + json.value("username").toString() + "' AND email = '" + json.value("email").toString() + "'");
+                    map.insert("password", token::getMD5(newpwd));
+                    sql::update updatepwd(dbFullPrefix + json.value("group").toString(), map, "username = '" + json.value("username").toString() + "' AND email = '" + json.value("auth").toString() + "'");
                     if(updatepwd.exec())
                     {
-                        QStringList rcp(json.value("email").toString());
-                        sendEmail email(*config::getInstance(), rcp, "Fetch Your Password", emailContent(newpwd));
+                        QString emailContent = emailChangePwdContent(newpwd);
+                        // find email template
+                        QString tplPath = config::getInstance()->templateDir() + "/forgetPwd.html";
+                        QFileInfo tpl(tplPath);
+                        if(tpl.isFile())
+                        {
+                            QFile file(tplPath);
+                            if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+                            {
+                                QTextStream in(&file);
+                                emailContent = in.readAll();
+                                emailContent.replace("%%Servicename",appName);
+                                emailContent.replace("%%Newpwd",newpwd);
+                            }
+                        }
+                        QStringList rcp(json.value("auth").toString());
+                        sendEmail email(*config::getInstance(), rcp, emailChangePwdTitle, emailContent);
+                        QObject::connect(&email,&sendEmail::onFail,this,[&](const QString& what)
+                        {
+                            qDaemonLog(what,QDaemonLog::ErrorEntry);
+                            jsonReturn.insert("result", false);
+                            jsonReturn.insert("detail", what);
+                        });
+                        QObject::connect(&email,&sendEmail::onSuccess,this,[&]()
+                        {
+                            HDL_SUCCESS(jsonReturn);
+                        });
                         email.send();
-                        HDL_SUCCESS(jsonReturn);
                     }
                     else
                     {
                         HDL_DB_ERROR(jsonReturn)
+                        logDbErr(&updatepwd);
                     }
                 }
                 else
                 {
                     jsonReturn.insert("result", false);
-                    jsonReturn.insert("detail", "wrong username or email");
+                    jsonReturn.insert("detail", "Wrong username or email");
                 }
             }
             else
             {
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(msql);
             }
         }
         else
@@ -108,9 +136,6 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
         {
             ctrl->DeleteUser(token);
             jsonReturn.insert("result", true);
-#ifdef VERBOSE_OUTPUT
-            qDebug() << ctrl->mClient;
-#endif
         }
         else
         {
@@ -136,12 +161,13 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     jsonReturn.insert("result", false);
-                    jsonReturn.insert("detail", "wrong old password");
+                    jsonReturn.insert("detail", "Wrong old password");
                 }
             }
             else
             {
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(msql);
             }
         }
         else
@@ -164,6 +190,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
             else
             {
                 HDL_DB_ERROR(jsonReturn)
+                logDbErr(msql);
             }
         }
         else

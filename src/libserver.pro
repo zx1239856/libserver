@@ -2,8 +2,6 @@ include(daemon/daemon-lib.pri)
 include(libserver.pri)
 include(qcron/qcron.pri)
 
-QMAKE_CXXFLAGS += -Wswitch
-
 DEFINES += VERBOSE_OUTPUT
 
 TARGET = libserver
@@ -22,14 +20,9 @@ CONFIG(debug, debug|release) {
     MOC_DIR = $$BINDIR/release/.moc
     RCC_DIR = $$BINDIR/release/.rcc
     UI_DIR = $$BINDIR/release/.ui
+    DEFINES+= QT_NO_DEBUG_OUTPUT
 }
 
-
-# poppler qt5 lib
-INCLUDEPATH += /usr/local/include/poppler/qt5 \
-    /usr/include/poppler/qt5
-LIBS += -L"/usr/local/lib64" -L"/usr/local/lib" \
-    -L"/usr/lib64" -L"/usr/lib" -lpoppler-qt5
 
 HEADERS += \
     utils/dbwrapper/db-operation.h \
@@ -135,4 +128,10 @@ unix:!macx  {
     epoll/socknot_p.cpp \
     epoll/timers_p.cpp
 
+    # poppler qt5 lib
+    INCLUDEPATH += /usr/local/include/poppler/qt5 \
+        /usr/include/poppler/qt5
+    LIBS += -L"/usr/local/lib64" -L"/usr/local/lib" \
+        -L"/usr/lib64" -L"/usr/lib" -lpoppler-qt5
+    QMAKE_CXXFLAGS += -Wswitch
 }

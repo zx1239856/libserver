@@ -1,4 +1,4 @@
-#include "operategrouphdl.h"
+﻿#include "operategrouphdl.h"
 
 using namespace sql;
 using namespace globalInfo;
@@ -11,6 +11,10 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
     char* cmd = cpath.data();
 
     QMetaEnum me = QMetaEnum::fromType<operategrouphdl::CMD>();
+
+    // update token status
+    ctrl->UpdateStatus(token);
+
     switch(me.keyToValue(cmd))
     {
     case createreader:
@@ -40,13 +44,14 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                     qDebug()<<err;
                 });
                 if(msql.exec())
-                {
-                    HDL_SUCCESS(jsonReturn)
-                }
-                else
-                {
-                    HDL_DB_ERROR(jsonReturn)
-                }
+                    {
+                        HDL_SUCCESS(jsonReturn)
+                    }
+                    else
+                    {
+                        HDL_DB_ERROR(jsonReturn)
+                        logDbErr(&msql);
+                    }
             }
         }
         else
@@ -81,13 +86,14 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                     qDebug()<<err;
                 });
                 if(msql.exec())
-                {
-                    HDL_SUCCESS(jsonReturn)
-                }
-                else
-                {
-                    HDL_DB_ERROR(jsonReturn)
-                }
+                    {
+                        HDL_SUCCESS(jsonReturn)
+                    }
+                    else
+                    {
+                        HDL_DB_ERROR(jsonReturn)
+                        logDbErr(&msql);
+                    }
             }
         }
         else
@@ -122,13 +128,14 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                     qDebug()<<err;
                 });
                 if(msql.exec())
-                {
-                    HDL_SUCCESS(jsonReturn)
-                }
-                else
-                {
-                    HDL_DB_ERROR(jsonReturn)
-                }
+                    {
+                        HDL_SUCCESS(jsonReturn)
+                    }
+                    else
+                    {
+                        HDL_DB_ERROR(jsonReturn)
+                        logDbErr(&msql);
+                    }
             }
         }
         else
@@ -163,13 +170,14 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                     qDebug()<<err;
                 });
                 if(msql.exec())
-                {
-                    HDL_SUCCESS(jsonReturn)
-                }
-                else
-                {
-                    HDL_DB_ERROR(jsonReturn)
-                }
+                    {
+                        HDL_SUCCESS(jsonReturn)
+                    }
+                    else
+                    {
+                        HDL_DB_ERROR(jsonReturn)
+                        logDbErr(&msql);
+                    }
             }
         }
         else
@@ -204,13 +212,14 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                     qDebug()<<err;
                 });
                 if(msql.exec())
-                {
-                    HDL_SUCCESS(jsonReturn)
-                }
-                else
-                {
-                    HDL_DB_ERROR(jsonReturn)
-                }
+                    {
+                        HDL_SUCCESS(jsonReturn)
+                    }
+                    else
+                    {
+                        HDL_DB_ERROR(jsonReturn)
+                        logDbErr(&msql);
+                    }
             }
         }
         else
@@ -245,13 +254,14 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                     qDebug()<<err;
                 });
                 if(msql.exec())
-                {
-                    HDL_SUCCESS(jsonReturn)
-                }
-                else
-                {
-                    HDL_DB_ERROR(jsonReturn)
-                }
+                    {
+                        HDL_SUCCESS(jsonReturn)
+                    }
+                    else
+                    {
+                        HDL_DB_ERROR(jsonReturn)
+                        logDbErr(&msql);
+                    }
             }
         }
         else
@@ -282,6 +292,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                         else
                         {
                             HDL_DB_ERROR(jsonReturn)
+                            logDbErr(&msql);
                         }
                     }
                     else
@@ -293,6 +304,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(&query);
                 }
             }
         }
@@ -324,6 +336,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                         else
                         {
                             HDL_DB_ERROR(jsonReturn)
+                            logDbErr(&msql);
                         }
                     }
                     else
@@ -335,6 +348,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(&query);
                 }
             }
         }
@@ -366,6 +380,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                         else
                         {
                             HDL_DB_ERROR(jsonReturn)
+                            logDbErr(&msql);
                         }
                     }
                     else
@@ -377,6 +392,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                 else
                 {
                     HDL_DB_ERROR(jsonReturn)
+                    logDbErr(&query);
                 }
             }
         }

@@ -1,7 +1,7 @@
-#include "pdfhandler.h"
+﻿#include "pdfhandler.h"
 #include <QPainter>
 #include <QtMath>
-
+#ifdef Q_OS_LINUX
 pdfHandler::pdfHandler(const QString& Path):
     document(nullptr),filePath(Path),waterMark(nullptr),rotation(0),opacity(0.5),line(1),full(true),numPages(0),pageSize(0,0)
 {
@@ -144,3 +144,5 @@ void pdfHandler::setWatermark(const QImage &water,qreal rot, qreal op, int l,boo
     line=l;
     full=f;
 }
+
+#endif
