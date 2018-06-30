@@ -76,7 +76,8 @@ HEADERS += \
     utils/worker/bgworker.h \
     utils/worker/bgworkercontroller.h \
     utils/handle/dblog.h \
-    utils/handle/dbsettings.h
+    utils/handle/dbsettings.h \
+    utils/handle/loadhdl.h
 
 SOURCES += \
     utils/dbwrapper/db-operation.cpp \
@@ -119,7 +120,8 @@ SOURCES += \
     utils/worker/bgworker.cpp \
     utils/worker/bgworkercontroller.cpp \
     utils/handle/dblog.cpp \
-    utils/handle/dbsettings.cpp
+    utils/handle/dbsettings.cpp \
+    utils/handle/loadhdl.cpp
 
 unix:!macx  {
     HEADERS += \

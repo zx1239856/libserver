@@ -9,6 +9,7 @@
 #include <QRunnable>
 #include "utils/web/requesthdl.h"
 #include "utils/file/tcpfiletransfer.h"
+#include "utils/config.h"
 
 class socketThread: public QRunnable
 {
@@ -38,5 +39,6 @@ public slots:
 private:
     QTcpSocket* tcpsocket;
     tcpFileTransfer *fileTransfer;
+
 };
 #endif // SOCKETTHREAD_H

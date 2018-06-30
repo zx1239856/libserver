@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QMetaEnum>
+#include <QTcpSocket>
 #include "utils/handle/controlhdl.h"
 #include "utils/dbwrapper/db-operation.h"
 #include "utils/crypto/token.h"
@@ -31,6 +32,7 @@ public:
     QJsonObject GetReturn();
 
 protected:
+    QTcpSocket *socket;
     QString token;
     int ID;
     QString group;

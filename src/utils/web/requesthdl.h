@@ -3,13 +3,19 @@
 
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QTcpSocket>
+#include <QObject>
 
-class requesthdl
+class requesthdl: public QObject
 {
+    Q_OBJECT
+
     QJsonObject jsonRequest;
 public:
     requesthdl(const QByteArray &rqtData);
-    virtual QByteArray deal();
+    QByteArray deal();
+    QString mode;
+    QString file;
 };
 
 #endif // REQUESTHDL_H

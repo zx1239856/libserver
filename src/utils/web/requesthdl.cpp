@@ -6,6 +6,7 @@
 #include "utils/handle/operategrouphdl.h"
 #include "utils/handle/operateuserhdl.h"
 #include "utils/handle/appointhdl.h"
+#include "utils/handle/loadhdl.h"
 
 requesthdl::requesthdl(const QByteArray &rqtData)
 {
@@ -44,6 +45,10 @@ QByteArray requesthdl::deal()
     {
         hdl = new operategrouphdl(jsonRequest.value("token").toString());
     }
+    else if(jsonRequest.value("type").toString() == "LOAD")
+    {
+        hdl = new loadhdl(jsonRequest.value("token").toString());
+    }
     else
     {
         QJsonObject jsonReturn;
@@ -54,7 +59,14 @@ QByteArray requesthdl::deal()
     }
 
     hdl->deal(jsonRequest.take("command").toString(), jsonRequest);
-    QJsonDocument jdocReturn(hdl->GetReturn());
+    QJsonObject&& jsonReturn = hdl->GetReturn();
     delete hdl;
+    if(!jsonReturn.value("mode").isNull())
+    {
+        mode = jsonReturn.take("mode").toString();
+        file = jsonReturn.take("file").toString();
+    }
+    QJsonDocument jdocReturn(jsonReturn);
     return jdocReturn.toBinaryData();
+
 }
