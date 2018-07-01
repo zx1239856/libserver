@@ -51,7 +51,13 @@ Assume you have installed Qt creator, so gently open libserver.pro file with tha
 
 The server requires MySQL as server-side database, so you need to set up a database server in advance either using the same host or some other remote host. But it is recommended that you deploy DB server locally to maximize performance and stability.
 
-Before running, please create a config file (See example config file in libserver/docs/config.conf)
+**Prepare your SQL server**
+
+First you need to deploy MySQL server. Create a database named **libserver**, then import [libserver.sql](https://github.com/zx1239856/libserver/blob/master/sql/libserver.sql) file into this database. You can conveniently use [phpMyAdmin](https://www.phpmyadmin.net/) or other MySQL management software.
+
+**Config File Guidance**
+
+Before running, please create a config file (See example config file in libserver/docs/[config.conf](https://github.com/zx1239856/libserver/blob/master/docs/config.conf))
 
 Available commands for the server:
 
