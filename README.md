@@ -7,9 +7,9 @@ Server side application
 
 Tested on Ubuntu 14.04-18.04 , CentOS 7 , Windows 10(MSVC)
 
-**Warning**: Ubuntu 18.04 uses a newer version of OpenSSL(OpenSSL 1.1.0g  2 Nov 2017), which is not compatible with SSLSocket of Qt, and thus you won't be able to send Email via SSL if you are using Ubuntu 18.04
-
 For Windows platform, owing to the infirmities of Poppler-Qt5 library, we currently do not support PDF file handling. If you want to use this function, feel free to embrace Linux system such as Ubuntu.
+
+If you have encountered any problem while using this application, see [Problem Resolutions](#solution) below.
 
 ## 2018 Spring
 **O**bject-**O**riented **P**rogramming Project
@@ -168,6 +168,26 @@ systemctl stop libserver  # Stop the server
 systemctl restart libserver  # Restart the server
 systemctl status libserver # Get the status of the server
 systemctl enable libserver # Automatic startup the server when system boots
+```
+
+## Problem Resolutions
+
+<span id="solution"></span>
+
+Here is guidance to some common problems.
+
+**Q**: QSqlDatabase: QMYSQL driver not loaded
+
+**A**: This problem comes from the version of libmysqlclient.so. Typically, MySQL drivers of QT support version 18 of this library. If you have versions that is not identical, the MySQL would not load.
+
+To solve this, you need to install [RPM](https://pkgs.org/download/libmysqlclient.so.18) or [DEB](https://launchpad.net/ubuntu/xenial/amd64/libmysqlclient18/5.6.25-0ubuntu1) package, and the problem should be addressed.
+
+**Q**: QSSLSocket unavailable on Ubuntu 18.04, resulting in the failure of email sending
+
+**A**: Owing to the fact that the newer Ubuntu release utilizes a newer version of OpenSSL which is not compatible with SSLSocket protocol, the email sending would presumably fail. To solve this, please install the following packages:
+
+```bash
+sudo apt install libssl1.0-dev
 ```
 
 
