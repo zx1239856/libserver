@@ -176,13 +176,25 @@ systemctl status libserver # Get the status of the server
 systemctl enable libserver # Automatic startup the server when system boots
 ```
 
+
+
+### Email Sending Customization
+
+The server supports notifying users to return books and password reset through Email. You can choose to use either plain text Email or one equipped with HTML, which would be much more beautiful.
+
+To customize your Email, please create a folder named **template** in the same directory as the server App. And create two HTML files, **forgetPwd.html** for password reset, **returnNotify.html** for book return notification.  The forgetPwd.html should contain **%%Newpwd** placeholder, and retrnNotify.html should contain **%%Bookname** and **%%Exptime**.
+
+You can refer to [example HTML](https://github.com/zx1239856/libserver/tree/master/template) here.
+
+
+
 ## Problem Resolutions
 
 Here is guidance to some common problems.
 
 **Q**: QSqlDatabase: QMYSQL driver not loaded
 
-**A**: This problem comes from the version of libmysqlclient.so. Typically, MySQL drivers of QT support version 18 of this library. If you have versions that is not identical, the MySQL would not load.
+**A**: This problem comes from the version of libmysqlclient.so. Typically, MySQL drivers of QT support version 18 of this library. If you have versions that are not identical, the MySQL would not load.
 
 To solve this, you need to install [RPM](https://pkgs.org/download/libmysqlclient.so.18) or [DEB](https://launchpad.net/ubuntu/xenial/amd64/libmysqlclient18/5.6.25-0ubuntu1) package, and the problem should be addressed.
 
