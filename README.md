@@ -5,9 +5,9 @@ A cross-platform, versatile library management system
 
 Server side application
 
-Tested on Ubuntu 14.04-18.04 , CentOS 7 , Windows 10(MSVC)
+Tested on Ubuntu 14.04-18.04 , CentOS 7
 
-For Windows platform, owing to the infirmities of Poppler-Qt5 library, we currently do not support PDF file handling. If you want to use this function, feel free to embrace Linux system such as Ubuntu.
+It is recommended that you run the server on Linux to avoid weird problems.
 
 If you have encountered any problem while using this application, see [Problem Resolutions](#problem-resolutions) below.
 
@@ -15,6 +15,19 @@ If you have encountered any problem while using this application, see [Problem R
 **O**bject-**O**riented **P**rogramming Project
 
 See [contributors](https://github.com/zx1239856/libserver/graphs/contributors) here
+
+## Highlights
+
+The icing on the cake would be as follows:
+
++ Book search/borrow/return
++ Online PDF preview
++ Client configuration(password, server address, etc.) encrypted storage
++ Administrator management
++ Automatic Email return notification
++ Find your forgotten password through Email
++ Easy customizable Email template
++ etc...
 
 ## How to build
 
@@ -42,10 +55,6 @@ If everything goes without error and you have successfully acquired all the libr
 git clone https://github.com/zx1239856/libserver.git
 cd libserver && qmake && make
 ```
-
-#### Build on Windows
-
-Assume you have installed Qt creator, so gently open libserver.pro file with that. Now, don't tell me about your unawareness of the building procedure!
 
 ## Usage
 
@@ -182,7 +191,7 @@ systemctl enable libserver # Automatic startup the server when system boots
 
 The server supports notifying users to return books and password reset through Email. You can choose to use either plain text Email or one equipped with HTML, which would be much more beautiful.
 
-To customize your Email, please create a folder named **template** in the same directory as the server App. And create two HTML files, **forgetPwd.html** for password reset, **returnNotify.html** for book return notification.  The forgetPwd.html should contain **%%Newpwd** placeholder, and retrnNotify.html should contain **%%Bookname** and **%%Exptime**.
+To customize your Email, please create a folder named **template** in the same directory as the server App. And create two HTML files, **forgetPwd.html** for password reset, **returnNotify.html** for book return notification.  The forgetPwd.html should contain **%%Newpwd** placeholder, and returnNotify.html should contain **%%Bookname** and **%%Exptime**.
 
 You can refer to [example HTML](https://github.com/zx1239856/libserver/tree/master/template) here.
 
@@ -219,3 +228,9 @@ The server is based on Qt5, and it involves these libraries/ projects as well:
 [Smtp Email](https://github.com/bluetiger9/SmtpClient-for-Qt)  Little changes to make the interface easier to utilize
 
 [Poppler library](https://poppler.freedesktop.org/)  A library to handle PDF files, including Qt5 wrapper
+
+
+
+## Wiki
+
+For more information, please refer to [Wiki](https://github.com/zx1239856/libserver/wiki).
