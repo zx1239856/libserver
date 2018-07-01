@@ -8,6 +8,7 @@ using namespace sql;
  */
 
 dbWrapper::Control * basicSQL::mainDBControl = nullptr;
+dbConn::dbConnGarbo dbConn::Garbo;
 
 basicSQL::basicSQL():query(mainDBControl->query())
 {

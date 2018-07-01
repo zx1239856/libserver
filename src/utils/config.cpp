@@ -3,6 +3,7 @@
 #include <QDebug>
 
 config * config::instance = nullptr;
+config::configGarbo config::garbo;
 QString config::path = "";
 
 config::config(const QString &path)

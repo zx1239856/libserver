@@ -5,6 +5,8 @@
 #include <QCoreApplication>
 using namespace controlhdlDetail;
 
+controlhdl::controlhdlGarbo controlhdl::garbo;
+
 QThreadWrapper::QThreadWrapper(QObject *parent):QThread(parent){}
 
 void QThreadWrapper::run()
