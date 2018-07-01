@@ -16,6 +16,7 @@ void dbLog::log(const QString type, const QString content, uint operatorID, oper
     {
     case staff: t="staff";break;
     case reader: t="reader";break;
+    case general: t="general";break;
     default: t="other";
     }
   QMap<QString,QVariant> list;

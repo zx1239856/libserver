@@ -28,8 +28,11 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
             mAppoint.insert("appointtime", json.value("appointtime").toString());
             msql = new sql::insert(dbFullPrefix + "currappoint", mAppoint);
             if(msql->exec())
-                HDL_SUCCESS(jsonReturn)
-                        else
+                {
+                    HDL_SUCCESS(jsonReturn)
+                    dbLog::log("appointborrow","The user appointed to borrow book, ID="+json.value("id").toString(),ID,dbLog::reader);
+                }
+                else
                 {
                     HDL_DB_ERROR(jsonReturn)
                     logDbErr(msql);
@@ -50,7 +53,10 @@ void appointhdl::deal(const QString &command, const QJsonObject &json)
             mAppoint.insert("appointtime", json.value("appointtime").toString());
             msql = new sql::insert(dbFullPrefix + "currappoint", mAppoint);
             if(msql->exec())
+              {
                 HDL_SUCCESS(jsonReturn)
+                    dbLog::log("appointreturn","The user appointed to return book, ID="+json.value("id").toString(),ID,dbLog::reader);
+              }
                         else
                 {
                     HDL_DB_ERROR(jsonReturn)

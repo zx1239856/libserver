@@ -8,7 +8,8 @@ public:
   enum operatorType
   {
     staff,
-    reader
+    reader,
+    general
   };
   dbLog();
   static void log(const QString type, const QString content, unsigned int operatorID, operatorType opType);

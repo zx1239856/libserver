@@ -54,6 +54,7 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
                 });
                 if(msql->exec())
                 {
+                    dbLog::log("createBook","The admin added book",ID,dbLog::staff);
                     HDL_SUCCESS(jsonReturn)
                 }
                 else
@@ -84,6 +85,7 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
                     msql= new sql::del(dbFullPrefix + "books", "ID = " + QString::number(x.toInt()));
                     if(msql->exec())
                     {
+                        dbLog::log("deleteBook","The admin deleted book, ID="+json.value("bookid").toString(),ID,dbLog::staff);
                         HDL_SUCCESS(jsonReturn)
                     }
                     else
@@ -138,6 +140,7 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
                 });
                  if(msql->exec())
                     {
+                        dbLog::log("changeBook","The admin changed book",ID,dbLog::staff);
                         HDL_SUCCESS(jsonReturn)
                     }
                     else
@@ -175,6 +178,7 @@ void operatebookhdl::deal(const QString &command, const QJsonObject &json)
                     });
                      if(msql->exec())
                     {
+                        dbLog::log("changeGroup","The admin changed group of books, ID="+json.value("bookid").toString(),ID,dbLog::staff);
                         HDL_SUCCESS(jsonReturn)
                     }
                     else

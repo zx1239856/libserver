@@ -43,6 +43,7 @@ void operateuserhdl::deal(const QString &command, const QJsonObject &json)
                 });
                 if(msql.exec())
                 {
+                    dbLog::log("createUser","The admin created a new reader",ID,dbLog::staff);
                     HDL_SUCCESS(jsonReturn)
                 }
                 else
@@ -79,6 +80,7 @@ void operateuserhdl::deal(const QString &command, const QJsonObject &json)
                 }
                 if(success)
                 {
+                    dbLog::log("deleteUser","The admin deleted a reader",ID,dbLog::staff);
                     HDL_SUCCESS(jsonReturn)
                 }
                 else
@@ -117,6 +119,7 @@ void operateuserhdl::deal(const QString &command, const QJsonObject &json)
                 }
                 if(success)
                 {
+                    dbLog::log("changeGroup","The admin changed group of user, ID="+json.value("userid").toString(),ID,dbLog::staff);
                     HDL_SUCCESS(jsonReturn)
                 }
                 else

@@ -45,6 +45,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                 });
                 if(msql.exec())
                     {
+                        dbLog::log("createReaderGroup","The admin created a new reader group",ID,dbLog::staff);
                         HDL_SUCCESS(jsonReturn)
                     }
                     else
@@ -87,6 +88,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                 });
                 if(msql.exec())
                     {
+                        dbLog::log("createStaffGroup","The admin created a new staff group",ID,dbLog::staff);
                         HDL_SUCCESS(jsonReturn)
                     }
                     else
@@ -129,6 +131,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                 });
                 if(msql.exec())
                     {
+                        dbLog::log("createBookGroup","The admin created a new book group",ID,dbLog::staff);
                         HDL_SUCCESS(jsonReturn)
                     }
                     else
@@ -171,6 +174,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                 });
                 if(msql.exec())
                     {
+                        dbLog::log("changeReaderGroup","The admin changed a reader group",ID,dbLog::staff);
                         HDL_SUCCESS(jsonReturn)
                     }
                     else
@@ -213,6 +217,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                 });
                 if(msql.exec())
                     {
+                        dbLog::log("changeStaffGroup","The admin changed a group staff",ID,dbLog::staff);
                         HDL_SUCCESS(jsonReturn)
                     }
                     else
@@ -255,6 +260,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                 });
                 if(msql.exec())
                     {
+                        dbLog::log("changeBookGroup","The admin changed a book group",ID,dbLog::staff);
                         HDL_SUCCESS(jsonReturn)
                     }
                     else
@@ -287,6 +293,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                         sql::del msql(dbFullPrefix + "readergroup", "ID = " + QString::number(groupid));
                         if(msql.exec())
                         {
+                            dbLog::log("deleteReaderGroup","The admin deleted a reader group.",ID,dbLog::staff);
                             HDL_SUCCESS(jsonReturn)
                         }
                         else
@@ -331,6 +338,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                         sql::del msql(dbFullPrefix + "staffgroup", "ID = " + QString::number(groupid));
                         if(msql.exec())
                         {
+                            dbLog::log("deleteStaffGroup","The admin deleted a staff group.",ID,dbLog::staff);
                             HDL_SUCCESS(jsonReturn)
                         }
                         else
@@ -375,6 +383,7 @@ void operategrouphdl::deal(const QString &command, const QJsonObject &json)
                         sql::del msql(dbFullPrefix + "bookgroup", "ID = " + QString::number(groupid));
                         if(msql.exec())
                         {
+                            dbLog::log("deleteBookGroup","The admin deleted a book group.",ID,dbLog::staff);
                             HDL_SUCCESS(jsonReturn)
                         }
                         else

@@ -24,6 +24,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
     case login:
         if(ID == -1) // check token
         {
+            dbLog::operatorType userType = (json.value("group").toString()=="staffs")?dbLog::staff:dbLog::reader;
             msql = new sql::select(dbFullPrefix + json.value("group").toString(),
                                    "username = '" + json.value("username").toString()+"'");
             if(msql->exec())  // db okay
@@ -38,6 +39,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                                       qMakePair(json.value("group").toString(), sqlresult[0].value("ID").toInt()));
                         jsonReturn.insert("result", true);
                         jsonReturn.insert("token", token);
+                        dbLog::log("userLogin","User "+json.value("username").toString()+" login",ID,userType);
                     }
                     else // wrong pwd
                     {
@@ -96,6 +98,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                         }
                         QStringList rcp(json.value("auth").toString());
                         sendEmail email(*config::getInstance(), rcp, emailChangePwdTitle, emailContent);
+                        dbLog::log("userForgetPWD","Attempting to reset password, email="+json.value("auth").toString(),0,dbLog::general);
                         QObject::connect(&email,&sendEmail::onFail,this,[&](const QString& what)
                         {
                             qDaemonLog(what,QDaemonLog::ErrorEntry);
@@ -136,6 +139,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
         {
             ctrl->DeleteUser(token);
             jsonReturn.insert("result", true);
+            dbLog::log("userLogout","User logout",ID,dbLog::general);
         }
         else
         {
@@ -156,6 +160,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                     newpwd.insert("password", json.value("newpwd").toString());
                     update up(dbFullPrefix + group, newpwd, "ID = " + QString::number(ID));
                     up.exec();
+                    dbLog::log("userChangePWD","User changed password",ID,(group=="staffs")?dbLog::staff:dbLog::reader);
                     jsonReturn.insert("result", true);
                 }
                 else
@@ -186,7 +191,10 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
             }
             msql = new sql::update(dbFullPrefix + group, mInfo, "ID = " + QString::number(ID));
             if(msql->exec())
+              {
+                dbLog::log("userUpdateInfo","User updated personal info",ID,(group=="staffs")?dbLog::staff:dbLog::reader);
                 jsonReturn.insert("result", true);
+              }
             else
             {
                 HDL_DB_ERROR(jsonReturn)

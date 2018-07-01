@@ -53,6 +53,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                                 {
                                     sql::del msql5(dbFullPrefix + "currappoint", "ID = " + QString::number(json.value("appointid").toInt()));
                                     msql5.exec();
+                                    dbLog::log("checkborrow","The admin checked borrow, BookID="+json.value("bookid").toString()+",ReaderID="+json.value("readerid").toString(),ID,dbLog::staff);
                                     HDL_SUCCESS(jsonReturn)
                                 }
                                 else
@@ -111,6 +112,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                         {
                             sql::del msql3(dbFullPrefix + "currappoint", "ID = " + QString::number(json.value("appointid").toInt()));
                             msql3.exec();
+                            dbLog::log("checkreturn","The admin checked return, borrowID="+json.value("borrowid").toString()+",appoint ID="+json.value("appointid").toString(),ID,dbLog::staff);
                             HDL_SUCCESS(jsonReturn)
                         }
                         else
