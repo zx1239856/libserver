@@ -9,7 +9,7 @@ Tested on Ubuntu 14.04-18.04 , CentOS 7 , Windows 10(MSVC)
 
 For Windows platform, owing to the infirmities of Poppler-Qt5 library, we currently do not support PDF file handling. If you want to use this function, feel free to embrace Linux system such as Ubuntu.
 
-If you have encountered any problem while using this application, see [Problem Resolutions](#solution) below.
+If you have encountered any problem while using this application, see [Problem Resolutions](#problem-resolutions) below.
 
 ## 2018 Spring
 **O**bject-**O**riented **P**rogramming Project
@@ -171,8 +171,6 @@ systemctl enable libserver # Automatic startup the server when system boots
 ```
 
 ## Problem Resolutions
-
-<span id="solution"></span>
 
 Here is guidance to some common problems.
 
