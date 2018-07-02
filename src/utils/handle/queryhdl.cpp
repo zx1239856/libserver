@@ -184,11 +184,11 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
         }
         else if(json.value("rule").toString() == "intelligentsearch")
         {
+            QString conditions;
             if(!json.value("info").isNull())
             {
-                    QString conditions;
-                    QString info = json.value("info").toString();
-                    conditions += "name LIKE '%" + info +"%' OR author LIKE '%" + info + "%' OR press LIKE '%" + info + "%' OR tags LIKE '%" + info + "%'";
+                QString info = json.value("info").toString();
+                conditions += "name LIKE '%" + info +"%' OR author LIKE '%" + info + "%' OR press LIKE '%" + info + "%' OR tags LIKE '%" + info + "%'";
             }
 
             //添加排序
