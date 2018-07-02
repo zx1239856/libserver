@@ -138,6 +138,8 @@ For **Ubuntu 17.10** or earlier, or any other linux system using initd to manage
 
 Now you would be able to manage the server using systemctl.
 
+Before starting, type `systemctl daemon-reload` to flush services.
+
 ### A little reminder
 
 For **CentOS** or **Ubuntu 18.04**, you need extra procedures:
