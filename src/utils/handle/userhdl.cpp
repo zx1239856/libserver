@@ -39,6 +39,7 @@ void userhdl::deal(const QString &command, const QJsonObject &json)
                                       qMakePair(json.value("group").toString(), sqlresult[0].value("ID").toInt()));
                         jsonReturn.insert("result", true);
                         jsonReturn.insert("token", token);
+                        jsonReturn.insert("ID",sqlresult[0].value("ID").toInt());
                         dbLog::log("userLogin","User "+json.value("username").toString()+" login",ID,userType);
                     }
                     else // wrong pwd

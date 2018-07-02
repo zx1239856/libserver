@@ -74,6 +74,14 @@ void socketThreadHandler::slotFunc()
             qint32 bytes;
             QByteArray rqtData;
             in >> bytes;
+            qint32 leftData = bytes - ReadData.size();
+            while(leftData>0)
+              {
+                tcpsocket->waitForReadyRead(3000);
+                QByteArray &&add = tcpsocket->readAll();
+                ReadData.append(add);
+                leftData -= add.size();
+              }
             in >> rqtData;
             if(rqtData.size() != bytes)
             {
@@ -91,7 +99,7 @@ void socketThreadHandler::slotFunc()
             out << dltData;
             tcpsocket->write(SendData);
             tcpsocket->flush();
-
+            tcpsocket->waitForBytesWritten(3000);
             if(hdl.mode == "down")
             {
                 fileTransfer=new tcpFileTransfer(tcpsocket);

@@ -10,7 +10,6 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
     char* cmd = cpath.data();
 
     QMetaEnum me = QMetaEnum::fromType<queryhdl::CMD>();
-
     // update token status
     ctrl->UpdateStatus(token);
 
@@ -20,6 +19,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
         {
           QString bare = json.value("bareSQL").toString();
           bare.replace("$dbPrefix$",dbFullPrefix);
+          qDebug() << bare;
           sql::basicSQL bsql(bare);
           if(bsql.exec())
             {
