@@ -13,8 +13,12 @@ If you have encountered any problem while using this application, see [Problem R
 
 ## 2018 Spring
 **O**bject-**O**riented **P**rogramming Project
+:+1::+1::+1:
+See [contributors](https://github.com/zx1239856/libserver/graphs/contributors) here   
+:sparkles::sparkles::sparkles:**The contributors of the whole project(Server and Client) are [here](https://github.com/zx1239856/libserver/wiki/Statistics-and-Collaboration)**
 
-See [contributors](https://github.com/zx1239856/libserver/graphs/contributors) here
+## Client Side Application
+See [libclient](https://github.com/lixiaojia2017/libclient) here.
 
 ## Highlights
 
@@ -38,7 +42,7 @@ Make sure you have properly configured your Qt5 environment, or the project won'
 Also you need to install [Poppler library](https://poppler.freedesktop.org/). For Ubuntu, run the following command:
 
 ```bash
-sudo apt-get install libpoppler-dev
+sudo apt-get install libpoppler-dev libpoppler-qt5-dev
 ```
 
 For CentOS or other linux systems, you need to build the library yourself, and we provide you with a simple script to compile and install the library(Assume you have cloned our project):
@@ -133,6 +137,8 @@ esac
 For **Ubuntu 17.10** or earlier, or any other linux system using initd to manage services other than systemd: 
 
 Now you would be able to manage the server using systemctl.
+
+Before starting, type `systemctl daemon-reload` to flush services.
 
 ### A little reminder
 
