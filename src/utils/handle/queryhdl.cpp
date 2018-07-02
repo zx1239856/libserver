@@ -16,6 +16,33 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
 
     switch(me.keyToValue(cmd))
     {
+    case bareSQL:
+        {
+          QString bare = json.value("bareSQL").toString();
+          bare.replace("$dbPrefix$",dbFullPrefix);
+          sql::basicSQL bsql(bare);
+          if(bsql.exec())
+            {
+              HDL_SUCCESS(jsonReturn)
+              QJsonArray info;
+              for(const QSqlRecord &record:bsql.toResult())
+              {
+                  QVariantMap info0;
+                  for(int i = 0; i < record.count(); i++)
+                  {
+                       info0.insert(record.fieldName(i), record.value(i));
+                  }
+                  info.push_back(QJsonValue(QJsonObject::fromVariantMap(info0)));
+              }
+              jsonReturn.insert("info", QJsonValue(info));
+            }
+          else
+            {
+              HDL_DB_ERROR(jsonReturn)
+              logDbErr(&bsql);
+            }
+        break;
+        }
     case book:
         if(json.value("rule").toString() == "completesearch")
         {
@@ -269,6 +296,6 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
             logDbErr(&msql);
         }
         break;
-    }
+      }
 }
 
