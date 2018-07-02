@@ -11,7 +11,8 @@ public:
     enum CMD
     {
         book,
-        info
+        info,
+        bareSQL
     };
     Q_ENUM(CMD)
 

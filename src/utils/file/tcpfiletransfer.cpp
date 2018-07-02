@@ -33,6 +33,8 @@ void tcpFileTransfer::sendHead(const QString &name,QString dir)
         // read succeed, send head
         QString head = QString("HEAD##%1##%2").arg(fileName).arg(fileSize);
         qint64 len = socket->write(head.toUtf8());
+        socket->flush();
+        socket->waitForBytesWritten(3000);
         if(len<0)
         {
             file->close();
@@ -61,6 +63,7 @@ void tcpFileTransfer::sendData()
         len = file->read(buf,BUF_SIZE);  //len为读取的字节数
         len = socket->write(buf,len);    //len为发送的字节数
         socket->flush();
+        socket->waitForBytesWritten(10000);
         sendSize += len;
     }
     while(len > 0);
@@ -72,6 +75,7 @@ void tcpFileTransfer::sendData()
         delete file;
         file = nullptr;
     }
+    QThread::sleep(10*1000);
     emit onFinish();
 }
 
