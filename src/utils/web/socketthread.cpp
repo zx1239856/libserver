@@ -32,7 +32,7 @@ void socketThread::run()
         qDaemonLog("CANNOT set SocketDescriptor",QDaemonLog::ErrorEntry);
         return;
     }
-    tcpsocket->setReadBufferSize(2048);
+    tcpsocket->setReadBufferSize(4096);
     QString peerIp = "null";
     peerIp = ipParser(tcpsocket->peerAddress());
     qDaemonLog("New incoming connection from " + peerIp);
@@ -46,7 +46,7 @@ void socketThread::run()
     socketThreadHandler obj(tcpsocket);
     QObject::connect(tcpsocket, &QTcpSocket::readyRead, &obj, &socketThreadHandler::slotFunc);
     // set max Timeout for the socket
-    if(!tcpsocket->waitForDisconnected(100000))
+    if(!tcpsocket->waitForDisconnected(10000))
     {
         tcpsocket->disconnectFromHost();
     }
