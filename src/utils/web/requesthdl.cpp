@@ -59,7 +59,7 @@ QByteArray requesthdl::deal()
     }
 
     hdl->deal(jsonRequest.take("command").toString(), jsonRequest);
-    QJsonObject&& jsonReturn = hdl->GetReturn();
+    QJsonObject jsonReturn = hdl->GetReturn();
     delete hdl;
     if(!jsonReturn.value("mode").isNull())
     {
