@@ -17,6 +17,9 @@ If you have encountered any problem while using this application, see [Problem R
 See [contributors](https://github.com/zx1239856/libserver/graphs/contributors) here   
 :sparkles::sparkles::sparkles:**The contributors of the whole project(Server and Client) are [here](https://github.com/zx1239856/libserver/wiki/Statistics-and-Collaboration)**
 
+## Client Side Application
+See [libclient](https://github.com/lixiaojia2017/libclient) here.
+
 ## Highlights
 
 The icing on the cake would be as follows:
