@@ -24,7 +24,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
             for(auto y : cond)
             {
                 auto x = y.toObject();
-                if(x.value("field").toString() == "tags")
+                if(x.value("field").toString() == "tags" && !x.value("data").isNull())
                 {
                     QJsonArray tags = x.value("data").toArray();
                     for(auto iter:tags)
@@ -32,7 +32,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
                         conditions += ("tags LIKE '%," +iter.toString() + ",%' AND ");
                     }
                 }
-                else if(x.value("field").toString() == "bookcase")
+                else if(x.value("field").toString() == "bookcase" && !x.value("data").isNull())
                 {
                     auto z = x.value("data").toArray();
                     conditions += "(";
@@ -43,7 +43,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
                     conditions.chop(4);
                     conditions += ") AND ";
                 }
-                else if(x.value("field").toString() == "price")
+                else if(x.value("field").toString() == "price" && !x.value("data").isNull())
                 {
                     QJsonObject price = x.value("data").toObject();
                     conditions += "price<=" + QString::number(price.value("sup").toDouble()) + " AND price>=" + QString::number(price.value("inf").toDouble()) + " AND ";
@@ -107,7 +107,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
             for(auto y : cond)
             {
                 auto x = y.toObject();
-                if(x.value("field").toString() == "tags")
+                if(x.value("field").toString() == "tags" && !x.value("data").isNull())
                 {
                     QJsonArray tags = x.value("data").toArray();
                     for(auto iter:tags)
@@ -115,7 +115,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
                         conditions += ("tags LIKE '%" +iter.toString() + "%' AND ");
                     }
                 }
-                else if(x.value("field").toString() == "bookcase")
+                else if(x.value("field").toString() == "bookcase" && !x.value("data").isNull())
                 {
                     auto z = x.value("data").toArray();
                     conditions += "(";
@@ -126,7 +126,7 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
                     conditions.chop(4);
                     conditions += ") AND ";
                 }
-                else if(x.value("field").toString() == "price")
+                else if(x.value("field").toString() == "price" && !x.value("data").isNull())
                 {
                     QJsonObject price = x.value("data").toObject();
                     conditions += "price<=" + QString::number(price.value("sup").toDouble()) + " AND price>=" + QString::number(price.value("inf").toDouble()) + " AND ";
@@ -184,9 +184,12 @@ void queryhdl::deal(const QString &command, const QJsonObject &json)
         }
         else if(json.value("rule").toString() == "intelligentsearch")
         {
-            QString conditions;
-            QString info = json.value("info").toString();
-            conditions += "name LIKE '%" + info +"%' OR author LIKE '%" + info + "%' OR press LIKE '%" + info + "%' OR tags LIKE '%" + info + "%'";
+            if(!json.value("info").isNull())
+            {
+                    QString conditions;
+                    QString info = json.value("info").toString();
+                    conditions += "name LIKE '%" + info +"%' OR author LIKE '%" + info + "%' OR press LIKE '%" + info + "%' OR tags LIKE '%" + info + "%'";
+            }
 
             //添加排序
             conditions += " ORDER BY ";
