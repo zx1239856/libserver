@@ -36,6 +36,7 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                         map.insert("bookid", sqlresult1.value("bookid").toInt());
                         map.insert("operatorid", ID);
                         sql::select msql2(dbFullPrefix + "readers", "ID = " + QString::number(sqlresult1.value("readerid").toInt()));
+
                         if(msql2.exec() && msql2.toResult().size() == 1)
                         {
                             auto sqlresult2 = msql2.toResult()[0];
@@ -52,7 +53,11 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                                 if(msql4.exec())
                                 {
                                     sql::del msql5(dbFullPrefix + "currappoint", "ID = " + QString::number(json.value("appointid").toInt()));
+                                    QMap<QString, QVariant> content;
+                                    content.insert("available", false);
+                                    sql::update msql6(dbFullPrefix + "books", content, " ID = " + QString::number(sqlresult1.value("bookid").toInt()));
                                     msql5.exec();
+                                    msql6.exec();
                                     dbLog::log("checkborrow","The admin checked borrow, BookID="+json.value("bookid").toString()+",ReaderID="+json.value("readerid").toString(),ID,dbLog::staff);
                                     HDL_SUCCESS(jsonReturn)
                                 }
@@ -111,7 +116,11 @@ void checkhdl::deal(const QString &command, const QJsonObject &json)
                         if(msql2.exec())
                         {
                             sql::del msql3(dbFullPrefix + "currappoint", "ID = " + QString::number(json.value("appointid").toInt()));
+                            QMap<QString, QVariant> content;
+                            content.insert("available", true);
+                            sql::update msql4(dbFullPrefix + "books", content, " ID = " + QString::number(sqlresult1.value("bookid").toInt()));
                             msql3.exec();
+                            msql4.exec();
                             dbLog::log("checkreturn","The admin checked return, borrowID="+json.value("borrowid").toString()+",appoint ID="+json.value("appointid").toString(),ID,dbLog::staff);
                             HDL_SUCCESS(jsonReturn)
                         }
