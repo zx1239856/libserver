@@ -1,4 +1,4 @@
-#include "tcpfiletransfer.h"
+﻿#include "tcpfiletransfer.h"
 #include "utils/config.h"
 
 
@@ -82,6 +82,9 @@ void tcpFileTransfer::receiveFile(QString dir)
     {
         dir=config::getInstance()->dataDir();
     }
+    // if dir not exists, create automatically
+    QDir _dir;
+    _dir.mkpath(dir);
     while(true)
     {
         socket->waitForReadyRead();
