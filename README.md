@@ -42,7 +42,7 @@ Make sure you have properly configured your Qt5 environment, or the project won'
 Also you need to install [Poppler library](https://poppler.freedesktop.org/). For Ubuntu, run the following command:
 
 ```bash
-sudo apt-get install libpoppler-dev
+sudo apt-get install libpoppler-dev libpoppler-qt5-dev
 ```
 
 For CentOS or other linux systems, you need to build the library yourself, and we provide you with a simple script to compile and install the library(Assume you have cloned our project):
